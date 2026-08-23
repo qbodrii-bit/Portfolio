@@ -6,7 +6,7 @@ site_url: N/A (synthesized — no single source URL)
 fetched_at: 2026-08-01
 default_theme: light
 brand_color: "#0F0F0F"
-primary_font: "Archivo"
+primary_font: "Outfit"
 font_weight_normal: 400
 token_prefix: bp
 
@@ -30,8 +30,8 @@ colors:
   hairline: "#E5E5E5"
 
 typography:
-  display: "Archivo"
-  body: "Archivo"
+  display: "Outfit"
+  body: "Outfit"
   weights_used: [400, 900]
   weights_absent: [500, 600, 700]
 
@@ -86,7 +86,7 @@ Biography 페이지는 Roman Signer의 전시 리스트 관습을 그대로 계�
 ```css
 /* 1. 폰트 + weight — 900과 400만 사용, 그 사이 웨이트는 절대 쓰지 않는다 */
 body {
-  font-family: "Archivo", -apple-system, sans-serif;
+  font-family: "Outfit", -apple-system, sans-serif;
   font-weight: 400;
 }
 
@@ -212,7 +212,7 @@ Work 그리드는 촘촘하다 — 썸네일 사이 16px 갭으로 "카탈로그
 
 ```css
 :root {
-  --bp-font-family: "Archivo", -apple-system, sans-serif;
+  --bp-font-family: "Outfit", -apple-system, sans-serif;
   --bp-font-weight-normal: 400;
   --bp-font-weight-bold: 900;
 
@@ -263,7 +263,7 @@ Work 그리드는 촘촘하다 — 썸네일 사이 16px 갭으로 "카탈로그
 
 - **단일 소스 URL 없음** — 이 design.md는 5개 실제 사이트(ericlanz.net, romansigner.ch, hausig.eu, lenareckord.de, tamakiyoshida.com)에 대한 서술적 관찰(자동 CSS 추출이 아닌 WebFetch 요약 기반)을 종합해 새로 합성한 것이다. 특정 사이트의 hex/폰트를 그대로 추출한 것이 아니라, 공통 관습에서 새 방향을 도출했다.
 - **정확한 hex 미측정** — 5개 레퍼런스의 실제 CSS를 파싱하지 않았으므로 `#FFFFFF`/`#0F0F0F` 등은 관찰된 방향성(흰 배경, 소프트 블랙 텍스트)에 기반한 합리적 선택이지, 실측값이 아니다.
-- **폰트 라이선스** — "Archivo"는 Google Fonts 무료 오픈소스로 즉시 사용 가능하지만, 실제 레퍼런스 사이트들이 쓰는 정확한 서체는 확인하지 않았다.
+- **폰트 라이선스** — "Outfit"은 Google Fonts 무료 오픈소스(SIL OFL)로 즉시 사용 가능하지만, 실제 레퍼런스 사이트들이 쓰는 정확한 서체는 확인하지 않았다.
 - **반응형 상세 미정의** — 모바일에서 좌측 고정 nav가 상단 바/햄버거로 전환되는 구체적 브레이크포인트 값은 목업 단계에서 근사치로만 처리했다.
 - **모션/애니메이션 세부 미검증** — 스크롤 reveal 등 모션은 Step 1.7 사용자 선택에 따라 결정되며, 이 문서 자체는 정적 스펙만 담는다.
 - **다크모드 없음** — light 단일 테마만 정의.
