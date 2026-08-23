@@ -347,7 +347,7 @@ main {
 }
 
 .section-label {
-  font-size: 26px;
+  font-size: 20px;
   font-weight: var(--bp-font-weight-normal);
   letter-spacing: -0.01em;
   margin: 0 0 var(--bp-space-sm);
@@ -549,7 +549,7 @@ main {
   .work-figures img { max-height: 70vh; }
   .back-link { margin-top: var(--bp-space-lg); padding: 8px 0; }
 
-  .section-label { font-size: 22px; }
+  .section-label { font-size: 18px; }
   .exhibition-row { grid-template-columns: 1fr; gap: 2px; padding: 14px 0; }
   .exhibition-list { margin-bottom: var(--bp-space-lg); }
   .bio-statement { margin-bottom: var(--bp-space-lg); }

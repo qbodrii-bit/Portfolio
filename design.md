@@ -98,7 +98,7 @@ body {
 body { background: var(--bg); color: var(--fg); }
 
 /* 3. 좌측 nav를 마스트헤드로 */
-.nav-logo { font-weight: 900; font-size: 26px; letter-spacing: -0.02em; }  /* 유일한 900 */
+.nav-logo { font-weight: 900; font-size: 26px; letter-spacing: -0.02em; }
 .nav-link { font-weight: 900; font-size: 18px; letter-spacing: -0.01em; }
 ```
 
@@ -183,7 +183,7 @@ Work 그리드는 촘촘하다 — 썸네일 사이 16px 갭으로 "카탈로그
   <a class="nav-link" href="/contact">Contact</a>
 </nav>
 ```
-- `.nav-link`: `font-weight: 900; font-size: 26px; letter-spacing: -0.01em; line-height: 1.3; color: var(--bp-fg);`
+- `.nav-link`: `font-weight: 900; font-size: 18px; letter-spacing: -0.01em; line-height: 1.3; color: var(--bp-fg);`
 - active 상태: 밑줄 4px, `text-underline-offset: 6px` — 색 변화 없음
 - hover: `opacity: 0.55` 전환만 (`transition: opacity 0.15s ease`)
 
@@ -321,3 +321,9 @@ Ohne sie wirken die Fotos flau und zu kühl. Siehe `content/README.md`.
 `prefers-reduced-motion`이면 모션은 전부 꺼진다.
 
 **언어 토글의 현재 언어 표시**는 굵기 대신 밑줄이다(굵기는 워드마크와 내비게이션 전용이므로).
+
+**타이포 크기 정리** (`assets/site.css`가 유일한 출처):
+워드마크 26px/900 · 내비게이션 18px/900 · 작품 상세 제목 40px/400 ·
+섹션 라벨(Ausbildung·Ausstellungen) 20px/400 · 본문 16px/400 ·
+작품 캡션 15px/400 · 재료·매체와 메타 13~14px/400 `#6B6B6B`.
+모바일에서는 섹션 라벨 18px, 상세 제목 28px, 전체화면 메뉴 링크 32px.
