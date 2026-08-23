@@ -9,7 +9,10 @@
 
   function setOpen(open) {
     toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü');
     panel.setAttribute('data-open', String(open));
+    masthead.setAttribute('data-open', String(open));
+    document.documentElement.classList.toggle('nav-open', open);
   }
 
   masthead.setAttribute('data-js', 'true');

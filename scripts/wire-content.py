@@ -12,6 +12,7 @@ Die Seiten werden jedes Mal vollstaendig neu geschrieben; von Hand geaenderte
 HTML-Dateien gehen dabei verloren.
 """
 import glob
+import hashlib
 import html
 import json
 import os
@@ -22,6 +23,17 @@ CONTENT = os.path.join(ROOT, "content")
 e = html.escape
 
 FONT = "https://fonts.googleapis.com/css2?family=Outfit:wght@400;900&display=swap"
+
+
+def asset(name):
+    """Dateiname mit kurzem Hash, damit Browser nach einer Aenderung
+    nicht die alte Fassung aus dem Cache zeigen."""
+    path = os.path.join(ROOT, "assets", name)
+    if not os.path.exists(path):
+        return f"assets/{name}"
+    with open(path, "rb") as f:
+        digest = hashlib.sha1(f.read()).hexdigest()[:8]
+    return f"assets/{name}?v={digest}"
 
 
 # ---------------------------------------------------------------- Daten laden
@@ -127,7 +139,7 @@ def page(title, description, section, active, main):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="{FONT}" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="{asset("site.css")}">
 </head>
 <body{body_attr}>
 
@@ -135,7 +147,7 @@ def page(title, description, section, active, main):
 
 {main}
 
-  <script src="assets/site.js"></script>
+  <script src="{asset("site.js")}"></script>
 </body>
 </html>
 """

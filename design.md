@@ -32,12 +32,12 @@ colors:
 typography:
   display: "Outfit"
   body: "Outfit"
-  weights_used: [400, 900]
+  weights_used: [400, 900]   # 900 ausschliesslich fuer die Wortmarke
   weights_absent: [500, 600, 700]
 
 components:
-  nav-logo: { weight: 900, size: "26px" }
-  nav-link: { weight: 900, size: "18px" }
+  nav-logo: { weight: 900, size: "26px" }   # einziges fettes Element
+  nav-link: { weight: 400, size: "18px" }
   work-thumb: { border: "none", shadow: "none" }
   exhibition-row: { border-bottom: "1px solid #E5E5E5" }
 ---
@@ -52,7 +52,9 @@ components:
 
 이 사이트는 좌측 내비게이션을 "작은 유틸리티 링크 목록"이 아니라 **마스트헤드(masthead) 그 자체**로 다룬다. 맨 위에 작가 이름 "Boram Park"가 워드마크로 앉고(weight 900, 26px), 그 아래 Work / Biography / Contact 세 단어가 세로로 쌓인다(weight 900, 18px). 이름이 로고 역할을 맡고 링크는 한 단계 낮은 목소리로 따라온다 — 이것이 5개 레퍼런스(ericlanz.net, romansigner.ch, hausig.eu, lenareckord.de, tamakiyoshida.com) 중 어느 하나도 정확히 하지 않는 조합이다. Roman Signer와 Hausig는 왼쪽 세로 내비게이션을 쓰지만 작은 유틸리티 텍스트로 취급하고, Tamaki Yoshida는 이름을 볼드하게 다루지만 상단 중앙에 배치한다. 이 사이트는 두 관습을 하나로 합친다: **위치는 왼쪽, 취급은 마스트헤드.**
 
-색은 존재하지 않는다. 배경은 순수 백색(`#FFFFFF`), 텍스트는 소프트 블랙(`#0F0F0F`) — 두 번째 브랜드 컬러는 의도적으로 없다. 작품 이미지가 유일한 색채 공급원이 되도록, 사이트 자체는 철저히 무채색을 유지한다. 대비는 색이 아니라 **굵기**에서 나온다: 900(마스트헤드/섹션 타이틀)과 400(본문/메타데이터) 단 두 웨이트만 쓰고, 그 사이의 500·600·700은 의도적으로 비운다.
+색은 존재하지 않는다. 배경은 순수 백색(`#FFFFFF`), 텍스트는 소프트 블랙(`#0F0F0F`) — 두 번째 브랜드 컬러는 의도적으로 없다. 작품 이미지가 유일한 색채 공급원이 되도록, 사이트 자체는 철저히 무채색을 유지한다.
+
+**굵은 글자는 워드마크 "Boram Park" 하나뿐이다.** 900은 그 이름에만 쓰고, 나머지 텍스트는 전부 400이다. 위계는 굵기가 아니라 **크기와 회색조**가 만든다 — 페이지 타이틀 40px, 본문 16px, 메타데이터 13~15px에 `#6B6B6B`. 그래서 페이지에서 시선이 가장 먼저 닿는 굵은 덩어리는 작가 이름 하나뿐이고, 그다음은 곧바로 작품 이미지다.
 
 여백은 넉넉하되 리듬이 있다: 섹션 사이 수직 여백은 96px로 크게 벌리지만, Work 그리드의 썸네일 사이 간격은 16px로 좁혀 — "숨 쉬는 섹션, 촘촘한 그리드"라는 Airbnb식 비대칭 리듬을 따른다. Work 썸네일에는 그림자도 테두리도 라운드도 없다 — 이미지가 페이지에 놓인 게 아니라 페이지의 일부처럼 보이도록.
 
@@ -60,8 +62,8 @@ Biography 페이지는 Roman Signer의 전시 리스트 관습을 그대로 계�
 
 ### Key Characteristics
 
-- 좌측 고정 마스트헤드 (워드마크 "Boram Park" 26px/900 + Work / Biography / Contact 18px/900)
-- 무채색 전용 팔레트 — 브랜드 컬러 없음, 대비는 굵기(900 vs 400)로만 표현
+- 좌측 고정 마스트헤드 (워드마크 "Boram Park" 26px/900 + Work / Biography / Contact 18px/400)
+- 무채색 전용 팔레트 — 브랜드 컬러 없음. 900은 워드마크 전용, 그 외 전부 400
 - 순수 백색 배경 — 작품 이미지가 유일한 색채
 - Work 콜라주: 각 썸네일이 원본 비율 그대로, 한 줄씩 높이를 맞춰 배치 — 크롭 없음, 16px 갭
 - Biography: 날짜-제목-장소 헤어라인 리스트, 역순 정렬
@@ -75,7 +77,7 @@ Biography 페이지는 Roman Signer의 전시 리스트 관습을 그대로 계�
 
 > **BOLD Direction**: Vertical Manifest
 > **Aesthetic Category**: Editorial Magazine
-> **Signature Element**: 이 사이트는 **좌측 마스트헤드 내비게이션과 900/400 두 웨이트만의 극단적 타이포 대비**로 기억된다.
+> **Signature Element**: 이 사이트는 **좌측 마스트헤드와, 오직 작가 이름에만 허용된 900 웨이트**로 기억된다.
 > **Code Complexity**: medium — 그리드 + 리스트 두 레이아웃 패턴, 바닐라 HTML/CSS, 스크롤 reveal 모션 1종
 
 ---
@@ -96,8 +98,8 @@ body {
 body { background: var(--bg); color: var(--fg); }
 
 /* 3. 좌측 nav를 마스트헤드로 */
-.nav-logo { font-weight: 900; font-size: 26px; letter-spacing: -0.02em; }
-.nav-link { font-weight: 900; font-size: 18px; letter-spacing: -0.01em; }
+.nav-logo { font-weight: 900; font-size: 26px; letter-spacing: -0.02em; }  /* 유일한 900 */
+.nav-link { font-weight: 400; font-size: 18px; letter-spacing: -0.01em; }
 ```
 
 **절대 하지 말아야 할 것 하나**: 좌측 nav를 작은 유틸리티 텍스트(14px 이하, weight 400)로 만들지 말 것 — 이 사이트의 정체성이 곧 "굵은 좌측 마스트헤드"이므로, 여기서 타협하면 다른 미니멀 아트 포트폴리오와 구별되지 않는다.
@@ -310,3 +312,12 @@ Ohne sie wirken die Fotos flau und zu kühl. Siehe `content/README.md`.
 아이콘 버튼이 나타나 패널을 여닫는다. 아이콘은 인라인 SVG 두 개(햄버거/X)를 넣어 두고
 `aria-expanded` 값으로 CSS가 골라 보여준다 — 자바스크립트는 속성만 토글한다.
 스크립트가 없으면 `.masthead[data-js]`가 없어 버튼이 숨겨지고 패널은 열린 채로 남는다.
+
+**모바일 메뉴는 전체 화면 팝업**이다. 780px 이하에서 아이콘을 누르면 `.nav-panel`이
+`position: fixed; inset: 0`으로 화면을 덮고, 0.26초 페이드 + 6px 슬라이드로 열린다.
+링크는 32px(400px 이하 28px)로 커지고 0.06초 간격 스태거로 올라온다.
+`.masthead-bar`에 `z-index: 40`을 주는 것이 필수다 — 패널이 마스트헤드의 자식이라
+패널의 `z-index: 20`이 같은 스택 안에서 워드마크와 X 버튼을 덮어버린다.
+`prefers-reduced-motion`이면 모션은 전부 꺼진다.
+
+**언어 토글의 현재 언어 표시**는 굵기 대신 밑줄이다(굵기는 워드마크 전용이므로).

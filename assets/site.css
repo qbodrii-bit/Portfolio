@@ -1,7 +1,8 @@
 /* Boram Park — Portfolio
    Eine Datei fuer alle Seiten. Regeln und Werte nach design.md:
-   keine Farbe ausser Schwarz/Weiss/Grau, Kontrast nur ueber Schriftgewicht
-   (900 / 400), flache Bilder ohne Rahmen, Schatten oder Rundungen. */
+   keine Farbe ausser Schwarz/Weiss/Grau, flache Bilder ohne Rahmen, Schatten
+   oder Rundungen. Fett (900) traegt allein die Wortmarke "Boram Park";
+   alles andere steht in 400 und ordnet sich ueber Groesse und Grau. */
 
 :root {
   --bp-font-family: "Outfit", -apple-system, BlinkMacSystemFont, sans-serif;
@@ -116,7 +117,7 @@ img { max-width: 100%; height: auto; }
 }
 
 .nav-link {
-  font-weight: var(--bp-font-weight-bold);
+  font-weight: var(--bp-font-weight-normal);
   font-size: 18px;
   letter-spacing: -0.01em;
   line-height: 1.3;
@@ -156,7 +157,8 @@ body[data-section] .nav-link:not([data-active="true"]) { opacity: 0.35; }
 
 .lang-toggle button[aria-pressed="true"] {
   color: var(--bp-fg);
-  font-weight: var(--bp-font-weight-bold);
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 /* ---------- Hauptspalte ---------- */
@@ -169,7 +171,7 @@ main {
 
 .page-head h1 {
   font-size: 40px;
-  font-weight: var(--bp-font-weight-bold);
+  font-weight: var(--bp-font-weight-normal);
   letter-spacing: -0.01em;
   margin: 0;
 }
@@ -213,7 +215,7 @@ main {
 
 .hero-title {
   color: var(--bp-fg);
-  font-weight: var(--bp-font-weight-bold);
+  font-weight: var(--bp-font-weight-normal);
   font-size: clamp(20px, 2vw, 32px);
   letter-spacing: -0.01em;
   transition: opacity 0.15s ease;
@@ -224,7 +226,7 @@ main {
 .home-enter {
   display: inline-block;
   font-size: 16px;
-  font-weight: var(--bp-font-weight-bold);
+  font-weight: var(--bp-font-weight-normal);
   border-bottom: 2px solid var(--bp-fg);
   padding-bottom: 2px;
   opacity: 0;
@@ -346,7 +348,7 @@ main {
 
 .section-label {
   font-size: 26px;
-  font-weight: var(--bp-font-weight-bold);
+  font-weight: var(--bp-font-weight-normal);
   letter-spacing: -0.01em;
   margin: 0 0 var(--bp-space-sm);
 }
@@ -374,7 +376,7 @@ main {
 .contact-email {
   display: inline-block;
   font-size: 26px;
-  font-weight: var(--bp-font-weight-bold);
+  font-weight: var(--bp-font-weight-normal);
   letter-spacing: -0.01em;
   border-bottom: 2px solid var(--bp-fg);
   padding-bottom: 2px;
@@ -410,6 +412,14 @@ main {
     animation: none;
     opacity: 1;
   }
+
+  .nav-panel,
+  .nav-panel .nav-links,
+  .nav-panel .lang-toggle,
+  .nav-panel .nav-link {
+    transition-duration: 0.01ms;
+    transform: none;
+  }
 }
 
 /* ---------- Tablet ---------- */
@@ -439,12 +449,64 @@ main {
 
   .masthead[data-js="true"] .nav-toggle { display: flex; }
 
-  /* ohne JavaScript bleibt das Panel offen, sonst gaebe es keine Navigation */
-  .nav-panel[data-open="false"] { display: none; }
+  /* Geoeffnet legt sich das Menu als ganze Flaeche ueber die Seite.
+     Die Leiste mit Wortmarke und Kreuz bleibt darueber sichtbar. */
+  .masthead[data-open="true"] {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 30;
+    background: var(--bp-bg);
+  }
+
+  .masthead[data-open="true"] .masthead-bar {
+    position: relative;
+    z-index: 40;          /* sonst deckt das Panel Wortmarke und Kreuz zu */
+    background: var(--bp-bg);
+  }
+
+  html.nav-open, html.nav-open body { overflow: hidden; }
 
   .nav-panel {
-    padding-top: var(--bp-space-sm);
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    background: var(--bp-bg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--bp-space-xl) var(--bp-space-md) var(--bp-space-lg);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition: opacity 0.26s ease, transform 0.26s ease, visibility 0.26s;
   }
+
+  .nav-panel[data-open="true"] {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  /* ohne JavaScript bleibt das Menu als normale Liste stehen */
+  .masthead:not([data-js="true"]) .nav-panel {
+    position: static;
+    padding: var(--bp-space-sm) 0 0;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  .nav-links,
+  .nav-panel .lang-toggle {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .nav-panel[data-open="true"] .nav-links { opacity: 1; transform: none; transition-delay: 0.06s; }
+  .nav-panel[data-open="true"] .lang-toggle { opacity: 1; transform: none; transition-delay: 0.16s; }
 
   .nav-links {
     flex-direction: column;
@@ -452,17 +514,23 @@ main {
   }
 
   .nav-link {
-    font-size: 20px;
-    padding: 12px 0;          /* Tippfläche mindestens 44px hoch */
+    font-size: 32px;
+    padding: 10px 0;          /* Tippfläche mindestens 44px hoch */
+    transform: translateY(14px);
+    transition: transform 0.34s ease, opacity 0.15s ease;
   }
+
+  .nav-panel[data-open="true"] .nav-link { transform: none; }
+  .nav-panel[data-open="true"] .nav-link:nth-child(1) { transition-delay: 0.08s; }
+  .nav-panel[data-open="true"] .nav-link:nth-child(2) { transition-delay: 0.14s; }
+  .nav-panel[data-open="true"] .nav-link:nth-child(3) { transition-delay: 0.20s; }
 
   .lang-toggle {
     position: static;
-    margin-top: var(--bp-space-xs);
-    padding-bottom: var(--bp-space-xs);
+    margin-top: var(--bp-space-md);
+    font-size: 16px;
   }
 
-  .lang-toggle { font-size: 15px; }
   .lang-toggle button { padding: 12px 14px 12px 0; }
 
   main { padding: var(--bp-space-md) var(--bp-space-md) var(--bp-space-lg); }
@@ -493,6 +561,7 @@ main {
 @media (max-width: 400px) {
   .masthead { padding: var(--bp-space-sm) var(--bp-space-sm) var(--bp-space-xs); }
   main { padding: var(--bp-space-sm) var(--bp-space-sm) var(--bp-space-md); }
-  .nav-links { gap: 0 var(--bp-space-sm); }
+  .nav-link { font-size: 28px; }
+  .nav-panel { padding: var(--bp-space-lg) var(--bp-space-sm) var(--bp-space-md); }
   .page-head h1 { font-size: 26px; }
 }
