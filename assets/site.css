@@ -1,8 +1,8 @@
 /* Boram Park — Portfolio
    Eine Datei fuer alle Seiten. Regeln und Werte nach design.md:
    keine Farbe ausser Schwarz/Weiss/Grau, flache Bilder ohne Rahmen, Schatten
-   oder Rundungen. Fett (900) traegt allein die Wortmarke "Boram Park";
-   alles andere steht in 400 und ordnet sich ueber Groesse und Grau. */
+   oder Rundungen. Fett (900) tragen nur Wortmarke und Navigation; alle
+   uebrigen Texte stehen in 400 und ordnen sich ueber Groesse und Grau. */
 
 :root {
   --bp-font-family: "Outfit", -apple-system, BlinkMacSystemFont, sans-serif;
@@ -117,7 +117,7 @@ img { max-width: 100%; height: auto; }
 }
 
 .nav-link {
-  font-weight: var(--bp-font-weight-normal);
+  font-weight: var(--bp-font-weight-bold);
   font-size: 18px;
   letter-spacing: -0.01em;
   line-height: 1.3;

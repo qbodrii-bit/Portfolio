@@ -37,7 +37,7 @@ typography:
 
 components:
   nav-logo: { weight: 900, size: "26px" }   # einziges fettes Element
-  nav-link: { weight: 400, size: "18px" }
+  nav-link: { weight: 900, size: "18px" }
   work-thumb: { border: "none", shadow: "none" }
   exhibition-row: { border-bottom: "1px solid #E5E5E5" }
 ---
@@ -54,7 +54,7 @@ components:
 
 색은 존재하지 않는다. 배경은 순수 백색(`#FFFFFF`), 텍스트는 소프트 블랙(`#0F0F0F`) — 두 번째 브랜드 컬러는 의도적으로 없다. 작품 이미지가 유일한 색채 공급원이 되도록, 사이트 자체는 철저히 무채색을 유지한다.
 
-**굵은 글자는 워드마크 "Boram Park" 하나뿐이다.** 900은 그 이름에만 쓰고, 나머지 텍스트는 전부 400이다. 위계는 굵기가 아니라 **크기와 회색조**가 만든다 — 페이지 타이틀 40px, 본문 16px, 메타데이터 13~15px에 `#6B6B6B`. 그래서 페이지에서 시선이 가장 먼저 닿는 굵은 덩어리는 작가 이름 하나뿐이고, 그다음은 곧바로 작품 이미지다.
+**굵은 글자는 좌측 마스트헤드에만 있다.** 워드마크 "Boram Park"와 내비게이션 세 단어가 900이고, 본문 영역의 텍스트는 전부 400이다. 위계는 굵기가 아니라 **크기와 회색조**가 만든다 — 페이지 타이틀 40px, 본문 16px, 메타데이터 13~15px에 `#6B6B6B`. 그래서 페이지에서 시선이 가장 먼저 닿는 굵은 덩어리는 작가 이름 하나뿐이고, 그다음은 곧바로 작품 이미지다.
 
 여백은 넉넉하되 리듬이 있다: 섹션 사이 수직 여백은 96px로 크게 벌리지만, Work 그리드의 썸네일 사이 간격은 16px로 좁혀 — "숨 쉬는 섹션, 촘촘한 그리드"라는 Airbnb식 비대칭 리듬을 따른다. Work 썸네일에는 그림자도 테두리도 라운드도 없다 — 이미지가 페이지에 놓인 게 아니라 페이지의 일부처럼 보이도록.
 
@@ -62,8 +62,8 @@ Biography 페이지는 Roman Signer의 전시 리스트 관습을 그대로 계�
 
 ### Key Characteristics
 
-- 좌측 고정 마스트헤드 (워드마크 "Boram Park" 26px/900 + Work / Biography / Contact 18px/400)
-- 무채색 전용 팔레트 — 브랜드 컬러 없음. 900은 워드마크 전용, 그 외 전부 400
+- 좌측 고정 마스트헤드 (워드마크 "Boram Park" 26px/900 + Work / Biography / Contact 18px/900)
+- 무채색 전용 팔레트 — 브랜드 컬러 없음. 900은 마스트헤드(워드마크 + 내비게이션)에만, 본문 영역은 전부 400
 - 순수 백색 배경 — 작품 이미지가 유일한 색채
 - Work 콜라주: 각 썸네일이 원본 비율 그대로, 한 줄씩 높이를 맞춰 배치 — 크롭 없음, 16px 갭
 - Biography: 날짜-제목-장소 헤어라인 리스트, 역순 정렬
@@ -77,7 +77,7 @@ Biography 페이지는 Roman Signer의 전시 리스트 관습을 그대로 계�
 
 > **BOLD Direction**: Vertical Manifest
 > **Aesthetic Category**: Editorial Magazine
-> **Signature Element**: 이 사이트는 **좌측 마스트헤드와, 오직 작가 이름에만 허용된 900 웨이트**로 기억된다.
+> **Signature Element**: 이 사이트는 **900이 좌측 마스트헤드에만 허용되고 본문 영역은 전부 400인 좌우 대비**로 기억된다.
 > **Code Complexity**: medium — 그리드 + 리스트 두 레이아웃 패턴, 바닐라 HTML/CSS, 스크롤 reveal 모션 1종
 
 ---
@@ -99,7 +99,7 @@ body { background: var(--bg); color: var(--fg); }
 
 /* 3. 좌측 nav를 마스트헤드로 */
 .nav-logo { font-weight: 900; font-size: 26px; letter-spacing: -0.02em; }  /* 유일한 900 */
-.nav-link { font-weight: 400; font-size: 18px; letter-spacing: -0.01em; }
+.nav-link { font-weight: 900; font-size: 18px; letter-spacing: -0.01em; }
 ```
 
 **절대 하지 말아야 할 것 하나**: 좌측 nav를 작은 유틸리티 텍스트(14px 이하, weight 400)로 만들지 말 것 — 이 사이트의 정체성이 곧 "굵은 좌측 마스트헤드"이므로, 여기서 타협하면 다른 미니멀 아트 포트폴리오와 구별되지 않는다.
@@ -320,4 +320,4 @@ Ohne sie wirken die Fotos flau und zu kühl. Siehe `content/README.md`.
 패널의 `z-index: 20`이 같은 스택 안에서 워드마크와 X 버튼을 덮어버린다.
 `prefers-reduced-motion`이면 모션은 전부 꺼진다.
 
-**언어 토글의 현재 언어 표시**는 굵기 대신 밑줄이다(굵기는 워드마크 전용이므로).
+**언어 토글의 현재 언어 표시**는 굵기 대신 밑줄이다(굵기는 워드마크와 내비게이션 전용이므로).
