@@ -329,6 +329,9 @@ Ohne sie wirken die Fotos flau und zu kühl. Siehe `content/README.md`.
 
 **타이포 크기 정리** (`assets/site.css`가 유일한 출처):
 워드마크 26px/900 · 내비게이션 18px/900 · 작품 상세 제목 40px/400 ·
-섹션 라벨(Ausbildung·Ausstellungen) 20px/400 · 본문 16px/400 ·
+섹션 라벨(Ausbildung·Ausstellungen) 15px/400 회색·자간 +0.02em(모바일 14px) · 본문 16px/400 ·
 작품 목록 14px/400 `#6B6B6B`(모바일 18px) · 메타 13~14px/400 `#6B6B6B`.
-모바일에서는 섹션 라벨 18px, 상세 제목 28px, 전체화면 메뉴 링크 32px.
+모바일에서는 상세 제목 28px, 전체화면 메뉴 링크 32px.
+
+섹션 라벨은 제목이 아니라 **라벨**로 다룬다 — 본문보다 작고 회색이며, 아래 표를 묶는 역할만 한다.
+크게 잡으면 굵기가 없는 상태에서 본문과 경쟁해 페이지가 시끄러워진다.
