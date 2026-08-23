@@ -27,7 +27,9 @@ EN-Ansicht der Website. Bleibt es leer, steht dort nichts.
 3. **Reihenfolge**: kleinere Zahl steht auf der Work-Seite weiter oben.
 4. Felder ausfüllen, Bilder über **Bilder → +** hochladen.
    Die Reihenfolge der Bilder ist die Reihenfolge auf der Werkseite.
-   Fotos dürfen direkt aus der Kamera kommen — sie werden automatisch verkleinert.
+   Fotos dürfen direkt aus der Kamera oder vom Telefon kommen: sie werden
+   automatisch verkleinert und farblich nach sRGB umgerechnet, damit sie im
+   Browser so aussehen wie im Original.
 5. **Save**.
 
 Eine Bildunterschrift ist nur bei Serien nötig (wie bei *Street Food*, wo jedes

@@ -152,13 +152,16 @@ cover_slug = site.get("cover_link_slug") or lead["slug"]
 cover_year = site.get("cover_caption_year") or lead["year_label"]
 cover_title = site.get("cover_caption_title") or lead["title"]
 cover_title_en = site.get("cover_caption_title_en") or lead["title_en"]
-tag_de = site.get("tagline_de", "Fotografie — Installation — Video")
-tag_en = site.get("tagline_en", "Photography — Installation — Video")
+tag_de = site.get("tagline_de", "").strip()
+tag_en = site.get("tagline_en", "").strip() or tag_de
+
+tagline_block = ""
+if tag_de:
+    tagline_block = ('\n    <p class="home-tagline" '
+                     f'data-de="{e(tag_de)}" data-en="{e(tag_en)}">{e(tag_de)}</p>\n')
 
 index_main = f"""  <main>
-    <h1 class="visually-hidden">Boram Park — {e(tag_de)}</h1>
-    <p class="home-tagline" data-de="{e(tag_de)}" data-en="{e(tag_en)}">{e(tag_de)}</p>
-
+    <h1 class="visually-hidden">Boram Park — Portfolio</h1>{tagline_block}
     <a class="hero-work" href="werk-{cover_slug}.html">
       <img class="hero-thumb" src="{rel(cover)}"{dims(cover)} alt="{e(cover_title)}, {cover_year} — Boram Park">
       <div class="hero-caption">
@@ -170,9 +173,9 @@ index_main = f"""  <main>
     <a class="home-enter" href="work.html" data-de="Alle Arbeiten ansehen →" data-en="View all works →">Alle Arbeiten ansehen →</a>
   </main>"""
 
-write("index.html", page("Boram Park — Portfolio",
-                         f"Boram Park — {tag_de}. Arbeiten, Biografie und Kontakt.",
-                         "", "", index_main))
+home_desc = (f"Boram Park — {tag_de}. Arbeiten, Biografie und Kontakt." if tag_de
+             else "Boram Park — Arbeiten, Biografie und Kontakt.")
+write("index.html", page("Boram Park — Portfolio", home_desc, "", "", index_main))
 
 # ---------------------------------------------------------------- work.html
 items = []

@@ -288,3 +288,8 @@ Work 그리드는 촘촘하다 — 썸네일 사이 16px 갭으로 "카탈로그
 
 - **이미지에 `height: auto`를 반드시 유지할 것.** `width`/`height` 속성이 붙은 `<img>`는 이 선언이 없으면 `aspect-ratio`를 무시하고 원본 높이로 늘어난다.
 - **`body`에 `align-content: start`.** 그리드 행이 `min-height: 100vh`를 채우려고 늘어나면서 짧은 페이지(홈·Contact)에 빈 구멍이 생긴다.
+
+**Farbe der Werkbilder**: alle Bilder liegen als sRGB mit eingebettetem Profil vor.
+Die Quellen sind es nicht (Adobe RGB, ProPhoto RGB, Display P3, CMYK) — die
+Umrechnung passiert in `scripts/extract-pdf-assets.py` und `scripts/prepare-images.py`.
+Ohne sie wirken die Fotos flau und zu kühl. Siehe `content/README.md`.
