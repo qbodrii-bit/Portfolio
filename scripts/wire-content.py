@@ -4,13 +4,15 @@
 Aufruf: python scripts/wire-content.py      (nur Standardbibliothek)
 
 Liest content/works/<slug>.json, content/artist.json und content/site.json und
-schreibt index/work/biography/contact.html sowie werk-<slug>.html je Arbeit.
+schreibt index/biography/contact.html sowie werk-<slug>.html je Arbeit.
+Eine Uebersichtsseite gibt es nicht - die Werkliste steht in der Navigation.
 Das Aussehen steckt komplett in assets/site.css - hier steht nur die Struktur.
 Bildgroessen kommen aus content/images/_sizes.json (scripts/prepare-images.py);
 fehlt die Datei, werden width/height weggelassen.
 Die Seiten werden jedes Mal vollstaendig neu geschrieben; von Hand geaenderte
 HTML-Dateien gehen dabei verloren.
 """
+
 import glob
 import hashlib
 import html
@@ -72,9 +74,11 @@ if not works:
     raise SystemExit("content/works/ ist leer - keine Arbeiten zu schreiben.")
 
 
+
+
 # ---------------------------------------------------------------- Bausteine
-NAV = [("work.html", "Work", "Work"),
-       ("biography.html", "Biography", "Biography"),
+# "Work" ist kein Link mehr, sondern klappt die Werkliste auf.
+NAV = [("biography.html", "Biography", "Biography"),
        ("contact.html", "Contact", "Contact")]
 
 
@@ -92,17 +96,84 @@ LANG_TOGGLE = """      <div class="lang-toggle" role="group" aria-label="Sprache
       </div>"""
 
 
-def masthead(active):
+def _short_title(w, lang):
+    """Untertitel nach dem Doppelpunkt weglassen - die Liste ist schmal."""
+    title = w["title"] if lang == "de" else (w["title_en"] or w["title"])
+    return title.split(":")[0].strip()
+
+
+def _qualifiers(w, lang):
+    """Kandidaten, um gleichnamige Arbeiten auseinanderzuhalten.
+
+    Beim Material der letzte Bestandteil (die Reispapier-Arbeiten teilen den
+    ersten), bei der Technik der erste, sonst das Jahr.
+    """
+    def tidy(value):
+        value = value.strip()
+        return value[:1].upper() + value[1:]      # "light box" -> "Light box"
+
+    material = tidy((w["material_" + lang] or "").split(",")[-1])
+    medium = tidy((w["medium_" + lang] or "").split(",")[0])
+    return [material, medium, w["year_label"]]
+
+
+def _build_sub_labels():
+    """Beschriftungen der Werkliste, je Sprache einmal vorberechnet."""
+    labels = {}
+    for lang in ("de", "en"):
+        groups = {}
+        for w in works:
+            groups.setdefault(_short_title(w, lang), []).append(w)
+        for base, members in groups.items():
+            if len(members) == 1:
+                labels[(members[0]["slug"], lang)] = base
+                continue
+            pick = None
+            for index in range(3):
+                values = [_qualifiers(m, lang)[index] for m in members]
+                if all(values) and len(set(values)) == len(values):
+                    pick = index
+                    break
+            for m in members:
+                q = _qualifiers(m, lang)[pick if pick is not None else 2]
+                labels[(m["slug"], lang)] = f"{base} · {q}" if q else base
+    return labels
+
+
+SUB_LABELS = _build_sub_labels()
+
+
+def sub_label(w, lang):
+    return SUB_LABELS[(w["slug"], lang)]
+
+
+def masthead(active, current_slug=None):
     """Wortmarke, Navigation und Sprachwahl.
 
-    Auf dem Telefon steckt beides unter .nav-panel hinter dem Menuknopf;
+    "Work" klappt die Werkliste auf; jeder Eintrag fuehrt direkt auf die
+    Werkseite. Auf einer Werkseite ist die Liste von Anfang an offen.
+    Auf dem Telefon steckt alles unter .nav-panel hinter dem Menuknopf;
     am Rechner ist der Knopf ausgeblendet und das Panel immer offen.
     """
-    links = []
+    on_work = current_slug is not None
+    sub = []
+    for w in works:
+        mark = ' data-active="true"' if w["slug"] == current_slug else ""
+        sub.append(f'          <li><a class="nav-sub-link"{mark} href="{detail_href(w)}" '
+                   f'data-de="{e(sub_label(w, "de"))}" data-en="{e(sub_label(w, "en"))}">'
+                   f'{e(sub_label(w, "de"))}</a></li>')
+
+    links = [f'''        <button class="nav-link nav-branch" type="button"
+                aria-expanded="{"true" if on_work else "false"}" aria-controls="werkliste"
+                {'data-active="true"' if on_work else ""} data-de="Work" data-en="Work">Work</button>
+        <ul class="nav-sub" id="werkliste" data-open="{"true" if on_work else "false"}">
+{chr(10).join(sub)}
+        </ul>''']
     for href, de, en in NAV:
         mark = ' data-active="true"' if href == active else ""
         links.append(f'        <a class="nav-link"{mark} href="{href}" '
                      f'data-de="{de}" data-en="{en}">{de}</a>')
+
     return ("""  <nav class="masthead" aria-label="Hauptnavigation">
     <div class="masthead-bar">
       <a class="nav-logo" href="index.html">Boram Park</a>
@@ -127,7 +198,7 @@ def masthead(active):
   </nav>""")
 
 
-def page(title, description, section, active, main):
+def page(title, description, section, active, main, current_slug=None):
     body_attr = f' data-section="{section}"' if section else ""
     return f"""<!doctype html>
 <html lang="de" data-lang="de">
@@ -143,7 +214,7 @@ def page(title, description, section, active, main):
 </head>
 <body{body_attr}>
 
-{masthead(active)}
+{masthead(active, current_slug)}
 
 {main}
 
@@ -168,23 +239,8 @@ def meta_line(w, lang):
     return " · ".join(b for b in bits if b)
 
 
-def meta_short(w, lang):
-    bits = [w["material_" + lang], w["medium_" + lang]]
-    return " · ".join(b for b in bits if b)
-
-
 def detail_href(w):
     return f"werk-{w['slug']}.html"
-
-
-def thumb_src(w):
-    """Vorschaubild: eigenes Feld, sonst das erste Bild der Arbeit."""
-    return w.get("thumbnail") or w["images"][0]["src"]
-
-
-def aspect(src):
-    wh = SIZES.get(rel(src))
-    return round(wh[0] / wh[1], 3) if wh and wh[1] else 1.5
 
 
 def alt(w):
@@ -215,40 +271,11 @@ index_main = f"""  <main>
         <span class="hero-title" data-de="{e(cover_title)}" data-en="{e(cover_title_en)}">{e(cover_title)}</span>
       </div>
     </a>
-
-    <a class="home-enter" href="work.html" data-de="Alle Arbeiten ansehen →" data-en="View all works →">Alle Arbeiten ansehen →</a>
   </main>"""
 
 home_desc = (f"Boram Park — {tag_de}. Arbeiten, Biografie und Kontakt." if tag_de
              else "Boram Park — Arbeiten, Biografie und Kontakt.")
 write("index.html", page("Boram Park — Portfolio", home_desc, "", "", index_main))
-
-# ---------------------------------------------------------------- work.html
-items = []
-for w in works:
-    src = thumb_src(w)
-    items.append(f"""      <a class="work-item" style="--ar: {aspect(src)}" href="{detail_href(w)}">
-        <img class="thumb" src="{rel(src)}"{dims(src)} loading="lazy" alt="{alt(w)}">
-        <div class="work-caption">
-          <span class="work-title" data-de="{e(w['title'])}" data-en="{e(w['title_en'])}">{e(w['title'])}</span>
-          <span class="work-year">{w['year_label']}</span>
-        </div>
-        <div class="work-medium" data-de="{e(meta_short(w, 'de'))}" data-en="{e(meta_short(w, 'en'))}">{e(meta_short(w, 'de'))}</div>
-      </a>""")
-
-work_main = ("""  <main>
-    <h1 class="visually-hidden" data-de="Work" data-en="Work">Work</h1>
-
-    <div class="work-grid">
-"""
-             + "\n".join(items)
-             + """
-    </div>
-  </main>""")
-
-write("work.html", page("Boram Park — Work",
-                        "Arbeiten von Boram Park: Fotografie, Installation und Video.",
-                        "work", "work.html", work_main))
 
 # ----------------------------------------------------------- biography.html
 edu_rows = "\n".join(f"""      <div class="exhibition-row">
@@ -334,13 +361,17 @@ for w in works:
     <div class="work-figures">
 {chr(10).join(figs)}
     </div>
-
-    <a class="back-link" href="work.html" data-de="← Alle Arbeiten" data-en="← All works">← Alle Arbeiten</a>
   </main>"""
 
     desc = w["text_de"][:150] if w["text_de"] else meta_line(w, "de")
     write(detail_href(w), page(f"{e(w['title'])} — Boram Park", desc,
-                               "work", "work.html", main))
+                               "work", "", main, current_slug=w["slug"]))
+
+# die fruehere Uebersichtsseite gibt es nicht mehr
+old_index = os.path.join(SITE, "work.html")
+if os.path.exists(old_index):
+    os.remove(old_index)
+    print("entfernt: work.html")
 
 # Detailseiten geloeschter Arbeiten entfernen
 keep = {detail_href(w) for w in works}
@@ -350,4 +381,4 @@ for path in glob.glob(os.path.join(SITE, "werk-*.html")):
         os.remove(path)
         print("entfernt:", name)
 
-print("Seiten geschrieben:", 4 + len(works))
+print("Seiten geschrieben:", 3 + len(works))

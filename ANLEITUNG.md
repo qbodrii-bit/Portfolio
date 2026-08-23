@@ -34,15 +34,17 @@ EN-Ansicht der Website. Bleibt es leer, steht dort nichts.
    Browser so aussehen wie im Original.
 5. **Save**.
 
-**Vorschaubild** bleibt normalerweise leer: auf der Work-Seite steht dann das erste
-Bild der Arbeit. Nur wenn dort ein anderes Bild passt, eines auswählen.
-
 Eine Bildunterschrift ist nur bei Serien nötig (wie bei *Street Food*, wo jedes
 Foto einen eigenen Titel hat). Sonst leer lassen.
 
-## Am Telefon
+## Wie die Website aufgebaut ist
 
-Auf dem Telefon steckt die Navigation hinter dem Menüzeichen oben rechts:
+Links steht das Menü. Ein Klick auf **Work** klappt die Liste aller Arbeiten
+auf; ein Klick auf einen Titel öffnet die Werkseite. Eine Übersichtsseite mit
+Vorschaubildern gibt es nicht mehr — die Liste im Menü ist der Weg zu den
+Arbeiten. Die Reihenfolge dort ist die der Work-Sortierung: neueste zuerst.
+
+Auf dem Telefon steckt dasselbe Menü hinter dem Menüzeichen oben rechts:
 antippen öffnet Work, Biography, Contact und die Sprachwahl DE / EN.
 
 ## Nach dem Speichern

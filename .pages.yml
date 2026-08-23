@@ -70,12 +70,6 @@ content:
       - name: text_en
         label: Werktext (englisch)
         type: text
-      - name: thumbnail
-        label: Vorschaubild
-        type: image
-        description: Nur nötig, wenn auf der Work-Seite nicht das erste Bild stehen soll.
-        options:
-          media: images
       - name: images
         label: Bilder
         type: object

@@ -21,9 +21,6 @@
   --bp-space-xl: 96px;
 
   --bp-nav-width: 240px;
-
-  /* Zielhoehe einer Collage-Zeile; groesser = weniger, groessere Bilder */
-  --bp-work-base: 340px;
 }
 
 * { box-sizing: border-box; }
@@ -113,7 +110,8 @@ img { max-width: 100%; height: auto; }
 .nav-links {
   display: flex;
   flex-direction: column;
-  gap: var(--bp-space-sm);
+  gap: 0;                 /* Abstand kommt aus dem Padding der Eintraege,
+                             damit die zugeklappte Werkliste keine Luecke macht */
 }
 
 .nav-link {
@@ -123,8 +121,65 @@ img { max-width: 100%; height: auto; }
   line-height: 1.3;
   color: var(--bp-fg);
   width: fit-content;
+  padding: 7px 0;
   transition: opacity 0.15s ease;
 }
+
+/* "Work" ist ein Knopf: er klappt die Werkliste auf, statt zu verlinken */
+.nav-branch {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: inherit;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.nav-branch::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.22s ease;
+}
+
+.nav-branch[aria-expanded="true"]::after {
+  transform: translateY(1px) rotate(-135deg);
+}
+
+/* Werkliste unter "Work" */
+.nav-sub {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 1px;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.32s ease, opacity 0.25s ease;
+}
+
+.nav-sub[data-open="true"] {
+  max-height: 900px;
+  opacity: 1;
+  margin-bottom: var(--bp-space-xs);
+}
+
+.nav-sub-link {
+  display: block;
+  font-size: 14px;
+  font-weight: var(--bp-font-weight-normal);
+  line-height: 1.35;
+  color: var(--bp-fg-muted);
+  padding: 5px 0;
+  transition: color 0.15s ease;
+}
+
+.nav-sub-link:hover,
+.nav-sub-link[data-active="true"] { color: var(--bp-fg); }
 
 .nav-link:hover { opacity: 0.55; }
 
@@ -237,57 +292,6 @@ main {
 
 .home-enter:hover { opacity: 0.55; }
 
-/* ---------- Work: Collage ----------
-   Kein festes Raster: jede Vorschau behaelt ihr eigenes Seitenverhaeltnis.
-   --ar (Breite/Hoehe) setzt scripts/wire-content.py pro Kachel; Wachstum und
-   Basisbreite folgen daraus, sodass eine Zeile auf gleiche Hoehe ausgleicht. */
-.work-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--bp-space-sm);
-  max-width: 1400px;
-}
-
-/* haelt die letzte Zeile auf natuerlicher Groesse, statt sie aufzublaehen */
-.work-grid::after {
-  content: "";
-  flex: 999999 0 0;
-}
-
-.work-item {
-  --ar: 1.5;
-  flex: var(--ar) 1 calc(var(--ar) * var(--bp-work-base));
-  min-width: 0;
-  display: block;
-  opacity: 0;
-  animation: reveal 0.5s ease forwards;
-}
-
-.thumb {
-  display: block;
-  width: 100%;
-  height: auto;
-  background: var(--bp-hairline);
-}
-
-.work-caption {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 2px var(--bp-space-sm);
-  margin-top: var(--bp-space-xs);
-  font-size: 15px;
-}
-
-.work-year { color: var(--bp-fg-muted); font-weight: var(--bp-font-weight-normal); }
-.work-medium { color: var(--bp-fg-muted); font-size: 13px; margin-top: 2px; }
-.work-title {
-  color: var(--bp-fg);
-  font-weight: var(--bp-font-weight-normal);
-  transition: opacity 0.15s ease;
-}
-.work-item:hover .work-title { opacity: 0.55; }
-
 /* ---------- Work: Detailseite ---------- */
 .work-meta {
   font-size: 14px;
@@ -399,16 +403,9 @@ main {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.work-grid .work-item:nth-child(1) { animation-delay: 0.05s; }
-.work-grid .work-item:nth-child(2) { animation-delay: 0.10s; }
-.work-grid .work-item:nth-child(3) { animation-delay: 0.15s; }
-.work-grid .work-item:nth-child(4) { animation-delay: 0.20s; }
-.work-grid .work-item:nth-child(5) { animation-delay: 0.25s; }
-.work-grid .work-item:nth-child(6) { animation-delay: 0.30s; }
-.work-grid .work-item:nth-child(n + 7) { animation-delay: 0.35s; }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-work, .home-enter, .work-item {
+  .hero-work {
     animation: none;
     opacity: 1;
   }
@@ -416,7 +413,9 @@ main {
   .nav-panel,
   .nav-panel .nav-links,
   .nav-panel .lang-toggle,
-  .nav-panel .nav-link {
+  .nav-panel .nav-link,
+  .nav-sub,
+  .nav-branch::after {
     transition-duration: 0.01ms;
     transform: none;
   }
@@ -426,7 +425,6 @@ main {
 @media (max-width: 1100px) {
   :root { --bp-nav-width: 200px; }
   .nav-logo { font-size: 22px; margin-bottom: var(--bp-space-md); }
-  :root { --bp-work-base: 280px; }
   main { padding: var(--bp-space-lg) var(--bp-space-md); }
   .masthead { padding: var(--bp-space-lg) var(--bp-space-md); }
   .page-head h1 { font-size: 34px; }
@@ -475,7 +473,7 @@ main {
     background: var(--bp-bg);
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    overflow-y: auto;
     padding: var(--bp-space-xl) var(--bp-space-md) var(--bp-space-lg);
     opacity: 0;
     visibility: hidden;
@@ -498,6 +496,11 @@ main {
     transform: none;
   }
 
+  /* mittig, aber ueber automatische Abstaende - so wird bei langer Liste
+     nichts oben abgeschnitten, sondern gescrollt */
+  .nav-panel .nav-links { margin-top: auto; }
+  .nav-panel .lang-toggle { margin-bottom: auto; }
+
   .nav-links,
   .nav-panel .lang-toggle {
     opacity: 0;
@@ -512,6 +515,15 @@ main {
     flex-direction: column;
     gap: 0;
   }
+
+  .nav-sub-link {
+    font-size: 18px;
+    padding: 9px 0;
+  }
+
+  .nav-sub[data-open="true"] { max-height: 1200px; margin-bottom: var(--bp-space-sm); }
+
+  .nav-branch::after { width: 8px; height: 8px; }
 
   .nav-link {
     font-size: 32px;
@@ -540,9 +552,6 @@ main {
 
   .home-tagline { font-size: 16px; margin-bottom: var(--bp-space-md); }
   .hero-thumb { aspect-ratio: 4 / 3; max-height: none; }
-
-  .work-grid { gap: var(--bp-space-md); }
-  .work-item { flex: 1 1 100%; }
 
   .work-text { margin: var(--bp-space-md) 0 var(--bp-space-lg); }
   .work-figures { gap: var(--bp-space-md); }

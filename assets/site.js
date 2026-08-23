@@ -30,6 +30,44 @@
   });
 })();
 
+/* Werkliste unter "Work" auf- und zuklappen.
+   Auf einer Werkseite kommt sie bereits offen aus dem Generator; sonst merkt
+   sich der Browser die letzte Entscheidung fuer die Dauer des Besuchs. */
+(function () {
+  var branch = document.querySelector('.nav-branch');
+  var list = document.getElementById('werkliste');
+  if (!branch || !list) return;
+
+  var KEY = 'bp-werkliste';
+
+  function setOpen(open, remember) {
+    branch.setAttribute('aria-expanded', String(open));
+    list.setAttribute('data-open', String(open));
+    if (remember) {
+      try {
+        sessionStorage.setItem(KEY, open ? '1' : '0');
+      } catch (err) {
+        /* privater Modus: gilt nur fuer diese Seite */
+      }
+    }
+  }
+
+  var stored = null;
+  try {
+    stored = sessionStorage.getItem(KEY);
+  } catch (err) {
+    stored = null;
+  }
+  // auf der Werkseite bleibt die Liste offen, auch wenn sie zuletzt zu war
+  if (stored === '1' || (stored === '0' && branch.getAttribute('aria-expanded') === 'true')) {
+    setOpen(true, false);
+  }
+
+  branch.addEventListener('click', function () {
+    setOpen(branch.getAttribute('aria-expanded') !== 'true', true);
+  });
+})();
+
 /* Sprachumschaltung DE / EN.
    Jedes Element mit data-de und data-en tauscht seinen Text;
    die Wahl bleibt im Browser gespeichert. */

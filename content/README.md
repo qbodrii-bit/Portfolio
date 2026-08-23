@@ -84,9 +84,9 @@ CMS로 새로 올린 사진도 `prepare-images.py`가 같은 처리를 한다. �
 리포 루트의 페이지들이 이 디렉터리를 `content/…` 로 참조한다. 페이지는 `scripts/wire-content.py`가
 통째로 생성하고, 스타일은 전부 `assets/site.css`에 있다.
 
-- `index.html` — 표지 이미지 + 이름/분야
-- `work.html` — 작품 12점 그리드 (각 항목 → `werk-<slug>.html`)
-- `werk-<slug>.html` — 작품 상세 12장 (제목·메타·작품 텍스트·이미지 전체)
+- `index.html` — 표지 이미지
+- `werk-<slug>.html` — 작품 상세 12장 (제목·메타·작품 텍스트·이미지 전체).
+  작품 목록은 페이지가 아니라 좌측 메뉴의 서브메뉴다.
 - `biography.html` — 학력 + 전시 이력
 - `contact.html` — 이메일
 
