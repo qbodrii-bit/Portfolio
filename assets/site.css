@@ -1,0 +1,574 @@
+/* Boram Park — Portfolio
+   Eine Datei fuer alle Seiten. Regeln und Werte nach design.md:
+   keine Farbe ausser Schwarz/Weiss/Grau, flache Bilder ohne Rahmen, Schatten
+   oder Rundungen. Fett (900) tragen nur Wortmarke und Navigation; alle
+   uebrigen Texte stehen in 400 und ordnen sich ueber Groesse und Grau. */
+
+:root {
+  --bp-font-family: "Outfit", -apple-system, BlinkMacSystemFont, sans-serif;
+  --bp-font-weight-normal: 400;
+  --bp-font-weight-bold: 900;
+
+  --bp-bg: #FFFFFF;
+  --bp-fg: #0F0F0F;
+  --bp-fg-muted: #6B6B6B;
+  --bp-hairline: #E5E5E5;
+
+  --bp-space-xs: 8px;
+  --bp-space-sm: 16px;
+  --bp-space-md: 32px;
+  --bp-space-lg: 64px;
+  --bp-space-xl: 96px;
+
+  --bp-nav-width: 240px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bp-bg);
+  color: var(--bp-fg);
+  font-family: var(--bp-font-family);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--bp-nav-width) 1fr;
+  align-content: start;   /* sonst dehnen sich kurze Seiten auf 100vh auseinander */
+  min-height: 100vh;
+}
+
+a { color: inherit; text-decoration: none; }
+
+img { max-width: 100%; height: auto; }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Masthead: Wortmarke + Navigation (links) ---------- */
+.masthead {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100vh;
+  padding: var(--bp-space-xl) var(--bp-space-md);
+  display: flex;
+  flex-direction: column;
+}
+
+.masthead-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--bp-space-sm);
+}
+
+/* Menuknopf: nur auf dem Telefon sichtbar, und nur wenn JavaScript laeuft */
+.nav-toggle {
+  display: none;
+  width: 44px;
+  height: 44px;
+  margin-right: -10px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: none;
+  border: none;
+  color: var(--bp-fg);
+  cursor: pointer;
+}
+
+.nav-toggle .icon-close { display: none; }
+.nav-toggle[aria-expanded="true"] .icon-menu { display: none; }
+.nav-toggle[aria-expanded="true"] .icon-close { display: block; }
+
+.nav-logo {
+  font-weight: var(--bp-font-weight-bold);
+  font-size: 26px;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin: 0 0 var(--bp-space-lg);
+  width: fit-content;
+  transition: opacity 0.15s ease;
+}
+
+.nav-logo:hover { opacity: 0.55; }
+
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0;                 /* Abstand kommt aus dem Padding der Eintraege,
+                             damit die zugeklappte Werkliste keine Luecke macht */
+}
+
+.nav-link {
+  font-weight: var(--bp-font-weight-bold);
+  font-size: 18px;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  color: var(--bp-fg);
+  width: fit-content;
+  padding: 7px 0;
+  transition: opacity 0.15s ease;
+}
+
+/* "Work" ist ein Knopf: er klappt die Werkliste auf, statt zu verlinken */
+.nav-branch {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: inherit;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+/* Werkliste unter "Work".
+   Die Zeile waechst von 0fr auf 1fr, also genau auf die Hoehe des Inhalts -
+   anders als bei max-height laeuft die Bewegung in beide Richtungen gleich
+   ruhig und haengt nicht von einem geratenen Maximalwert ab. */
+.nav-sub {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+              opacity 0.3s ease;
+}
+
+.nav-sub > .nav-sub-list {
+  overflow: hidden;
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 1px;
+  min-height: 0;
+}
+
+.nav-sub[data-open="true"] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  margin-bottom: var(--bp-space-xs);
+}
+
+.nav-sub-link {
+  display: block;
+  font-size: 14px;
+  font-weight: var(--bp-font-weight-normal);
+  line-height: 1.35;
+  color: var(--bp-fg-muted);
+  padding: 5px 0;
+  transition: color 0.15s ease;
+}
+
+.nav-sub-link:hover,
+.nav-sub-link[data-active="true"] { color: var(--bp-fg); }
+
+.nav-link:hover { opacity: 0.55; }
+
+body[data-section] .nav-link:not([data-active="true"]) { opacity: 0.35; }
+.nav-link[data-active="true"] { opacity: 1; }
+
+/* ---------- Sprachumschalter (oben rechts) ---------- */
+.lang-toggle {
+  position: fixed;
+  top: var(--bp-space-md);
+  right: var(--bp-space-md);
+  display: flex;
+  align-items: center;      /* sonst haengt der Trenner an der Oberkante,
+                               weil nur die Knoepfe Padding haben */
+  gap: 6px;
+  font-size: 13px;
+  z-index: 10;
+}
+
+.lang-sep {
+  color: var(--bp-hairline);
+  line-height: 1;
+  transform: translateY(-1px);
+}
+
+.lang-toggle button {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  color: var(--bp-fg-muted);
+  font-weight: var(--bp-font-weight-normal);
+  cursor: pointer;
+  padding: 4px;
+}
+
+.lang-toggle button[aria-pressed="true"] {
+  color: var(--bp-fg);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* ---------- Hauptspalte ---------- */
+main {
+  padding: var(--bp-space-xl) var(--bp-space-lg);
+  min-width: 0;
+}
+
+.page-head { margin: 0 0 var(--bp-space-lg); }
+
+.page-head h1 {
+  font-size: 40px;
+  font-weight: var(--bp-font-weight-normal);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+/* ---------- Startseite ---------- */
+.home-tagline {
+  font-size: 18px;
+  font-weight: var(--bp-font-weight-normal);
+  color: var(--bp-fg-muted);
+  margin: 0 0 var(--bp-space-lg);
+}
+
+.hero-work {
+  display: block;
+  margin: 0 0 var(--bp-space-md);
+  opacity: 0;
+  animation: reveal 0.6s ease forwards;
+}
+
+.hero-thumb {
+  display: block;
+  width: 100%;
+  max-height: 72vh;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: var(--bp-hairline);
+}
+
+.hero-caption {
+  display: flex;
+  align-items: baseline;
+  gap: var(--bp-space-sm);
+  margin-top: var(--bp-space-sm);
+}
+
+.hero-year {
+  color: var(--bp-fg-muted);
+  font-weight: var(--bp-font-weight-normal);
+  font-size: 16px;
+}
+
+.hero-title {
+  color: var(--bp-fg);
+  font-weight: var(--bp-font-weight-normal);
+  font-size: clamp(20px, 2vw, 32px);
+  letter-spacing: -0.01em;
+  transition: opacity 0.15s ease;
+}
+
+.hero-work:hover .hero-title { opacity: 0.55; }
+
+.home-enter {
+  display: inline-block;
+  font-size: 16px;
+  font-weight: var(--bp-font-weight-normal);
+  border-bottom: 2px solid var(--bp-fg);
+  padding-bottom: 2px;
+  opacity: 0;
+  animation: reveal 0.6s ease forwards;
+  animation-delay: 0.12s;
+  transition: opacity 0.15s ease;
+}
+
+.home-enter:hover { opacity: 0.55; }
+
+/* ---------- Work: Detailseite ---------- */
+.work-meta {
+  font-size: 14px;
+  color: var(--bp-fg-muted);
+  margin: var(--bp-space-sm) 0 0;
+}
+
+.work-text {
+  max-width: 640px;
+  font-size: 16px;
+  line-height: 1.6;
+  margin: var(--bp-space-md) 0 var(--bp-space-xl);
+  text-wrap: pretty;
+}
+
+.work-figures {
+  display: flex;
+  flex-direction: column;
+  gap: var(--bp-space-sm);
+  max-width: 1400px;
+}
+
+.work-figures figure { margin: 0; }
+
+.work-figures img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 84vh;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.work-figures figcaption {
+  font-size: 14px;
+  color: var(--bp-fg-muted);
+  margin-top: var(--bp-space-xs);
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: var(--bp-space-xl);
+  font-size: 14px;
+  color: var(--bp-fg-muted);
+}
+
+.back-link:hover { color: var(--bp-fg); }
+
+/* ---------- Biografie ---------- */
+.bio-statement {
+  max-width: 640px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--bp-fg);
+  margin: 0 0 var(--bp-space-xl);
+  text-wrap: pretty;
+}
+
+.section-label {
+  font-size: 15px;
+  font-weight: var(--bp-font-weight-normal);
+  letter-spacing: 0.02em;
+  color: var(--bp-fg-muted);
+  margin: 0 0 var(--bp-space-xs);
+}
+
+.exhibition-list {
+  max-width: 900px;
+  margin: 0 0 var(--bp-space-xl);
+}
+
+.exhibition-row {
+  display: grid;
+  grid-template-columns: 120px 1fr 240px;
+  gap: var(--bp-space-sm);
+  padding: var(--bp-space-sm) 0;
+  border-bottom: 1px solid var(--bp-hairline);
+  font-size: 14px;
+}
+
+.ex-date, .ex-location { color: var(--bp-fg-muted); font-weight: var(--bp-font-weight-normal); }
+.ex-title { color: var(--bp-fg); font-weight: var(--bp-font-weight-normal); }
+
+/* ---------- Kontakt ---------- */
+.contact-block { max-width: 640px; }
+
+.contact-email {
+  display: inline-block;
+  font-size: 26px;
+  font-weight: var(--bp-font-weight-normal);
+  letter-spacing: -0.01em;
+  border-bottom: 2px solid var(--bp-fg);
+  padding-bottom: 2px;
+  word-break: break-word;
+  transition: opacity 0.15s ease;
+}
+
+.contact-email:hover { opacity: 0.55; }
+
+.contact-note {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--bp-fg-muted);
+  margin: var(--bp-space-sm) 0 0;
+}
+
+/* ---------- Bewegung ---------- */
+@keyframes reveal {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-work {
+    animation: none;
+    opacity: 1;
+  }
+
+  .nav-panel,
+  .nav-panel .nav-links,
+  .nav-panel .lang-toggle,
+  .nav-panel .nav-link,
+  .nav-sub {
+    transition-duration: 0.01ms;
+    transform: none;
+  }
+}
+
+/* ---------- Tablet ---------- */
+@media (max-width: 1100px) {
+  :root { --bp-nav-width: 200px; }
+  .nav-logo { font-size: 22px; margin-bottom: var(--bp-space-md); }
+  main { padding: var(--bp-space-lg) var(--bp-space-md); }
+  .masthead { padding: var(--bp-space-lg) var(--bp-space-md); }
+  .page-head h1 { font-size: 34px; }
+}
+
+/* ---------- Telefon ---------- */
+@media (max-width: 780px) {
+  body { grid-template-columns: 1fr; }
+
+  .masthead {
+    position: static;
+    height: auto;
+    padding: var(--bp-space-md) var(--bp-space-md) var(--bp-space-sm);
+  }
+
+  .nav-logo {
+    font-size: 22px;
+    margin-bottom: 0;
+  }
+
+  .masthead[data-js="true"] .nav-toggle { display: flex; }
+
+  /* Geoeffnet legt sich das Menu als ganze Flaeche ueber die Seite.
+     Die Leiste mit Wortmarke und Kreuz bleibt darueber sichtbar. */
+  .masthead[data-open="true"] {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 30;
+    background: var(--bp-bg);
+  }
+
+  .masthead[data-open="true"] .masthead-bar {
+    position: relative;
+    z-index: 40;          /* sonst deckt das Panel Wortmarke und Kreuz zu */
+    background: var(--bp-bg);
+  }
+
+  html.nav-open, html.nav-open body { overflow: hidden; }
+
+  .nav-panel {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    background: var(--bp-bg);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: var(--bp-space-xl) var(--bp-space-md) var(--bp-space-lg);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition: opacity 0.26s ease, transform 0.26s ease, visibility 0.26s;
+  }
+
+  .nav-panel[data-open="true"] {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  /* ohne JavaScript bleibt das Menu als normale Liste stehen */
+  .masthead:not([data-js="true"]) .nav-panel {
+    position: static;
+    padding: var(--bp-space-sm) 0 0;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  /* oben ausgerichtet: die Liste waechst nach unten, statt den ganzen
+     Inhalt bei jedem Aufklappen neu zu zentrieren */
+  .nav-panel .nav-links { margin-top: 0; }
+
+  .nav-links,
+  .nav-panel .lang-toggle {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .nav-panel[data-open="true"] .nav-links { opacity: 1; transform: none; transition-delay: 0.06s; }
+  .nav-panel[data-open="true"] .lang-toggle { opacity: 1; transform: none; transition-delay: 0.16s; }
+
+  .nav-links {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .nav-sub-link {
+    font-size: 18px;
+    padding: 9px 0;
+  }
+
+  .nav-sub[data-open="true"] { margin-bottom: var(--bp-space-sm); }
+
+  .nav-link {
+    font-size: 32px;
+    padding: 10px 0;          /* Tippfläche mindestens 44px hoch */
+    transform: translateY(14px);
+    transition: transform 0.34s ease, opacity 0.15s ease;
+  }
+
+  .nav-panel[data-open="true"] .nav-link { transform: none; }
+  .nav-panel[data-open="true"] .nav-link:nth-child(1) { transition-delay: 0.08s; }
+  .nav-panel[data-open="true"] .nav-link:nth-child(2) { transition-delay: 0.14s; }
+  .nav-panel[data-open="true"] .nav-link:nth-child(3) { transition-delay: 0.20s; }
+
+  .lang-toggle {
+    position: static;
+    margin-top: var(--bp-space-md);
+    font-size: 16px;
+  }
+
+  .lang-toggle button { padding: 12px 14px 12px 0; }
+
+  main { padding: var(--bp-space-md) var(--bp-space-md) var(--bp-space-lg); }
+
+  .page-head { margin-bottom: var(--bp-space-md); }
+  .page-head h1 { font-size: 28px; }
+
+  .home-tagline { font-size: 16px; margin-bottom: var(--bp-space-md); }
+  .hero-thumb { aspect-ratio: 4 / 3; max-height: none; }
+
+  .work-text { margin: var(--bp-space-md) 0 var(--bp-space-lg); }
+  .work-figures { gap: var(--bp-space-md); }
+  .work-figures img { max-height: 70vh; }
+  .back-link { margin-top: var(--bp-space-lg); padding: 8px 0; }
+
+  .section-label { font-size: 14px; }
+  .exhibition-row { grid-template-columns: 1fr; gap: 2px; padding: 14px 0; }
+  .exhibition-list { margin-bottom: var(--bp-space-lg); }
+  .bio-statement { margin-bottom: var(--bp-space-lg); }
+
+  .contact-email { font-size: 22px; }
+}
+
+/* ---------- Kleines Telefon ---------- */
+@media (max-width: 400px) {
+  .masthead { padding: var(--bp-space-sm) var(--bp-space-sm) var(--bp-space-xs); }
+  main { padding: var(--bp-space-sm) var(--bp-space-sm) var(--bp-space-md); }
+  .nav-link { font-size: 28px; }
+  .nav-panel { padding: var(--bp-space-lg) var(--bp-space-sm) var(--bp-space-md); }
+  .page-head h1 { font-size: 26px; }
+}

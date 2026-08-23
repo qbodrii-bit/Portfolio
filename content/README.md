@@ -54,13 +54,39 @@ content/
 - 영상 작업 3점(Lebensfluss, Übergabe, Ein Hammer)은 **영상 파일이 없다**. 현재는 스틸 이미지만 있으므로,
   실제 영상(또는 Vimeo/YouTube 링크)이 필요하면 작가에게 요청해야 한다.
 
+## 색 처리 (중요)
+
+PDF 안의 이미지들은 **sRGB가 아니다.** 페이지마다 컬러스페이스가 다르다.
+
+| 원본 컬러스페이스 | 장수 |
+|---|---|
+| ICCBased Display / Modified Display P3 | 22 |
+| DeviceRGB | 6 |
+| ICCBased Adobe RGB (1998) | 6 |
+| DeviceCMYK | 6 |
+| ICCBased ProPhoto RGB | 1 |
+
+Drive 고해상도 사진 2장도 Display P3다.
+
+프로파일을 무시하고 그대로 저장하면 브라우저가 숫자를 sRGB로 해석해 색이 틀어진다.
+실제로 첫 추출본이 그랬다 — ProPhoto 원본은 밝기가 15단계 어두웠고(156 vs 172),
+CMYK 원본들은 채도 폭이 3분의 1로 줄어 바래 보였다.
+
+지금은 `extract-pdf-assets.py`가 MuPDF의 컬러 관리(`TOOLS.set_icc(True)`)로 sRGB로
+변환하고 sRGB 프로파일을 심는다. 결과는 PDF 뷰어가 보여주는 색과 거의 일치한다
+(p3 기준 172.3/168.0/168.7 vs 렌더 171.7/167.5/168.2).
+
+CMS로 새로 올린 사진도 `prepare-images.py`가 같은 처리를 한다. 아이폰 사진(Display P3)을
+그대로 올려도 sRGB로 변환된다. **이 두 스크립트를 고칠 때 색 변환 단계를 빼지 말 것.**
+
 ## 사이트 연결 상태
 
-리포 루트의 페이지들이 이 디렉터리를 `content/…` 로 참조한다.
+리포 루트의 페이지들이 이 디렉터리를 `content/…` 로 참조한다. 페이지는 `scripts/wire-content.py`가
+통째로 생성하고, 스타일은 전부 `assets/site.css`에 있다.
 
-- `index.html` — 표지 이미지 + 이름/분야
-- `work.html` — 작품 12점 그리드 (각 항목 → `werk-<slug>.html`)
-- `werk-<slug>.html` — 작품 상세 12장 (제목·메타·작품 텍스트·이미지 전체)
+- `index.html` — 표지 이미지
+- `werk-<slug>.html` — 작품 상세 12장 (제목·메타·작품 텍스트·이미지 전체).
+  작품 목록은 페이지가 아니라 좌측 메뉴의 서브메뉴다.
 - `biography.html` — 학력 + 전시 이력
 - `contact.html` — 이메일
 
@@ -76,8 +102,8 @@ python scripts/extract-pdf-assets.py  # PDF → content/images/* 다시 추출 (
 
 앞의 두 개는 GitHub Actions가 푸시마다 자동으로 돌린다. `content/works/*.json`의 텍스트나
 `order`를 고치고 `wire-content.py`만 다시 돌려도 사이트에 반영된다.
-`extract-pdf-assets.py`는 `content/images/`를 덮어쓰므로, 실행 후 Drive 고해상도 2장
-(`ein-hammer-video/01.jpg`, `/10.jpg`)을 `source/drive/`에서 다시 넣어야 한다.
+`extract-pdf-assets.py`는 `content/images/`를 덮어쓴다. Drive 고해상도 2장
+(`ein-hammer-video/01.jpg`, `/10.jpg`)은 스크립트가 마지막에 알아서 다시 넣는다.
 
 용량: `content/` 전체 36.5 MB (images 10.7 MB + source 25.8 MB). 원본까지 한곳에 두는 편이
 낫다고 보고 `source/`도 리포에 포함했다. GitHub 기준 문제없는 크기다.

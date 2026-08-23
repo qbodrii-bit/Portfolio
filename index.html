@@ -3,229 +3,60 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Boram</title>
+<title>Boram Park — Portfolio</title>
+<meta name="description" content="Boram Park — Arbeiten, Biografie und Kontakt.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;900&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bp-font-family: "Outfit", -apple-system, BlinkMacSystemFont, sans-serif;
-    --bp-font-weight-normal: 400;
-    --bp-font-weight-bold: 900;
-
-    --bp-bg: #FFFFFF;
-    --bp-fg: #0F0F0F;
-    --bp-fg-muted: #6B6B6B;
-    --bp-hairline: #E5E5E5;
-
-    --bp-space-xs: 8px;
-    --bp-space-sm: 16px;
-    --bp-space-md: 32px;
-    --bp-space-lg: 64px;
-    --bp-space-xl: 96px;
-
-    --bp-nav-width: 240px;
-  }
-
-  * { box-sizing: border-box; }
-
-  html, body {
-    margin: 0;
-    padding: 0;
-    background: var(--bp-bg);
-    color: var(--bp-fg);
-    font-family: var(--bp-font-family);
-  }
-
-  body {
-    display: grid;
-    grid-template-columns: var(--bp-nav-width) 1fr;
-    min-height: 100vh;
-  }
-
-  a { color: inherit; text-decoration: none; }
-
-  /* ---------- Masthead nav (left, fixed) ---------- */
-  .masthead {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    padding: var(--bp-space-xl) var(--bp-space-md);
-    display: flex;
-    flex-direction: column;
-    gap: var(--bp-space-sm);
-  }
-
-  .nav-link {
-    font-weight: var(--bp-font-weight-bold);
-    font-size: 26px;
-    letter-spacing: -0.01em;
-    line-height: 1.3;
-    color: var(--bp-fg);
-    width: fit-content;
-    opacity: 1;
-    transition: opacity 0.15s ease;
-  }
-
-  .nav-link:hover { opacity: 0.55; }
-
-  body[data-section] .nav-link:not([data-active="true"]) { opacity: 0.35; }
-  .nav-link[data-active="true"] { opacity: 1; }
-
-  .nav-foot {
-    margin-top: auto;
-    font-size: 12px;
-    font-weight: var(--bp-font-weight-normal);
-    color: var(--bp-fg-muted);
-    width: fit-content;
-  }
-
-  /* ---------- Language toggle (independent, top-right) ---------- */
-  .lang-toggle {
-    position: fixed;
-    top: var(--bp-space-md);
-    right: var(--bp-space-md);
-    display: flex;
-    gap: 6px;
-    font-size: 13px;
-    z-index: 10;
-  }
-
-  .lang-toggle button {
-    background: none;
-    border: none;
-    font-family: inherit;
-    font-size: inherit;
-    color: var(--bp-fg-muted);
-    font-weight: var(--bp-font-weight-normal);
-    cursor: pointer;
-    padding: 4px;
-  }
-
-  .lang-toggle button[aria-pressed="true"] {
-    color: var(--bp-fg);
-    font-weight: var(--bp-font-weight-bold);
-  }
-
-  /* ---------- Home ---------- */
-  main {
-    padding: var(--bp-space-xl) var(--bp-space-lg);
-  }
-
-  .home-hero {
-    margin: 0 0 var(--bp-space-lg);
-    opacity: 0;
-    animation: reveal 0.6s ease forwards;
-  }
-
-  .home-name {
-    font-size: clamp(72px, 11vw, 200px);
-    font-weight: var(--bp-font-weight-bold);
-    letter-spacing: -0.02em;
-    line-height: 0.9;
-    margin: 0;
-  }
-
-  .home-tagline {
-    font-size: 18px;
-    font-weight: var(--bp-font-weight-normal);
-    color: var(--bp-fg-muted);
-    margin: var(--bp-space-sm) 0 0;
-  }
-
-  .hero-work {
-    display: block;
-    margin: 0 0 var(--bp-space-md);
-    opacity: 0;
-    animation: reveal 0.6s ease forwards;
-    animation-delay: 0.12s;
-  }
-
-  .hero-thumb {
-    display: block;
-    width: 100%;
-    max-height: 62vh;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    background: var(--bp-hairline);
-  }
-
-  .hero-caption {
-    display: flex;
-    align-items: baseline;
-    gap: var(--bp-space-sm);
-    margin-top: var(--bp-space-sm);
-  }
-
-  .hero-year { color: var(--bp-fg-muted); font-weight: var(--bp-font-weight-normal); font-size: 16px; }
-  .hero-title {
-    color: var(--bp-fg);
-    font-weight: var(--bp-font-weight-bold);
-    font-size: clamp(20px, 2vw, 32px);
-    letter-spacing: -0.01em;
-    transition: opacity 0.15s ease;
-  }
-  .hero-work:hover .hero-title { opacity: 0.55; }
-
-  .home-enter {
-    display: inline-block;
-    font-size: 16px;
-    font-weight: var(--bp-font-weight-bold);
-    border-bottom: 2px solid var(--bp-fg);
-    padding-bottom: 2px;
-    opacity: 0;
-    animation: reveal 0.6s ease forwards;
-    animation-delay: 0.2s;
-    transition: opacity 0.15s ease;
-  }
-  .home-enter:hover { opacity: 0.55; }
-
-  @keyframes reveal {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  @media (max-width: 780px) {
-    body { grid-template-columns: 1fr; }
-    .masthead {
-      position: static;
-      height: auto;
-      flex-direction: row;
-      flex-wrap: wrap;
-      align-items: center;
-      padding: var(--bp-space-md);
-      padding-right: 96px;
-      gap: var(--bp-space-sm) var(--bp-space-md);
-    }
-    .nav-link { font-size: 18px; }
-    .nav-foot { flex-basis: 100%; }
-    .lang-toggle button { padding: 8px; }
-    main { padding: var(--bp-space-lg) var(--bp-space-md); }
-  }
-</style>
+<link rel="stylesheet" href="assets/site.css?v=2506c4a3">
 </head>
-<!-- No data-section on <body>: Home is the arrival screen, not one of the three nav items, so no nav-link dims here (deliberate — see .impeccable critique P2). -->
 <body>
 
   <nav class="masthead" aria-label="Hauptnavigation">
-    <a class="nav-link" href="work.html" data-de="Work" data-en="Work">Work</a>
-    <a class="nav-link" href="biography.html" data-de="Biography" data-en="Biography">Biography</a>
-    <a class="nav-link" href="contact.html" data-de="Contact" data-en="Contact">Contact</a>
-    <a class="nav-foot" href="index.html" data-de="Boram — Kunst Portfolio" data-en="Boram — Art Portfolio">Boram — Kunst Portfolio</a>
-  </nav>
-
-  <div class="lang-toggle" role="group" aria-label="Sprache">
-    <button type="button" data-set-lang="de" aria-pressed="true">DE</button>
-    <span aria-hidden="true" style="color: var(--bp-hairline);">／</span>
-    <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
-  </div>
-
-  <main>
-    <div class="home-hero">
-      <h1 class="home-name">Boram Park</h1>
-      <p class="home-tagline" data-de="Fotografie — Installation — Video" data-en="Photography — Installation — Video">Fotografie — Installation — Video</p>
+    <div class="masthead-bar">
+      <a class="nav-logo" href="index.html">Boram Park</a>
+      <button class="nav-toggle" type="button" aria-expanded="false"
+              aria-controls="hauptmenue" aria-label="Menü">
+        <svg class="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/></svg>
+        <svg class="icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 5l14 14"/><path d="M19 5L5 19"/></svg>
+      </button>
     </div>
 
+    <div class="nav-panel" id="hauptmenue">
+      <div class="nav-links">
+        <button class="nav-link nav-branch" type="button"
+                aria-expanded="false" aria-controls="werkliste"
+                 data-de="Work" data-en="Work">Work</button>
+        <div class="nav-sub" id="werkliste" data-open="false">
+          <ul class="nav-sub-list">
+            <li><a class="nav-sub-link" href="werk-uebergabe.html" data-de="Übergabe" data-en="Handover">Übergabe</a></li>
+            <li><a class="nav-sub-link" href="werk-beruehrung.html" data-de="Berührung" data-en="Touch">Berührung</a></li>
+            <li><a class="nav-sub-link" href="werk-huelle.html" data-de="Hülle" data-en="Shell">Hülle</a></li>
+            <li><a class="nav-sub-link" href="werk-street-food.html" data-de="Street Food (Serie)" data-en="Street Food (series)">Street Food (Serie)</a></li>
+            <li><a class="nav-sub-link" href="werk-haeutung-reispapier.html" data-de="Häutung · Reispapier" data-en="Moulting · Rice paper">Häutung · Reispapier</a></li>
+            <li><a class="nav-sub-link" href="werk-haeutung-leuchtkasten.html" data-de="Häutung · Leuchtkasten" data-en="Moulting · Light box">Häutung · Leuchtkasten</a></li>
+            <li><a class="nav-sub-link" href="werk-haeutung-kleiderbuegel.html" data-de="Häutung · Kleiderbügel" data-en="Moulting · Coat hangers">Häutung · Kleiderbügel</a></li>
+            <li><a class="nav-sub-link" href="werk-haeutung-kosmetikmaske.html" data-de="Häutung · Kosmetikmaske" data-en="Moulting · Cosmetic sheet mask">Häutung · Kosmetikmaske</a></li>
+            <li><a class="nav-sub-link" href="werk-ein-monat.html" data-de="Ein Monat" data-en="One Month">Ein Monat</a></li>
+            <li><a class="nav-sub-link" href="werk-lebensfluss.html" data-de="Lebensfluss" data-en="Flow of Life">Lebensfluss</a></li>
+            <li><a class="nav-sub-link" href="werk-ein-hammer-installation.html" data-de="Ein Hammer · Installation" data-en="A Hammer · Installation">Ein Hammer · Installation</a></li>
+            <li><a class="nav-sub-link" href="werk-ein-hammer-video.html" data-de="Ein Hammer · Video" data-en="A Hammer · Video">Ein Hammer · Video</a></li>
+          </ul>
+        </div>
+        <a class="nav-link" href="biography.html" data-de="Biography" data-en="Biography">Biography</a>
+        <a class="nav-link" href="contact.html" data-de="Contact" data-en="Contact">Contact</a>
+      </div>
+
+      <div class="lang-toggle" role="group" aria-label="Sprache">
+        <button type="button" data-set-lang="de" aria-pressed="true">DE</button>
+        <span class="lang-sep" aria-hidden="true">/</span>
+        <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <h1 class="visually-hidden">Boram Park — Portfolio</h1>
     <a class="hero-work" href="werk-haeutung-reispapier.html">
       <img class="hero-thumb" src="content/images/cover/01.jpg" width="1915" height="1351" alt="Häutung, 2025 — Boram Park">
       <div class="hero-caption">
@@ -233,40 +64,8 @@
         <span class="hero-title" data-de="Häutung" data-en="Moulting">Häutung</span>
       </div>
     </a>
-
-    <a class="home-enter" href="work.html" data-de="Alle Arbeiten ansehen →" data-en="View all works →">Alle Arbeiten ansehen →</a>
   </main>
 
-  <script>
-    (function () {
-      var STORAGE_KEY = 'bp-lang';
-      var buttons = document.querySelectorAll('[data-set-lang]');
-
-      function applyLang(lang) {
-        document.documentElement.setAttribute('lang', lang);
-        document.documentElement.setAttribute('data-lang', lang);
-        buttons.forEach(function (b) {
-          b.setAttribute('aria-pressed', String(b.getAttribute('data-set-lang') === lang));
-        });
-        document.querySelectorAll('[data-de][data-en]').forEach(function (el) {
-          el.textContent = el.getAttribute('data-' + lang);
-        });
-      }
-
-      var saved = localStorage.getItem(STORAGE_KEY);
-      if (saved === 'de' || saved === 'en') {
-        applyLang(saved);
-      }
-
-      buttons.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var lang = btn.getAttribute('data-set-lang');
-          localStorage.setItem(STORAGE_KEY, lang);
-          applyLang(lang);
-        });
-      });
-    })();
-  </script>
-
+  <script src="assets/site.js?v=f4da3577"></script>
 </body>
 </html>

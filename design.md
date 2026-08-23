@@ -32,11 +32,12 @@ colors:
 typography:
   display: "Outfit"
   body: "Outfit"
-  weights_used: [400, 900]
+  weights_used: [400, 900]   # 900 ausschliesslich fuer die Wortmarke
   weights_absent: [500, 600, 700]
 
 components:
-  nav-link: { weight: 900, size: "26px" }
+  nav-logo: { weight: 900, size: "26px" }   # einziges fettes Element
+  nav-link: { weight: 900, size: "18px" }
   work-thumb: { border: "none", shadow: "none" }
   exhibition-row: { border-bottom: "1px solid #E5E5E5" }
 ---
@@ -49,9 +50,11 @@ components:
 
 ### Narrative
 
-이 사이트는 좌측 내비게이션을 "작은 유틸리티 링크 목록"이 아니라 **마스트헤드(masthead) 그 자체**로 다룬다. Work / Biography / Contact 세 단어가 페이지 왼쪽에 굵고 크게(weight 900) 세로로 쌓여, 브랜드 로고와 내비게이션의 역할을 동시에 수행한다 — 이것이 5개 레퍼런스(ericlanz.net, romansigner.ch, hausig.eu, lenareckord.de, tamakiyoshida.com) 중 어느 하나도 정확히 하지 않는 조합이다. Roman Signer와 Hausig는 왼쪽 세로 내비게이션을 쓰지만 작은 유틸리티 텍스트로 취급하고, Tamaki Yoshida는 이름을 볼드하게 다루지만 상단 중앙에 배치한다. 이 사이트는 두 관습을 하나로 합친다: **위치는 왼쪽, 취급은 마스트헤드.**
+이 사이트는 좌측 내비게이션을 "작은 유틸리티 링크 목록"이 아니라 **마스트헤드(masthead) 그 자체**로 다룬다. 맨 위에 작가 이름 "Boram Park"가 워드마크로 앉고(weight 900, 26px), 그 아래 Work / Biography / Contact 세 단어가 세로로 쌓인다(weight 900, 18px). 이름이 로고 역할을 맡고 링크는 한 단계 낮은 목소리로 따라온다 — 이것이 5개 레퍼런스(ericlanz.net, romansigner.ch, hausig.eu, lenareckord.de, tamakiyoshida.com) 중 어느 하나도 정확히 하지 않는 조합이다. Roman Signer와 Hausig는 왼쪽 세로 내비게이션을 쓰지만 작은 유틸리티 텍스트로 취급하고, Tamaki Yoshida는 이름을 볼드하게 다루지만 상단 중앙에 배치한다. 이 사이트는 두 관습을 하나로 합친다: **위치는 왼쪽, 취급은 마스트헤드.**
 
-색은 존재하지 않는다. 배경은 순수 백색(`#FFFFFF`), 텍스트는 소프트 블랙(`#0F0F0F`) — 두 번째 브랜드 컬러는 의도적으로 없다. 작품 이미지가 유일한 색채 공급원이 되도록, 사이트 자체는 철저히 무채색을 유지한다. 대비는 색이 아니라 **굵기**에서 나온다: 900(마스트헤드/섹션 타이틀)과 400(본문/메타데이터) 단 두 웨이트만 쓰고, 그 사이의 500·600·700은 의도적으로 비운다.
+색은 존재하지 않는다. 배경은 순수 백색(`#FFFFFF`), 텍스트는 소프트 블랙(`#0F0F0F`) — 두 번째 브랜드 컬러는 의도적으로 없다. 작품 이미지가 유일한 색채 공급원이 되도록, 사이트 자체는 철저히 무채색을 유지한다.
+
+**굵은 글자는 좌측 마스트헤드에만 있다.** 워드마크 "Boram Park"와 내비게이션 세 단어가 900이고, 본문 영역의 텍스트는 전부 400이다. 위계는 굵기가 아니라 **크기와 회색조**가 만든다 — 페이지 타이틀 40px, 본문 16px, 메타데이터 13~15px에 `#6B6B6B`. 그래서 페이지에서 시선이 가장 먼저 닿는 굵은 덩어리는 작가 이름 하나뿐이고, 그다음은 곧바로 작품 이미지다.
 
 여백은 넉넉하되 리듬이 있다: 섹션 사이 수직 여백은 96px로 크게 벌리지만, Work 그리드의 썸네일 사이 간격은 16px로 좁혀 — "숨 쉬는 섹션, 촘촘한 그리드"라는 Airbnb식 비대칭 리듬을 따른다. Work 썸네일에는 그림자도 테두리도 라운드도 없다 — 이미지가 페이지에 놓인 게 아니라 페이지의 일부처럼 보이도록.
 
@@ -59,10 +62,10 @@ Biography 페이지는 Roman Signer의 전시 리스트 관습을 그대로 계�
 
 ### Key Characteristics
 
-- 좌측 고정 마스트헤드형 내비게이션 (Work / Biography / Contact, weight 900, 26px)
-- 무채색 전용 팔레트 — 브랜드 컬러 없음, 대비는 굵기(900 vs 400)로만 표현
+- 좌측 고정 마스트헤드 (워드마크 "Boram Park" 26px/900 + Work / Biography / Contact 18px/900)
+- 무채색 전용 팔레트 — 브랜드 컬러 없음. 900은 마스트헤드(워드마크 + 내비게이션)에만, 본문 영역은 전부 400
 - 순수 백색 배경 — 작품 이미지가 유일한 색채
-- Work 그리드: 그림자·테두리·라운드 없는 flat 썸네일, 촘촘한 16px 갭
+- Work 인덱스 페이지 없음 — 작품 목록은 좌측 마스트헤드의 서브메뉴이고, 클릭하면 곧바로 작품 상세로 간다
 - Biography: 날짜-제목-장소 헤어라인 리스트, 역순 정렬
 - 섹션 간 96px 수직 여백 vs 그리드 내부 16px — 의도적 비대칭 리듬
 - 언어 토글(DE/EN)은 마스트헤드와 분리해 우측 상단에 독립 배치
@@ -74,7 +77,7 @@ Biography 페이지는 Roman Signer의 전시 리스트 관습을 그대로 계�
 
 > **BOLD Direction**: Vertical Manifest
 > **Aesthetic Category**: Editorial Magazine
-> **Signature Element**: 이 사이트는 **좌측 마스트헤드 내비게이션과 900/400 두 웨이트만의 극단적 타이포 대비**로 기억된다.
+> **Signature Element**: 이 사이트는 **900이 좌측 마스트헤드에만 허용되고 본문 영역은 전부 400인 좌우 대비**로 기억된다.
 > **Code Complexity**: medium — 그리드 + 리스트 두 레이아웃 패턴, 바닐라 HTML/CSS, 스크롤 reveal 모션 1종
 
 ---
@@ -95,7 +98,8 @@ body {
 body { background: var(--bg); color: var(--fg); }
 
 /* 3. 좌측 nav를 마스트헤드로 */
-.nav-link { font-weight: 900; font-size: 26px; letter-spacing: -0.01em; }
+.nav-logo { font-weight: 900; font-size: 26px; letter-spacing: -0.02em; }
+.nav-link { font-weight: 900; font-size: 18px; letter-spacing: -0.01em; }
 ```
 
 **절대 하지 말아야 할 것 하나**: 좌측 nav를 작은 유틸리티 텍스트(14px 이하, weight 400)로 만들지 말 것 — 이 사이트의 정체성이 곧 "굵은 좌측 마스트헤드"이므로, 여기서 타협하면 다른 미니멀 아트 포트폴리오와 구별되지 않는다.
@@ -144,11 +148,11 @@ Work 그리드는 촘촘하다 — 썸네일 사이 16px 갭으로 "카탈로그
 ### Grid System
 - **Content max-width**: 1400px
 - **Grid type**: 좌측 고정 컬럼(240px) + 우측 fluid 메인
-- **Column count (Work grid)**: 데스크톱 2열, 태블릿 이하 1열
+- **작품 목록**: 마스트헤드 안의 서브메뉴(14px/400 회색, 현재 작품만 검정). 데스크톱은 항상 접근 가능, 모바일은 전체화면 메뉴 안
 - **Gutter**: 16px
 
 ### Navigation Structure
-- **Type**: 좌측 세로 고정(sticky) 마스트헤드 — 상단 로고 없이 nav 자체가 로고 역할
+- **Type**: 좌측 세로 고정(sticky) 마스트헤드 — 맨 위 워드마크가 로고, 그 아래 nav
 - **Position**: `position: sticky; top: 0; height: 100vh;` 왼쪽 240px 컬럼
 - **Background**: 투명 (페이지와 동일한 `--bp-bg`)
 - **Border**: 없음 — 컬럼 간 여백만으로 분리
@@ -165,7 +169,7 @@ Work 그리드는 촘촘하다 — 썸네일 사이 16px 갭으로 "카탈로그
 
 ### Content Width
 - **Prose max-width**: 640px (Biography 스테이트먼트 텍스트)
-- **Sidebar width**: 240px (좌측 마스트헤드 nav)
+- **Sidebar width**: 240px (≤1100px 200px, ≤780px 가로 배치로 전환)
 
 ---
 
@@ -179,7 +183,7 @@ Work 그리드는 촘촘하다 — 썸네일 사이 16px 갭으로 "카탈로그
   <a class="nav-link" href="/contact">Contact</a>
 </nav>
 ```
-- `.nav-link`: `font-weight: 900; font-size: 26px; letter-spacing: -0.01em; line-height: 1.3; color: var(--bp-fg);`
+- `.nav-link`: `font-weight: 900; font-size: 18px; letter-spacing: -0.01em; line-height: 1.3; color: var(--bp-fg);`
 - active 상태: 밑줄 4px, `text-underline-offset: 6px` — 색 변화 없음
 - hover: `opacity: 0.55` 전환만 (`transition: opacity 0.15s ease`)
 
@@ -203,7 +207,7 @@ Work 그리드는 촘촘하다 — 썸네일 사이 16px 갭으로 "카탈로그
 - `.ex-date`, `.ex-location`은 `--bp-fg-muted`, `.ex-title`은 `--bp-fg`
 
 ### Hero Section (Work 인덱스 상단)
-- 히어로 없음 — 페이지 진입 즉시 "Work" 타이틀(weight 900, 48px) + 그리드
+- 히어로도 타이틀도 없음 — 페이지를 열면 곧바로 작품 콜라주가 시작된다. "Work"는 화면에서 지우고 스크린리더용으로만 남겼다(`.visually-hidden`). 현재 위치는 좌측 마스트헤드의 활성 링크가 알려준다. Biography·Contact도 같다.
 - 배경: `var(--bp-bg)` 단색, 어떤 그라디언트/이미지 오버레이도 없음
 
 ---
@@ -255,7 +259,7 @@ Work 그리드는 촘촘하다 — 썸네일 사이 16px 갭으로 "카탈로그
 - 아이콘/이모지: 전혀 없음 — 텍스트와 이미지만으로 구성.
 - Border-radius: 0 — 모든 모서리는 직각.
 - Weight 500/600/700: 의도적으로 비움 — 900과 400 두 계단만 존재.
-- 히어로 배너/풀블리드 이미지: 없음 — Work 인덱스는 타이틀+그리드로 즉시 시작.
+- 히어로 배너/풀블리드 이미지: 없음. 페이지 제목을 반복해 적지 않는다(내비게이션이 이미 말해준다). 썸네일 인덱스도 없다 — 작품 목록은 내비게이션이 맡는다.
 
 ---
 
@@ -268,3 +272,66 @@ Work 그리드는 촘촘하다 — 썸네일 사이 16px 갭으로 "카탈로그
 - **모션/애니메이션 세부 미검증** — 스크롤 reveal 등 모션은 Step 1.7 사용자 선택에 따라 결정되며, 이 문서 자체는 정적 스펙만 담는다.
 - **다크모드 없음** — light 단일 테마만 정의.
 - **콘텐츠 시드 없음** — 실제 작품/전시 데이터가 아직 없어 placeholder 콘텐츠로 목업한다.
+
+---
+
+## 20. Responsive (Nachtrag, Branch `mobile-und-layout`)
+
+세 구간으로만 나눈다. 값은 `assets/site.css` 하단 미디어 쿼리가 유일한 출처다.
+
+| 구간 | 변화 |
+|---|---|
+| `> 1100px` | 기준 레이아웃. 사이드바 240px, 여백 96/64 |
+| `≤ 1100px` | 사이드바 200px, 워드마크 22px, 여백 64/32 |
+| `≤ 780px` | 사이드바 해제 — 워드마크 왼쪽, 메뉴 아이콘 오른쪽. 메뉴(작품 목록 포함)와 DE·EN은 아이콘을 눌러야 열리는 전체화면 패널 안으로 들어간다. 홈 히어로 4:3, 링크 터치 영역 44px 이상 |
+| `≤ 400px` | 여백 16px까지 축소 |
+
+규칙 두 가지:
+
+- **이미지에 `height: auto`를 반드시 유지할 것.** `width`/`height` 속성이 붙은 `<img>`는 이 선언이 없으면 `aspect-ratio`를 무시하고 원본 높이로 늘어난다.
+- **`body`에 `align-content: start`.** 그리드 행이 `min-height: 100vh`를 채우려고 늘어나면서 짧은 페이지(홈·Contact)에 빈 구멍이 생긴다.
+
+**Farbe der Werkbilder**: alle Bilder liegen als sRGB mit eingebettetem Profil vor.
+Die Quellen sind es nicht (Adobe RGB, ProPhoto RGB, Display P3, CMYK) — die
+Umrechnung passiert in `scripts/extract-pdf-assets.py` und `scripts/prepare-images.py`.
+Ohne sie wirken die Fotos flau und zu kühl. Siehe `content/README.md`.
+
+**작품 탐색 구조**: 썸네일 인덱스 페이지는 없다. "Work"는 링크가 아니라 서브메뉴를 여닫는
+버튼(`.nav-branch`)이고, 그 아래 `.nav-sub` 목록이 최신순으로 12점을 나열한다. 항목을 누르면
+바로 작품 상세로 이동하고, 작품 상세에서는 목록이 열린 채 현재 작품이 검정으로 표시된다.
+여닫힘은 `grid-template-rows: 0fr → 1fr` 전환(0.4초, ease-out)이라 내용 높이에 정확히 맞춰
+움직인다 — `max-height`로 큰 값을 찍으면 실제 높이보다 빨리 끝나 툭 끊기는 느낌이 난다.
+"Work" 옆에 화살표 같은 표시는 두지 않는다. 펼침 상태는 방문 중 `sessionStorage`에 남는다.
+
+모바일 전체화면 메뉴의 내용은 **위쪽 정렬**이다. 가운데 정렬이면 목록을 펼칠 때마다
+전체가 위로 밀려 올라가 흔들린다 — 위에 고정해 두면 목록만 아래로 자란다.
+
+**같은 제목 구분**: 「Häutung」 4점, 「Ein Hammer」 2점처럼 제목이 겹치는 작품은 목록에서
+구분자가 붙는다 — 재료의 마지막 항목(Reispapier / Leuchtkasten / Kleiderbügel / Kosmetikmaske),
+그래도 겹치면 매체(Installation / Video), 마지막 수단은 연도. 콜론 뒤 부제는 목록에서 생략한다.
+
+**Work 정렬**: 연도 내림차순이 먼저고, 같은 해 안에서만 `order` 값이 순서를 정한다.
+새 작품은 연도만 맞으면 자동으로 위로 올라온다.
+
+**모바일 메뉴**: 마크업은 데스크톱과 같고(`.masthead-bar` + `.nav-panel`), 780px 이하에서만
+아이콘 버튼이 나타나 패널을 여닫는다. 아이콘은 인라인 SVG 두 개(햄버거/X)를 넣어 두고
+`aria-expanded` 값으로 CSS가 골라 보여준다 — 자바스크립트는 속성만 토글한다.
+스크립트가 없으면 `.masthead[data-js]`가 없어 버튼이 숨겨지고 패널은 열린 채로 남는다.
+
+**모바일 메뉴는 전체 화면 팝업**이다. 780px 이하에서 아이콘을 누르면 `.nav-panel`이
+`position: fixed; inset: 0`으로 화면을 덮고, 0.26초 페이드 + 6px 슬라이드로 열린다.
+링크는 32px(400px 이하 28px)로 커지고 0.06초 간격 스태거로 올라온다.
+`.masthead-bar`에 `z-index: 40`을 주는 것이 필수다 — 패널이 마스트헤드의 자식이라
+패널의 `z-index: 20`이 같은 스택 안에서 워드마크와 X 버튼을 덮어버린다.
+`prefers-reduced-motion`이면 모션은 전부 꺼진다.
+
+**언어 토글의 현재 언어 표시**는 굵기 대신 밑줄이다(굵기는 워드마크와 내비게이션 전용이므로).
+
+**타이포 크기 정리** (`assets/site.css`가 유일한 출처):
+워드마크 26px/900 · 내비게이션 18px/900 · 작품 상세 제목 40px/400 ·
+섹션 라벨(Ausbildung·Ausstellungen) 15px/400 회색·자간 +0.02em(모바일 14px) · 본문 16px/400 ·
+작품 목록 14px/400 `#6B6B6B`(모바일 18px) · 메타 13~14px/400 `#6B6B6B`.
+모바일에서는 상세 제목 28px, 전체화면 메뉴 링크 32px.
+
+섹션 라벨은 제목이 아니라 **라벨**로 다룬다 — 본문보다 작고 회색이며, 아래 표를 묶는 역할만 한다.
+크게 잡으면 굵기가 없는 상태에서 본문과 경쟁해 페이지가 시끄러워진다.

@@ -4,11 +4,12 @@
 작가용 사용 설명서는 [`ANLEITUNG.md`](ANLEITUNG.md) (독일어).
 
 ```
-index.html            홈 (표지 사진 + 이름)
-work.html             작품 그리드
+index.html            홈 (표지 사진 한 장)
 werk-<slug>.html      작품 상세 (작품 수만큼 자동 생성)
 biography.html        학력 + 전시 이력
 contact.html          이메일
+assets/site.css       사이트 전체 스타일 (한 파일)
+assets/site.js        DE/EN 전환
 content/              모든 내용의 원본 (아래 참조)
 scripts/              content → HTML 생성 스크립트
 .pages.yml            Pages CMS 편집 화면 정의 (독일어 라벨)
@@ -24,11 +25,12 @@ design.md             디자인 시스템 기준 (색·서체·여백 규칙)
 **개발자** — `content/` 파일을 직접 고치고 스크립트를 돌린다.
 
 ```bash
-python scripts/prepare-images.py   # 큰 이미지 축소(2400px) + _sizes.json 갱신 (pillow 필요)
+python scripts/prepare-images.py   # 색 프로파일 sRGB 변환 + 2400px 축소 + _sizes.json (pillow 필요)
 python scripts/wire-content.py     # content/ → 모든 페이지 재생성 (표준 라이브러리만)
 ```
 
-두 스크립트 모두 여러 번 돌려도 결과가 같다. HTML은 **직접 고치지 않는다** — 다음 생성 때 덮어쓴다.
+두 스크립트 모두 여러 번 돌려도 결과가 같다. HTML은 **직접 고치지 않는다** — 매번 통째로 다시 쓰기 때문에 손으로 고친 내용은 사라진다.
+디자인을 바꾸려면 `assets/site.css`를, 페이지 구조를 바꾸려면 `scripts/wire-content.py`의 템플릿을 고친다.
 
 ## 내용 구조
 
@@ -39,6 +41,10 @@ content/site.json           홈 표지 이미지와 태그라인
 content/images/<slug>/      작품 이미지 (_sizes.json은 빌드가 만드는 크기 캐시)
 content/source/             원본 PDF·고해상도 사진 (사이트에 쓰이지 않는 아카이브)
 ```
+
+작품 목록은 별도 페이지가 아니라 **좌측 메뉴의 서브메뉴**다. "Work"를 누르면 펼쳐지고,
+항목을 누르면 작품 상세로 간다. 정렬은 **연도 내림차순**, 같은 해 안에서만 `order` 값을 본다.
+제목이 겹치는 작품(Häutung 4점 등)은 목록에서 재료·매체로 자동 구분된다.
 
 작품을 추가하려면 `content/works/`에 JSON 파일 하나를 더 넣고 스크립트를 돌리면 된다.
 파일을 지우면 해당 상세 페이지도 함께 지워진다. 자세한 내용은 [`content/README.md`](content/README.md).

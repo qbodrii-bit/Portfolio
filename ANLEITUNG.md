@@ -24,14 +24,28 @@ EN-Ansicht der Website. Bleibt es leer, steht dort nichts.
 1. **Arbeiten → Add entry**.
 2. Dateiname vergeben — klein, ohne Umlaute, mit Bindestrichen: `haeutung-reispapier`.
    Er wird zur Adresse der Werkseite und lässt sich später nicht mehr ändern.
-3. **Reihenfolge**: kleinere Zahl steht auf der Work-Seite weiter oben.
+3. **Reihenfolge**: die Work-Seite stellt die neueste Arbeit nach oben, sortiert
+   also zuerst nach dem Jahr. Diese Zahl entscheidet nur, wie Arbeiten aus
+   demselben Jahr untereinander stehen — kleiner steht weiter oben.
 4. Felder ausfüllen, Bilder über **Bilder → +** hochladen.
    Die Reihenfolge der Bilder ist die Reihenfolge auf der Werkseite.
-   Fotos dürfen direkt aus der Kamera kommen — sie werden automatisch verkleinert.
+   Fotos dürfen direkt aus der Kamera oder vom Telefon kommen: sie werden
+   automatisch verkleinert und farblich nach sRGB umgerechnet, damit sie im
+   Browser so aussehen wie im Original.
 5. **Save**.
 
 Eine Bildunterschrift ist nur bei Serien nötig (wie bei *Street Food*, wo jedes
 Foto einen eigenen Titel hat). Sonst leer lassen.
+
+## Wie die Website aufgebaut ist
+
+Links steht das Menü. Ein Klick auf **Work** klappt die Liste aller Arbeiten
+auf; ein Klick auf einen Titel öffnet die Werkseite. Eine Übersichtsseite mit
+Vorschaubildern gibt es nicht mehr — die Liste im Menü ist der Weg zu den
+Arbeiten. Die Reihenfolge dort ist die der Work-Sortierung: neueste zuerst.
+
+Auf dem Telefon steckt dasselbe Menü hinter dem Menüzeichen oben rechts:
+antippen öffnet Work, Biography, Contact und die Sprachwahl DE / EN.
 
 ## Nach dem Speichern
 

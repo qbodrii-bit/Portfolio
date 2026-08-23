@@ -5,8 +5,9 @@
       "w": 1915,
       "h": 1351,
       "source_page": 1,
+      "source_colorspace": "ICCBased(RGB,Adobe RGB (1998))",
       "orig": "1915x1351",
-      "kb": 141
+      "kb": 144
     }
   ],
   "haeutung-reispapier": [
@@ -15,6 +16,7 @@
       "w": 627,
       "h": 1004,
       "source_page": 2,
+      "source_colorspace": "DeviceRGB",
       "orig": "627x1004",
       "kb": 74
     },
@@ -23,16 +25,18 @@
       "w": 659,
       "h": 1004,
       "source_page": 2,
+      "source_colorspace": "DeviceRGB",
       "orig": "659x1004",
-      "kb": 48
+      "kb": 49
     },
     {
       "file": "content/images/haeutung-reispapier/03.jpg",
       "w": 2400,
       "h": 1718,
       "source_page": 3,
+      "source_colorspace": "ICCBased(RGB,ProPhoto RGB)",
       "orig": "2898x2075",
-      "kb": 413
+      "kb": 406
     }
   ],
   "haeutung-leuchtkasten": [
@@ -41,6 +45,7 @@
       "w": 2050,
       "h": 1371,
       "source_page": 4,
+      "source_colorspace": "ICCBased(RGB,Adobe RGB (1998))",
       "orig": "2050x1371",
       "kb": 189
     },
@@ -49,8 +54,9 @@
       "w": 2345,
       "h": 1659,
       "source_page": 5,
+      "source_colorspace": "ICCBased(RGB,Adobe RGB (1998))",
       "orig": "2345x1659",
-      "kb": 301
+      "kb": 299
     }
   ],
   "haeutung-kleiderbuegel": [
@@ -59,24 +65,27 @@
       "w": 1579,
       "h": 2189,
       "source_page": 6,
+      "source_colorspace": "ICCBased(RGB,Adobe RGB (1998))",
       "orig": "1579x2189",
-      "kb": 275
+      "kb": 283
     },
     {
       "file": "content/images/haeutung-kleiderbuegel/02.jpg",
       "w": 2400,
       "h": 1701,
       "source_page": 7,
+      "source_colorspace": "ICCBased(RGB,Adobe RGB (1998))",
       "orig": "3514x2490",
-      "kb": 788
+      "kb": 810
     },
     {
       "file": "content/images/haeutung-kleiderbuegel/03.jpg",
       "w": 2400,
       "h": 1693,
       "source_page": 8,
+      "source_colorspace": "ICCBased(RGB,Adobe RGB (1998))",
       "orig": "3518x2481",
-      "kb": 439
+      "kb": 454
     }
   ],
   "beruehrung": [
@@ -85,6 +94,7 @@
       "w": 1584,
       "h": 2190,
       "source_page": 9,
+      "source_colorspace": "DeviceRGB",
       "orig": "1584x2190",
       "kb": 626
     }
@@ -95,16 +105,18 @@
       "w": 988,
       "h": 1506,
       "source_page": 10,
+      "source_colorspace": "DeviceCMYK",
       "orig": "988x1506",
-      "kb": 235
+      "kb": 211
     },
     {
       "file": "content/images/huelle/02.jpg",
       "w": 1000,
       "h": 1506,
       "source_page": 10,
+      "source_colorspace": "DeviceCMYK",
       "orig": "1000x1506",
-      "kb": 323
+      "kb": 300
     }
   ],
   "haeutung-kosmetikmaske": [
@@ -113,32 +125,36 @@
       "w": 960,
       "h": 948,
       "source_page": 11,
+      "source_colorspace": "DeviceCMYK",
       "orig": "960x948",
-      "kb": 158
+      "kb": 180
     },
     {
       "file": "content/images/haeutung-kosmetikmaske/02.jpg",
       "w": 961,
       "h": 948,
       "source_page": 11,
+      "source_colorspace": "DeviceCMYK",
       "orig": "961x948",
-      "kb": 180
+      "kb": 195
     },
     {
       "file": "content/images/haeutung-kosmetikmaske/03.jpg",
       "w": 955,
       "h": 948,
       "source_page": 11,
+      "source_colorspace": "DeviceCMYK",
       "orig": "955x948",
-      "kb": 166
+      "kb": 182
     },
     {
       "file": "content/images/haeutung-kosmetikmaske/04.jpg",
       "w": 955,
       "h": 945,
       "source_page": 11,
+      "source_colorspace": "DeviceCMYK",
       "orig": "955x945",
-      "kb": 187
+      "kb": 201
     }
   ],
   "ein-monat": [
@@ -147,8 +163,9 @@
       "w": 2059,
       "h": 1459,
       "source_page": 12,
+      "source_colorspace": "ICCBased(RGB,Modified Display P3)",
       "orig": "2059x1459",
-      "kb": 256
+      "kb": 261
     }
   ],
   "lebensfluss": [
@@ -157,32 +174,36 @@
       "w": 1528,
       "h": 926,
       "source_page": 13,
+      "source_colorspace": "ICCBased(RGB,Display)",
       "orig": "1528x926",
-      "kb": 156
+      "kb": 158
     },
     {
       "file": "content/images/lebensfluss/02.jpg",
       "w": 1528,
       "h": 927,
       "source_page": 13,
+      "source_colorspace": "ICCBased(RGB,Display)",
       "orig": "1528x927",
-      "kb": 145
+      "kb": 147
     },
     {
       "file": "content/images/lebensfluss/03.jpg",
       "w": 1528,
       "h": 907,
       "source_page": 13,
+      "source_colorspace": "ICCBased(RGB,Display)",
       "orig": "1528x907",
-      "kb": 192
+      "kb": 195
     },
     {
       "file": "content/images/lebensfluss/04.jpg",
       "w": 1532,
       "h": 907,
       "source_page": 13,
+      "source_colorspace": "ICCBased(RGB,Display)",
       "orig": "1532x907",
-      "kb": 190
+      "kb": 193
     }
   ],
   "uebergabe": [
@@ -191,40 +212,45 @@
       "w": 1634,
       "h": 919,
       "source_page": 14,
+      "source_colorspace": "ICCBased(RGB,Display)",
       "orig": "1634x919",
-      "kb": 231
+      "kb": 234
     },
     {
       "file": "content/images/uebergabe/02.jpg",
       "w": 1528,
       "h": 926,
       "source_page": 15,
+      "source_colorspace": "ICCBased(RGB,Display)",
       "orig": "1528x926",
-      "kb": 193
+      "kb": 196
     },
     {
       "file": "content/images/uebergabe/03.jpg",
       "w": 1528,
       "h": 927,
       "source_page": 15,
+      "source_colorspace": "ICCBased(RGB,Display)",
       "orig": "1528x927",
-      "kb": 219
+      "kb": 222
     },
     {
       "file": "content/images/uebergabe/04.jpg",
       "w": 1528,
       "h": 907,
       "source_page": 15,
+      "source_colorspace": "ICCBased(RGB,Display)",
       "orig": "1528x907",
-      "kb": 212
+      "kb": 215
     },
     {
       "file": "content/images/uebergabe/05.jpg",
       "w": 1532,
       "h": 907,
       "source_page": 15,
+      "source_colorspace": "ICCBased(RGB,Display)",
       "orig": "1532x907",
-      "kb": 224
+      "kb": 228
     }
   ],
   "street-food": [
@@ -233,14 +259,16 @@
       "w": 1542,
       "h": 2181,
       "source_page": 16,
+      "source_colorspace": "DeviceRGB",
       "orig": "1542x2181",
-      "kb": 707
+      "kb": 708
     },
     {
       "file": "content/images/street-food/02.jpg",
       "w": 2400,
       "h": 1684,
       "source_page": 17,
+      "source_colorspace": "DeviceRGB",
       "orig": "3985x2796",
       "kb": 694
     },
@@ -249,6 +277,7 @@
       "w": 2339,
       "h": 1654,
       "source_page": 18,
+      "source_colorspace": "DeviceRGB",
       "orig": "2339x1654",
       "kb": 795
     },
@@ -257,8 +286,9 @@
       "w": 2400,
       "h": 1697,
       "source_page": 19,
+      "source_colorspace": "ICCBased(RGB,Modified Display P3)",
       "orig": "3508x2481",
-      "kb": 643
+      "kb": 652
     }
   ],
   "ein-hammer-installation": [
@@ -267,8 +297,9 @@
       "w": 1583,
       "h": 1231,
       "source_page": 20,
+      "source_colorspace": "ICCBased(RGB,Modified Display P3)",
       "orig": "1583x1231",
-      "kb": 647
+      "kb": 650
     }
   ],
   "ein-hammer-video": [
@@ -277,8 +308,9 @@
       "w": 2400,
       "h": 1600,
       "source_page": null,
-      "orig": null,
-      "kb": 341,
+      "source_colorspace": "Display P3",
+      "orig": "5184x3456",
+      "kb": 350,
       "source_drive": "drive/ein-hammer_installationsansicht.jpg"
     },
     {
@@ -286,72 +318,81 @@
       "w": 970,
       "h": 558,
       "source_page": 22,
+      "source_colorspace": "ICCBased(RGB,Display)",
       "orig": "970x558",
-      "kb": 45
+      "kb": 46
     },
     {
       "file": "content/images/ein-hammer-video/03.jpg",
       "w": 986,
       "h": 558,
       "source_page": 22,
+      "source_colorspace": "ICCBased(RGB,Display)",
       "orig": "986x558",
-      "kb": 37
+      "kb": 38
     },
     {
       "file": "content/images/ein-hammer-video/04.jpg",
       "w": 981,
       "h": 558,
       "source_page": 22,
+      "source_colorspace": "ICCBased(RGB,Display)",
       "orig": "981x558",
-      "kb": 33
+      "kb": 34
     },
     {
       "file": "content/images/ein-hammer-video/05.jpg",
       "w": 982,
       "h": 559,
       "source_page": 22,
+      "source_colorspace": "ICCBased(RGB,Display)",
       "orig": "982x559",
-      "kb": 39
+      "kb": 40
     },
     {
       "file": "content/images/ein-hammer-video/06.jpg",
       "w": 986,
       "h": 558,
       "source_page": 22,
+      "source_colorspace": "ICCBased(RGB,Display)",
       "orig": "986x558",
-      "kb": 43
+      "kb": 44
     },
     {
       "file": "content/images/ein-hammer-video/07.jpg",
       "w": 971,
       "h": 558,
       "source_page": 22,
+      "source_colorspace": "ICCBased(RGB,Display)",
       "orig": "971x558",
-      "kb": 55
+      "kb": 56
     },
     {
       "file": "content/images/ein-hammer-video/08.jpg",
       "w": 972,
       "h": 558,
       "source_page": 22,
+      "source_colorspace": "ICCBased(RGB,Display)",
       "orig": "972x558",
-      "kb": 30
+      "kb": 31
     },
     {
       "file": "content/images/ein-hammer-video/09.jpg",
       "w": 986,
       "h": 558,
       "source_page": 22,
+      "source_colorspace": "ICCBased(RGB,Display)",
       "orig": "986x558",
-      "kb": 36
+      "kb": 37
     },
     {
       "file": "content/images/ein-hammer-video/10.jpg",
       "w": 2400,
       "h": 1344,
       "source_page": null,
-      "orig": null,
-      "kb": 229,
+      "source_colorspace": "Display",
+      "orig": "3456x1936",
+      "kb": 235,
       "source_drive": "drive/ein-hammer_still-ajona.jpg"
     }
   ]

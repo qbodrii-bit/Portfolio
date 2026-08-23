@@ -22,16 +22,18 @@ content:
     view:
       fields: [title, year_label, medium_de]
       primary: title
-      sort: [order, year, title]
+      sort: [year, order, title]
       default:
-        sort: order
-        order: asc
+        sort: year
+        order: desc
     fields:
       - name: order
         label: Reihenfolge
         type: number
         required: true
-        description: Kleinere Zahl steht auf der Work-Seite weiter oben.
+        description: >
+          Die Work-Seite sortiert zuerst nach Jahr, neueste Arbeit oben.
+          Diese Zahl entscheidet nur innerhalb desselben Jahres - kleiner steht weiter oben.
       - name: title
         label: Titel
         type: string

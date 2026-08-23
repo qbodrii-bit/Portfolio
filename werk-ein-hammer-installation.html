@@ -4,259 +4,56 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ein Hammer: Schlagen Sie auf etwas, das Ihnen gehört — Boram Park</title>
+<meta name="description" content="Besucher:innen schlagen auf einen Gegenstand, der ihnen gehört. Die Entscheidung, den eigenen Besitz zu beschädigen, liegt allein bei ihnen. Die Bedeu">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;900&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bp-font-family: "Outfit", -apple-system, BlinkMacSystemFont, sans-serif;
-    --bp-font-weight-normal: 400;
-    --bp-font-weight-bold: 900;
-
-    --bp-bg: #FFFFFF;
-    --bp-fg: #0F0F0F;
-    --bp-fg-muted: #6B6B6B;
-    --bp-hairline: #E5E5E5;
-
-    --bp-space-xs: 8px;
-    --bp-space-sm: 16px;
-    --bp-space-md: 32px;
-    --bp-space-lg: 64px;
-    --bp-space-xl: 96px;
-
-    --bp-nav-width: 240px;
-  }
-
-  * { box-sizing: border-box; }
-
-  html, body {
-    margin: 0;
-    padding: 0;
-    background: var(--bp-bg);
-    color: var(--bp-fg);
-    font-family: var(--bp-font-family);
-  }
-
-  body {
-    display: grid;
-    grid-template-columns: var(--bp-nav-width) 1fr;
-    min-height: 100vh;
-  }
-
-  a { color: inherit; text-decoration: none; }
-
-  /* ---------- Masthead nav (left, fixed) ---------- */
-  .masthead {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    padding: var(--bp-space-xl) var(--bp-space-md);
-    display: flex;
-    flex-direction: column;
-    gap: var(--bp-space-sm);
-  }
-
-  .nav-link {
-    font-weight: var(--bp-font-weight-bold);
-    font-size: 26px;
-    letter-spacing: -0.01em;
-    line-height: 1.3;
-    color: var(--bp-fg);
-    width: fit-content;
-    opacity: 1;
-    transition: opacity 0.15s ease;
-  }
-
-  .nav-link:hover { opacity: 0.55; }
-
-  body[data-section] .nav-link:not([data-active="true"]) { opacity: 0.35; }
-  .nav-link[data-active="true"] { opacity: 1; }
-
-  .nav-foot {
-    margin-top: auto;
-    font-size: 12px;
-    font-weight: var(--bp-font-weight-normal);
-    color: var(--bp-fg-muted);
-    width: fit-content;
-  }
-
-  /* ---------- Language toggle (independent, top-right) ---------- */
-  .lang-toggle {
-    position: fixed;
-    top: var(--bp-space-md);
-    right: var(--bp-space-md);
-    display: flex;
-    gap: 6px;
-    font-size: 13px;
-    z-index: 10;
-  }
-
-  .lang-toggle button {
-    background: none;
-    border: none;
-    font-family: inherit;
-    font-size: inherit;
-    color: var(--bp-fg-muted);
-    font-weight: var(--bp-font-weight-normal);
-    cursor: pointer;
-    padding: 4px;
-  }
-
-  .lang-toggle button[aria-pressed="true"] {
-    color: var(--bp-fg);
-    font-weight: var(--bp-font-weight-bold);
-  }
-
-  /* ---------- Main / Work index ---------- */
-  main {
-    padding: var(--bp-space-xl) var(--bp-space-lg);
-  }
-
-  .page-head {
-    margin: 0 0 var(--bp-space-lg);
-  }
-
-  .page-head h1 {
-    font-size: 40px;
-    font-weight: var(--bp-font-weight-bold);
-    letter-spacing: -0.01em;
-    margin: 0;
-  }
-
-  .work-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--bp-space-sm);
-    max-width: 1400px;
-  }
-
-  .work-item {
-    display: block;
-    opacity: 0;
-    animation: reveal 0.5s ease forwards;
-  }
-
-  .thumb {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-    background: var(--bp-hairline);
-  }
-
-  .work-caption {
-    display: flex;
-    justify-content: space-between;
-    gap: var(--bp-space-sm);
-    margin-top: var(--bp-space-xs);
-    font-size: 14px;
-  }
-
-  .work-year { color: var(--bp-fg-muted); font-weight: var(--bp-font-weight-normal); }
-  .work-medium { color: var(--bp-fg-muted); font-size: 13px; margin-top: 2px; }
-  .work-title { color: var(--bp-fg); font-weight: var(--bp-font-weight-normal); transition: opacity 0.15s ease; }
-  .work-item:hover .work-title { opacity: 0.55; }
-
-  @keyframes reveal {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .work-grid .work-item:nth-child(1) { animation-delay: 0.05s; }
-  .work-grid .work-item:nth-child(2) { animation-delay: 0.10s; }
-  .work-grid .work-item:nth-child(3) { animation-delay: 0.15s; }
-  .work-grid .work-item:nth-child(4) { animation-delay: 0.20s; }
-  .work-grid .work-item:nth-child(5) { animation-delay: 0.25s; }
-  .work-grid .work-item:nth-child(6) { animation-delay: 0.30s; }
-  .work-grid .work-item:nth-child(7) { animation-delay: 0.35s; }
-  .work-grid .work-item:nth-child(8) { animation-delay: 0.40s; }
-  .work-grid .work-item:nth-child(9) { animation-delay: 0.45s; }
-  .work-grid .work-item:nth-child(10) { animation-delay: 0.50s; }
-  .work-grid .work-item:nth-child(11) { animation-delay: 0.55s; }
-  .work-grid .work-item:nth-child(12) { animation-delay: 0.60s; }
-
-  @media (max-width: 780px) {
-    body { grid-template-columns: 1fr; }
-    .masthead {
-      position: static;
-      height: auto;
-      flex-direction: row;
-      flex-wrap: wrap;
-      align-items: center;
-      padding: var(--bp-space-md);
-      padding-right: 96px;
-      gap: var(--bp-space-sm) var(--bp-space-md);
-    }
-    .nav-link { font-size: 18px; }
-    .nav-foot { flex-basis: 100%; }
-    .lang-toggle button { padding: 8px; }
-    .work-grid { grid-template-columns: 1fr; }
-    main { padding: var(--bp-space-lg) var(--bp-space-md); }
-  }
-
-  /* ---------- Work detail ---------- */
-  .work-meta {
-    font-size: 14px;
-    color: var(--bp-fg-muted);
-    margin: var(--bp-space-sm) 0 0;
-  }
-
-  .work-text {
-    max-width: 640px;
-    font-size: 16px;
-    line-height: 1.6;
-    margin: var(--bp-space-md) 0 var(--bp-space-xl);
-  }
-
-  .work-figures {
-    display: flex;
-    flex-direction: column;
-    gap: var(--bp-space-sm);
-    max-width: 1400px;
-  }
-
-  .work-figures figure { margin: 0; }
-
-  .work-figures img {
-    display: block;
-    width: 100%;
-    height: auto;
-    max-height: 84vh;
-    object-fit: contain;
-    object-position: left center;
-  }
-
-  .work-figures figcaption {
-    font-size: 14px;
-    color: var(--bp-fg-muted);
-    margin-top: var(--bp-space-xs);
-  }
-
-  .back-link {
-    display: inline-block;
-    margin-top: var(--bp-space-xl);
-    font-size: 14px;
-    color: var(--bp-fg-muted);
-  }
-
-  .back-link:hover { color: var(--bp-fg); }
-</style>
+<link rel="stylesheet" href="assets/site.css?v=2506c4a3">
 </head>
 <body data-section="work">
 
   <nav class="masthead" aria-label="Hauptnavigation">
-    <a class="nav-link" data-active="true" href="work.html" data-de="Work" data-en="Work">Work</a>
-    <a class="nav-link" href="biography.html" data-de="Biography" data-en="Biography">Biography</a>
-    <a class="nav-link" href="contact.html" data-de="Contact" data-en="Contact">Contact</a>
-    <a class="nav-foot" href="index.html" data-de="Boram — Kunst Portfolio" data-en="Boram — Art Portfolio">Boram — Kunst Portfolio</a>
-  </nav>
+    <div class="masthead-bar">
+      <a class="nav-logo" href="index.html">Boram Park</a>
+      <button class="nav-toggle" type="button" aria-expanded="false"
+              aria-controls="hauptmenue" aria-label="Menü">
+        <svg class="icon-menu" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/></svg>
+        <svg class="icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 5l14 14"/><path d="M19 5L5 19"/></svg>
+      </button>
+    </div>
 
-  <div class="lang-toggle" role="group" aria-label="Sprache">
-    <button type="button" data-set-lang="de" aria-pressed="true">DE</button>
-    <span aria-hidden="true" style="color: var(--bp-hairline);">／</span>
-    <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
-  </div>
+    <div class="nav-panel" id="hauptmenue">
+      <div class="nav-links">
+        <button class="nav-link nav-branch" type="button"
+                aria-expanded="true" aria-controls="werkliste"
+                data-active="true" data-de="Work" data-en="Work">Work</button>
+        <div class="nav-sub" id="werkliste" data-open="true">
+          <ul class="nav-sub-list">
+            <li><a class="nav-sub-link" href="werk-uebergabe.html" data-de="Übergabe" data-en="Handover">Übergabe</a></li>
+            <li><a class="nav-sub-link" href="werk-beruehrung.html" data-de="Berührung" data-en="Touch">Berührung</a></li>
+            <li><a class="nav-sub-link" href="werk-huelle.html" data-de="Hülle" data-en="Shell">Hülle</a></li>
+            <li><a class="nav-sub-link" href="werk-street-food.html" data-de="Street Food (Serie)" data-en="Street Food (series)">Street Food (Serie)</a></li>
+            <li><a class="nav-sub-link" href="werk-haeutung-reispapier.html" data-de="Häutung · Reispapier" data-en="Moulting · Rice paper">Häutung · Reispapier</a></li>
+            <li><a class="nav-sub-link" href="werk-haeutung-leuchtkasten.html" data-de="Häutung · Leuchtkasten" data-en="Moulting · Light box">Häutung · Leuchtkasten</a></li>
+            <li><a class="nav-sub-link" href="werk-haeutung-kleiderbuegel.html" data-de="Häutung · Kleiderbügel" data-en="Moulting · Coat hangers">Häutung · Kleiderbügel</a></li>
+            <li><a class="nav-sub-link" href="werk-haeutung-kosmetikmaske.html" data-de="Häutung · Kosmetikmaske" data-en="Moulting · Cosmetic sheet mask">Häutung · Kosmetikmaske</a></li>
+            <li><a class="nav-sub-link" href="werk-ein-monat.html" data-de="Ein Monat" data-en="One Month">Ein Monat</a></li>
+            <li><a class="nav-sub-link" href="werk-lebensfluss.html" data-de="Lebensfluss" data-en="Flow of Life">Lebensfluss</a></li>
+            <li><a class="nav-sub-link" data-active="true" href="werk-ein-hammer-installation.html" data-de="Ein Hammer · Installation" data-en="A Hammer · Installation">Ein Hammer · Installation</a></li>
+            <li><a class="nav-sub-link" href="werk-ein-hammer-video.html" data-de="Ein Hammer · Video" data-en="A Hammer · Video">Ein Hammer · Video</a></li>
+          </ul>
+        </div>
+        <a class="nav-link" href="biography.html" data-de="Biography" data-en="Biography">Biography</a>
+        <a class="nav-link" href="contact.html" data-de="Contact" data-en="Contact">Contact</a>
+      </div>
+
+      <div class="lang-toggle" role="group" aria-label="Sprache">
+        <button type="button" data-set-lang="de" aria-pressed="true">DE</button>
+        <span class="lang-sep" aria-hidden="true">/</span>
+        <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </nav>
 
   <main>
     <header class="page-head">
@@ -271,40 +68,8 @@
         <img src="content/images/ein-hammer-installation/01.jpg" width="1583" height="1231" loading="lazy" alt="Ein Hammer: Schlagen Sie auf etwas, das Ihnen gehört, 2023 — Boram Park">
       </figure>
     </div>
-
-    <a class="back-link" href="work.html" data-de="← Alle Arbeiten" data-en="← All works">← Alle Arbeiten</a>
   </main>
 
-  <script>
-    (function () {
-      var STORAGE_KEY = 'bp-lang';
-      var buttons = document.querySelectorAll('[data-set-lang]');
-
-      function applyLang(lang) {
-        document.documentElement.setAttribute('lang', lang);
-        document.documentElement.setAttribute('data-lang', lang);
-        buttons.forEach(function (b) {
-          b.setAttribute('aria-pressed', String(b.getAttribute('data-set-lang') === lang));
-        });
-        document.querySelectorAll('[data-de][data-en]').forEach(function (el) {
-          el.textContent = el.getAttribute('data-' + lang);
-        });
-      }
-
-      var saved = localStorage.getItem(STORAGE_KEY);
-      if (saved === 'de' || saved === 'en') {
-        applyLang(saved);
-      }
-
-      buttons.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var lang = btn.getAttribute('data-set-lang');
-          localStorage.setItem(STORAGE_KEY, lang);
-          applyLang(lang);
-        });
-      });
-    })();
-  </script>
-
+  <script src="assets/site.js?v=f4da3577"></script>
 </body>
 </html>
