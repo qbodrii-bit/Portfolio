@@ -20,6 +20,9 @@
   --bp-space-xl: 96px;
 
   --bp-nav-width: 240px;
+
+  /* Zielhoehe einer Collage-Zeile; groesser = weniger, groessere Bilder */
+  --bp-work-base: 340px;
 }
 
 * { box-sizing: border-box; }
@@ -225,7 +228,7 @@ main {
 
 .work-item {
   --ar: 1.5;
-  flex: var(--ar) 1 calc(var(--ar) * 260px);
+  flex: var(--ar) 1 calc(var(--ar) * var(--bp-work-base));
   min-width: 0;
   display: block;
   opacity: 0;
@@ -245,7 +248,7 @@ main {
   justify-content: space-between;
   gap: 2px var(--bp-space-sm);
   margin-top: var(--bp-space-xs);
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .work-year { color: var(--bp-fg-muted); font-weight: var(--bp-font-weight-normal); }
@@ -387,6 +390,7 @@ main {
 @media (max-width: 1100px) {
   :root { --bp-nav-width: 200px; }
   .nav-logo { font-size: 22px; margin-bottom: var(--bp-space-md); }
+  :root { --bp-work-base: 280px; }
   main { padding: var(--bp-space-lg) var(--bp-space-md); }
   .masthead { padding: var(--bp-space-lg) var(--bp-space-md); }
   .page-head h1 { font-size: 34px; }

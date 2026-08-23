@@ -146,7 +146,7 @@ Work 그리드는 촘촘하다 — 썸네일 사이 16px 갭으로 "카탈로그
 ### Grid System
 - **Content max-width**: 1400px
 - **Grid type**: 좌측 고정 컬럼(240px) + 우측 fluid 메인
-- **Work 콜라주**: 고정 열 수 없음 — 줄당 개수는 각 이미지 비율이 정한다(기본 높이 260px). 780px 이하는 한 줄에 하나
+- **Work 콜라주**: 고정 열 수 없음 — 줄당 개수는 각 이미지 비율이 정한다. 기준 높이 `--bp-work-base` 340px(1100px 이하 280px)로 보통 한 줄에 2~3점, 높이 340~500px. 780px 이하는 한 줄에 하나
 - **Gutter**: 16px
 
 ### Navigation Structure
@@ -298,6 +298,10 @@ Ohne sie wirken die Fotos flau und zu kühl. Siehe `content/README.md`.
 비례시키면 같은 줄의 항목들이 같은 배율로 늘어나 높이가 저절로 맞는다. `--ar`은
 `scripts/wire-content.py`가 `_sizes.json`을 보고 타일마다 인라인으로 넣는다.
 마지막 줄은 `.work-grid::after`의 큰 `flex-grow`가 남은 공간을 먹어 원래 크기로 남는다.
+크기를 조절할 곳은 `--bp-work-base` 하나다 — 값을 키우면 줄당 개수가 줄고 이미지가 커진다.
+420px까지 올리면 대부분의 줄이 한 점씩만 담아 리스트처럼 보이므로 340px로 잡았다.
+
+작품 캡션은 **제목 왼쪽 / 연도 오른쪽**, 재료·매체는 그 아래 왼쪽 정렬이다.
 
 **Work 정렬**: 연도 내림차순이 먼저고, 같은 해 안에서만 `order` 값이 순서를 정한다.
 새 작품은 연도만 맞으면 자동으로 위로 올라온다.

@@ -194,8 +194,8 @@ for w in works:
     items.append(f"""      <a class="work-item" style="--ar: {aspect(src)}" href="{detail_href(w)}">
         <img class="thumb" src="{rel(src)}"{dims(src)} loading="lazy" alt="{alt(w)}">
         <div class="work-caption">
-          <span class="work-year">{w['year_label']}</span>
           <span class="work-title" data-de="{e(w['title'])}" data-en="{e(w['title_en'])}">{e(w['title'])}</span>
+          <span class="work-year">{w['year_label']}</span>
         </div>
         <div class="work-medium" data-de="{e(meta_short(w, 'de'))}" data-en="{e(meta_short(w, 'en'))}">{e(meta_short(w, 'de'))}</div>
       </a>""")
