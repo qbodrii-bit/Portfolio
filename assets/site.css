@@ -137,33 +137,28 @@ img { max-width: 100%; height: auto; }
   cursor: pointer;
 }
 
-.nav-branch::after {
-  content: "";
-  width: 6px;
-  height: 6px;
-  border-right: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
-  transform: translateY(-2px) rotate(45deg);
-  transition: transform 0.22s ease;
-}
-
-.nav-branch[aria-expanded="true"]::after {
-  transform: translateY(1px) rotate(-135deg);
-}
-
-/* Werkliste unter "Work" */
+/* Werkliste unter "Work".
+   Die Zeile waechst von 0fr auf 1fr, also genau auf die Hoehe des Inhalts -
+   anders als bei max-height laeuft die Bewegung in beide Richtungen gleich
+   ruhig und haengt nicht von einem geratenen Maximalwert ab. */
 .nav-sub {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+              opacity 0.3s ease;
+}
+
+.nav-sub > .nav-sub-list {
+  overflow: hidden;
   list-style: none;
   margin: 0;
   padding: 0 0 0 1px;
-  overflow: hidden;
-  max-height: 0;
-  opacity: 0;
-  transition: max-height 0.32s ease, opacity 0.25s ease;
+  min-height: 0;
 }
 
 .nav-sub[data-open="true"] {
-  max-height: 900px;
+  grid-template-rows: 1fr;
   opacity: 1;
   margin-bottom: var(--bp-space-xs);
 }
@@ -414,8 +409,7 @@ main {
   .nav-panel .nav-links,
   .nav-panel .lang-toggle,
   .nav-panel .nav-link,
-  .nav-sub,
-  .nav-branch::after {
+  .nav-sub {
     transition-duration: 0.01ms;
     transform: none;
   }
@@ -496,10 +490,9 @@ main {
     transform: none;
   }
 
-  /* mittig, aber ueber automatische Abstaende - so wird bei langer Liste
-     nichts oben abgeschnitten, sondern gescrollt */
-  .nav-panel .nav-links { margin-top: auto; }
-  .nav-panel .lang-toggle { margin-bottom: auto; }
+  /* oben ausgerichtet: die Liste waechst nach unten, statt den ganzen
+     Inhalt bei jedem Aufklappen neu zu zentrieren */
+  .nav-panel .nav-links { margin-top: 0; }
 
   .nav-links,
   .nav-panel .lang-toggle {
@@ -521,9 +514,7 @@ main {
     padding: 9px 0;
   }
 
-  .nav-sub[data-open="true"] { max-height: 1200px; margin-bottom: var(--bp-space-sm); }
-
-  .nav-branch::after { width: 8px; height: 8px; }
+  .nav-sub[data-open="true"] { margin-bottom: var(--bp-space-sm); }
 
   .nav-link {
     font-size: 32px;

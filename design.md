@@ -299,7 +299,12 @@ Ohne sie wirken die Fotos flau und zu kühl. Siehe `content/README.md`.
 **작품 탐색 구조**: 썸네일 인덱스 페이지는 없다. "Work"는 링크가 아니라 서브메뉴를 여닫는
 버튼(`.nav-branch`)이고, 그 아래 `.nav-sub` 목록이 최신순으로 12점을 나열한다. 항목을 누르면
 바로 작품 상세로 이동하고, 작품 상세에서는 목록이 열린 채 현재 작품이 검정으로 표시된다.
-여닫힘은 `max-height` 전환(0.32초)이고, 선택 상태는 방문 중 `sessionStorage`에 남는다.
+여닫힘은 `grid-template-rows: 0fr → 1fr` 전환(0.4초, ease-out)이라 내용 높이에 정확히 맞춰
+움직인다 — `max-height`로 큰 값을 찍으면 실제 높이보다 빨리 끝나 툭 끊기는 느낌이 난다.
+"Work" 옆에 화살표 같은 표시는 두지 않는다. 펼침 상태는 방문 중 `sessionStorage`에 남는다.
+
+모바일 전체화면 메뉴의 내용은 **위쪽 정렬**이다. 가운데 정렬이면 목록을 펼칠 때마다
+전체가 위로 밀려 올라가 흔들린다 — 위에 고정해 두면 목록만 아래로 자란다.
 
 **같은 제목 구분**: 「Häutung」 4점, 「Ein Hammer」 2점처럼 제목이 겹치는 작품은 목록에서
 구분자가 붙는다 — 재료의 마지막 항목(Reispapier / Leuchtkasten / Kleiderbügel / Kosmetikmaske),

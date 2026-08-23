@@ -159,16 +159,18 @@ def masthead(active, current_slug=None):
     sub = []
     for w in works:
         mark = ' data-active="true"' if w["slug"] == current_slug else ""
-        sub.append(f'          <li><a class="nav-sub-link"{mark} href="{detail_href(w)}" '
+        sub.append(f'            <li><a class="nav-sub-link"{mark} href="{detail_href(w)}" '
                    f'data-de="{e(sub_label(w, "de"))}" data-en="{e(sub_label(w, "en"))}">'
                    f'{e(sub_label(w, "de"))}</a></li>')
 
     links = [f'''        <button class="nav-link nav-branch" type="button"
                 aria-expanded="{"true" if on_work else "false"}" aria-controls="werkliste"
                 {'data-active="true"' if on_work else ""} data-de="Work" data-en="Work">Work</button>
-        <ul class="nav-sub" id="werkliste" data-open="{"true" if on_work else "false"}">
+        <div class="nav-sub" id="werkliste" data-open="{"true" if on_work else "false"}">
+          <ul class="nav-sub-list">
 {chr(10).join(sub)}
-        </ul>''']
+          </ul>
+        </div>''']
     for href, de, en in NAV:
         mark = ' data-active="true"' if href == active else ""
         links.append(f'        <a class="nav-link"{mark} href="{href}" '
