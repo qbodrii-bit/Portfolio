@@ -91,7 +91,7 @@ ICON_CLOSE = ('<svg class="icon-close" width="24" height="24" viewBox="0 0 24 24
 
 LANG_TOGGLE = """      <div class="lang-toggle" role="group" aria-label="Sprache">
         <button type="button" data-set-lang="de" aria-pressed="true">DE</button>
-        <span aria-hidden="true">／</span>
+        <span class="lang-sep" aria-hidden="true">/</span>
         <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
       </div>"""
 

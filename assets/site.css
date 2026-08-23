@@ -187,12 +187,18 @@ body[data-section] .nav-link:not([data-active="true"]) { opacity: 0.35; }
   top: var(--bp-space-md);
   right: var(--bp-space-md);
   display: flex;
+  align-items: center;      /* sonst haengt der Trenner an der Oberkante,
+                               weil nur die Knoepfe Padding haben */
   gap: 6px;
   font-size: 13px;
   z-index: 10;
 }
 
-.lang-toggle span { color: var(--bp-hairline); }
+.lang-sep {
+  color: var(--bp-hairline);
+  line-height: 1;
+  transform: translateY(-1px);
+}
 
 .lang-toggle button {
   background: none;
