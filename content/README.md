@@ -18,12 +18,14 @@ PDF 표지에는 "Portfolio 2025", 파일명에는 2026으로 적혀 있다. 본
 
 ```
 content/
-├── works.json         작품 12점 (제목·재료·매체·연도·작품 텍스트 DE/EN·이미지 목록)
-├── artist.json        약력, 학력, 전시 이력, 이메일
+├── works/<slug>.json  작품 1점 = 파일 1개. 파일 이름이 곧 URL(werk-<slug>.html)
+├── artist.json        약력, 학력, 전시 이력, 이메일, 소개 문단
+├── site.json          홈 표지 이미지와 태그라인
 ├── images/
 │   ├── cover/         PDF 표지 이미지
 │   ├── <slug>/01.jpg  작품별 이미지 (총 41장, 긴 변 최대 2400px, JPEG q88, ~11 MB)
-│   └── _manifest.json 이미지별 크기·출처(PDF 몇 페이지 / Drive 원본)
+│   ├── _sizes.json    빌드가 만드는 크기 캐시 (prepare-images.py)
+│   └── _manifest.json 추출 당시 출처 기록 (PDF 몇 페이지 / Drive 원본)
 └── source/
     ├── Portfolio_Boram-Park_2026.pdf   원본 PDF
     ├── portfolio-text.txt              PDF 전체 텍스트 (pdftotext -layout)
@@ -31,7 +33,7 @@ content/
     └── drive/                          Drive 고해상도 원본 2장
 ```
 
-작품 슬러그 12개 (works.json 순서 = PDF 순서):
+작품 슬러그 12개 (`order` 값 = PDF 순서):
 
 `haeutung-reispapier` · `haeutung-leuchtkasten` · `haeutung-kleiderbuegel` ·
 `beruehrung` · `huelle` · `haeutung-kosmetikmaske` · `ein-monat` ·
@@ -67,11 +69,13 @@ content/
 ## 재생성 스크립트
 
 ```bash
-python scripts/wire-content.py        # works.json/artist.json → 16개 페이지 전부 다시 씀 (idempotent)
+python scripts/prepare-images.py      # 큰 이미지 축소 + _sizes.json 갱신 (pillow 필요)
+python scripts/wire-content.py        # content/ → 모든 페이지 다시 씀 (표준 라이브러리만)
 python scripts/extract-pdf-assets.py  # PDF → content/images/* 다시 추출 (pymupdf, pillow 필요)
 ```
 
-`works.json`의 텍스트나 순서를 고치고 `wire-content.py`만 다시 돌리면 사이트에 반영된다.
+앞의 두 개는 GitHub Actions가 푸시마다 자동으로 돌린다. `content/works/*.json`의 텍스트나
+`order`를 고치고 `wire-content.py`만 다시 돌려도 사이트에 반영된다.
 `extract-pdf-assets.py`는 `content/images/`를 덮어쓰므로, 실행 후 Drive 고해상도 2장
 (`ein-hammer-video/01.jpg`, `/10.jpg`)을 `source/drive/`에서 다시 넣어야 한다.
 

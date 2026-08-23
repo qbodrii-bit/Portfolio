@@ -1,0 +1,18 @@
+{
+  "order": 4,
+  "title": "Berührung",
+  "title_en": "Touch",
+  "year": 2026,
+  "year_label": "2026",
+  "material_de": "Reispapier",
+  "material_en": "Rice paper",
+  "medium_de": "Fotografie",
+  "medium_en": "Photography",
+  "text_de": "Eine von Reispapier umhüllte Hand erinnert an eine dünne, schalenartige Oberfläche. Auf der Glastür begegnet sie allen, die den Raum betreten oder durchqueren.",
+  "text_en": "A hand wrapped in rice paper recalls a thin, shell-like surface. On the glass door it meets everyone who enters or crosses the room.",
+  "images": [
+    {
+      "src": "/content/images/beruehrung/01.jpg"
+    }
+  ]
+}

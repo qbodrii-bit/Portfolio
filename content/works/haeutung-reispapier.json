@@ -1,0 +1,24 @@
+{
+  "order": 1,
+  "title": "Häutung",
+  "title_en": "Moulting",
+  "year": 2025,
+  "year_label": "2025",
+  "material_de": "Reispapier",
+  "material_en": "Rice paper",
+  "medium_de": "Fotografie",
+  "medium_en": "Photography",
+  "text_de": "Nasses Reispapier wurde über Körperformen gelegt und trocknete zu dünnen, brüchigen Hüllen. Die Oberfläche zeigt Spuren einer körperlichen Form, ohne den Körper selbst sichtbar zu machen. Mich interessiert die Grenze zwischen Material und Körper.",
+  "text_en": "Wet rice paper was laid over body forms and dried into thin, brittle shells. The surface shows traces of a bodily form without making the body itself visible. I am interested in the boundary between material and body.",
+  "images": [
+    {
+      "src": "/content/images/haeutung-reispapier/01.jpg"
+    },
+    {
+      "src": "/content/images/haeutung-reispapier/02.jpg"
+    },
+    {
+      "src": "/content/images/haeutung-reispapier/03.jpg"
+    }
+  ]
+}

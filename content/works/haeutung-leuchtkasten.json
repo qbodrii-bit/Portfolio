@@ -1,0 +1,21 @@
+{
+  "order": 2,
+  "title": "Häutung",
+  "title_en": "Moulting",
+  "year": 2025,
+  "year_label": "2025",
+  "material_de": "Reispapier, Leuchtkasten",
+  "material_en": "Rice paper, light box",
+  "medium_de": "Installation",
+  "medium_en": "Installation",
+  "text_de": "Nasses Reispapier wurde über Körperformen gelegt und trocknete zu dünnen, brüchigen Hüllen. Im Leuchtkasten werden Materialität und feine Strukturen sichtbar. Die Arbeit thematisiert Präsenz durch Spuren statt durch Sichtbarkeit.",
+  "text_en": "Wet rice paper was laid over body forms and dried into thin, brittle shells. In the light box, materiality and fine structures become visible. The work addresses presence through traces rather than through visibility.",
+  "images": [
+    {
+      "src": "/content/images/haeutung-leuchtkasten/01.jpg"
+    },
+    {
+      "src": "/content/images/haeutung-leuchtkasten/02.jpg"
+    }
+  ]
+}

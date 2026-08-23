@@ -1,0 +1,27 @@
+{
+  "order": 6,
+  "title": "Häutung",
+  "title_en": "Moulting",
+  "year": 2025,
+  "year_label": "2025",
+  "material_de": "Kosmetikmaske",
+  "material_en": "Cosmetic sheet mask",
+  "medium_de": "Fotografie",
+  "medium_en": "Photography",
+  "text_de": "Durch Hitze verformt sich die Kosmetikmaske und bildet Falten und Risse. Die Fotografien zeigen unterschiedliche Zustände dieser Veränderung. Die Serie richtet den Blick auf die Oberfläche des Materials.",
+  "text_en": "Heat deforms the cosmetic mask, forming folds and cracks. The photographs show different states of this transformation. The series directs the gaze onto the surface of the material.",
+  "images": [
+    {
+      "src": "/content/images/haeutung-kosmetikmaske/01.jpg"
+    },
+    {
+      "src": "/content/images/haeutung-kosmetikmaske/02.jpg"
+    },
+    {
+      "src": "/content/images/haeutung-kosmetikmaske/03.jpg"
+    },
+    {
+      "src": "/content/images/haeutung-kosmetikmaske/04.jpg"
+    }
+  ]
+}

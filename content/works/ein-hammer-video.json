@@ -1,0 +1,45 @@
+{
+  "order": 12,
+  "title": "Ein Hammer",
+  "title_en": "A Hammer",
+  "year": 2023,
+  "year_label": "2023",
+  "material_de": "33 Objekte aus dem Alltag, Richterhammer",
+  "material_en": "33 everyday objects, judge's gavel",
+  "medium_de": "Video, 07:26 loop",
+  "medium_en": "Video, 07:26 loop",
+  "text_de": "Für das Video wurden 33 Alltagsobjekte mit einem Richterhammer geschlagen. Die Reaktion der Objekte steht dabei stärker im Fokus als der Schlag selbst. Mich interessiert, wie sich Materialeigenschaften und ihre Wirkung erst durch den Schlag zeigen.",
+  "text_en": "For the video, 33 everyday objects were struck with a judge's gavel. The reaction of the objects is more in focus than the blow itself. I am interested in how material properties and their effects only reveal themselves through the impact.",
+  "images": [
+    {
+      "src": "/content/images/ein-hammer-video/01.jpg"
+    },
+    {
+      "src": "/content/images/ein-hammer-video/02.jpg"
+    },
+    {
+      "src": "/content/images/ein-hammer-video/03.jpg"
+    },
+    {
+      "src": "/content/images/ein-hammer-video/04.jpg"
+    },
+    {
+      "src": "/content/images/ein-hammer-video/05.jpg"
+    },
+    {
+      "src": "/content/images/ein-hammer-video/06.jpg"
+    },
+    {
+      "src": "/content/images/ein-hammer-video/07.jpg"
+    },
+    {
+      "src": "/content/images/ein-hammer-video/08.jpg"
+    },
+    {
+      "src": "/content/images/ein-hammer-video/09.jpg"
+    },
+    {
+      "src": "/content/images/ein-hammer-video/10.jpg"
+    }
+  ]
+}

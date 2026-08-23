@@ -1,0 +1,18 @@
+{
+  "order": 11,
+  "title": "Ein Hammer: Schlagen Sie auf etwas, das Ihnen gehört",
+  "title_en": "A Hammer: Hit something that belongs to you",
+  "year": 2023,
+  "year_label": "2023",
+  "material_de": "Richterhammer",
+  "material_en": "Judge's gavel",
+  "medium_de": "Installation",
+  "medium_en": "Installation",
+  "text_de": "Besucher:innen schlagen auf einen Gegenstand, der ihnen gehört. Die Entscheidung, den eigenen Besitz zu beschädigen, liegt allein bei ihnen. Die Bedeutung der Handlung entsteht erst durch die Entscheidung der Besucher:innen.",
+  "text_en": "Visitors strike an object that belongs to them. The decision to damage their own property rests with them alone. The meaning of the act only comes about through the visitors' decision.",
+  "images": [
+    {
+      "src": "/content/images/ein-hammer-installation/01.jpg"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "order": 7,
+  "title": "Ein Monat",
+  "title_en": "One Month",
+  "year": 2025,
+  "year_label": "2025",
+  "material_de": "Kosmetikmaske",
+  "material_en": "Cosmetic sheet mask",
+  "medium_de": "Installation",
+  "medium_en": "Installation",
+  "text_de": "Jeden Tag verbrannte ich eine Kosmetikmaske und dokumentierte die kleinen Unterschiede. Obwohl der Ablauf gleich blieb, reagierte jede Maske anders. Die Installation folgt der Struktur eines Kalenders und macht diese Veränderungen sichtbar.",
+  "text_en": "Every day I burned a cosmetic mask and documented the small differences. Although the procedure stayed the same, each mask reacted differently. The installation follows the structure of a calendar and makes these changes visible.",
+  "images": [
+    {
+      "src": "/content/images/ein-monat/01.jpg"
+    }
+  ]
+}

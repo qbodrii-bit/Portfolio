@@ -1,0 +1,28 @@
+{
+  "order": 8,
+  "title": "Lebensfluss",
+  "title_en": "Flow of Life",
+  "year": 2024,
+  "year_label": "2024",
+  "material_de": "",
+  "material_en": "",
+  "medium_de": "Video, 06:27 loop",
+  "medium_en": "Video, 06:27 loop",
+  "text_de": "",
+  "text_en": "",
+  "images": [
+    {
+      "src": "/content/images/lebensfluss/01.jpg"
+    },
+    {
+      "src": "/content/images/lebensfluss/02.jpg"
+    },
+    {
+      "src": "/content/images/lebensfluss/03.jpg"
+    },
+    {
+      "src": "/content/images/lebensfluss/04.jpg"
+    }
+  ],
+  "note": "Im PDF ohne Werktext - nur Titel, Medium und Jahr."
+}

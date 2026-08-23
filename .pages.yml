@@ -1,0 +1,200 @@
+# Pages CMS (pagescms.org) — Redaktionsoberfläche für boram-park.
+# Anmeldung mit dem GitHub-Konto, das dieses Repository besitzt.
+# Nach dem Speichern erzeugt GitHub Actions die HTML-Seiten neu.
+
+media:
+  - name: images
+    label: Bilder
+    input: content/images
+    output: /content/images
+    extensions: [jpg, jpeg, png, webp]
+    categories: [image]
+
+content:
+  - name: works
+    label: Arbeiten
+    type: collection
+    path: content/works
+    format: json
+    filename:
+      template: "{primary}.json"
+      field: create
+    view:
+      fields: [title, year_label, medium_de]
+      primary: title
+      sort: [order, year, title]
+      default:
+        sort: order
+        order: asc
+    fields:
+      - name: order
+        label: Reihenfolge
+        type: number
+        required: true
+        description: Kleinere Zahl steht auf der Work-Seite weiter oben.
+      - name: title
+        label: Titel
+        type: string
+        required: true
+      - name: title_en
+        label: Titel (englisch)
+        type: string
+      - name: year
+        label: Jahr
+        type: number
+        required: true
+      - name: year_label
+        label: Jahresangabe
+        type: string
+        description: Nur ausfüllen, wenn etwas anderes als das Jahr stehen soll, z. B. 2025–2026.
+      - name: material_de
+        label: Material
+        type: string
+        description: z. B. Reispapier, Kleiderbügel
+      - name: material_en
+        label: Material (englisch)
+        type: string
+      - name: medium_de
+        label: Technik
+        type: string
+        description: z. B. Fotografie, Installation, Video, 07:26 loop
+      - name: medium_en
+        label: Technik (englisch)
+        type: string
+      - name: text_de
+        label: Werktext
+        type: text
+        description: Der Text, der auf der Werkseite unter dem Titel steht.
+      - name: text_en
+        label: Werktext (englisch)
+        type: text
+      - name: images
+        label: Bilder
+        type: object
+        list: true
+        fields:
+          - name: src
+            label: Bild
+            type: image
+            required: true
+            options:
+              media: images
+          - name: caption_de
+            label: Bildunterschrift
+            type: string
+            description: Nur bei Serien nötig, z. B. Toast · Fotografie · 2025.
+          - name: caption_en
+            label: Bildunterschrift (englisch)
+            type: string
+
+  - name: artist
+    label: Künstlerin / CV
+    type: file
+    path: content/artist.json
+    format: json
+    fields:
+      - name: name
+        label: Name
+        type: string
+      - name: born
+        label: Geboren
+        type: object
+        fields:
+          - name: year
+            label: Jahr
+            type: number
+          - name: place_de
+            label: Ort
+            type: string
+          - name: place_en
+            label: Ort (englisch)
+            type: string
+      - name: email
+        label: E-Mail
+        type: string
+      - name: place_de
+        label: Fußzeile Kontakt
+        type: string
+      - name: place_en
+        label: Fußzeile Kontakt (englisch)
+        type: string
+      - name: statement_de
+        label: Kurztext Biografie
+        type: text
+      - name: statement_en
+        label: Kurztext Biografie (englisch)
+        type: text
+      - name: contact_note_de
+        label: Hinweis auf der Kontaktseite
+        type: string
+      - name: contact_note_en
+        label: Hinweis auf der Kontaktseite (englisch)
+        type: string
+      - name: education
+        label: Ausbildung
+        type: object
+        list: true
+        fields:
+          - name: period
+            label: Zeitraum
+            type: string
+          - name: institution_de
+            label: Institution
+            type: string
+          - name: institution_en
+            label: Institution (englisch)
+            type: string
+          - name: degree_de
+            label: Abschluss
+            type: string
+          - name: degree_en
+            label: Abschluss (englisch)
+            type: string
+      - name: exhibitions
+        label: Ausstellungen
+        type: object
+        list: true
+        fields:
+          - name: year
+            label: Jahr
+            type: number
+          - name: title
+            label: Titel
+            type: string
+          - name: venue
+            label: Ort
+            type: string
+          - name: source_note
+            label: Interne Notiz
+            type: string
+
+  - name: site
+    label: Startseite
+    type: file
+    path: content/site.json
+    format: json
+    fields:
+      - name: cover_image
+        label: Bild auf der Startseite
+        type: image
+        options:
+          media: images
+      - name: cover_caption_title
+        label: Bildunterschrift Titel
+        type: string
+      - name: cover_caption_title_en
+        label: Bildunterschrift Titel (englisch)
+        type: string
+      - name: cover_caption_year
+        label: Bildunterschrift Jahr
+        type: string
+      - name: cover_link_slug
+        label: Verlinkte Arbeit
+        type: string
+        description: Dateiname der Arbeit ohne .json, z. B. haeutung-reispapier.
+      - name: tagline_de
+        label: Zeile unter dem Namen
+        type: string
+      - name: tagline_en
+        label: Zeile unter dem Namen (englisch)
+        type: string
