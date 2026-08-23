@@ -66,27 +66,53 @@ NAV = [("work.html", "Work", "Work"),
        ("contact.html", "Contact", "Contact")]
 
 
+ICON_MENU = ('<svg class="icon-menu" width="24" height="24" viewBox="0 0 24 24" '
+             'fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">'
+             '<path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/></svg>')
+ICON_CLOSE = ('<svg class="icon-close" width="24" height="24" viewBox="0 0 24 24" '
+              'fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">'
+              '<path d="M5 5l14 14"/><path d="M19 5L5 19"/></svg>')
+
+LANG_TOGGLE = """      <div class="lang-toggle" role="group" aria-label="Sprache">
+        <button type="button" data-set-lang="de" aria-pressed="true">DE</button>
+        <span aria-hidden="true">／</span>
+        <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
+      </div>"""
+
+
 def masthead(active):
+    """Wortmarke, Navigation und Sprachwahl.
+
+    Auf dem Telefon steckt beides unter .nav-panel hinter dem Menuknopf;
+    am Rechner ist der Knopf ausgeblendet und das Panel immer offen.
+    """
     links = []
     for href, de, en in NAV:
         mark = ' data-active="true"' if href == active else ""
-        links.append(f'      <a class="nav-link"{mark} href="{href}" '
+        links.append(f'        <a class="nav-link"{mark} href="{href}" '
                      f'data-de="{de}" data-en="{en}">{de}</a>')
     return ("""  <nav class="masthead" aria-label="Hauptnavigation">
-    <a class="nav-logo" href="index.html">Boram Park</a>
-    <div class="nav-links">
+    <div class="masthead-bar">
+      <a class="nav-logo" href="index.html">Boram Park</a>
+      <button class="nav-toggle" type="button" aria-expanded="false"
+              aria-controls="hauptmenue" aria-label="Menü">
+        """ + ICON_MENU + """
+        """ + ICON_CLOSE + """
+      </button>
+    </div>
+
+    <div class="nav-panel" id="hauptmenue">
+      <div class="nav-links">
 """
             + "\n".join(links)
             + """
+      </div>
+
+"""
+            + LANG_TOGGLE
+            + """
     </div>
   </nav>""")
-
-
-LANG_TOGGLE = """  <div class="lang-toggle" role="group" aria-label="Sprache">
-    <button type="button" data-set-lang="de" aria-pressed="true">DE</button>
-    <span aria-hidden="true">／</span>
-    <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
-  </div>"""
 
 
 def page(title, description, section, active, main):
@@ -106,8 +132,6 @@ def page(title, description, section, active, main):
 <body{body_attr}>
 
 {masthead(active)}
-
-{LANG_TOGGLE}
 
 {main}
 

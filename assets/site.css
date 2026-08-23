@@ -71,6 +71,32 @@ img { max-width: 100%; height: auto; }
   flex-direction: column;
 }
 
+.masthead-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--bp-space-sm);
+}
+
+/* Menuknopf: nur auf dem Telefon sichtbar, und nur wenn JavaScript laeuft */
+.nav-toggle {
+  display: none;
+  width: 44px;
+  height: 44px;
+  margin-right: -10px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: none;
+  border: none;
+  color: var(--bp-fg);
+  cursor: pointer;
+}
+
+.nav-toggle .icon-close { display: none; }
+.nav-toggle[aria-expanded="true"] .icon-menu { display: none; }
+.nav-toggle[aria-expanded="true"] .icon-close { display: block; }
+
 .nav-logo {
   font-weight: var(--bp-font-weight-bold);
   font-size: 26px;
@@ -408,28 +434,36 @@ main {
 
   .nav-logo {
     font-size: 22px;
-    margin-bottom: var(--bp-space-sm);
+    margin-bottom: 0;
+  }
+
+  .masthead[data-js="true"] .nav-toggle { display: flex; }
+
+  /* ohne JavaScript bleibt das Panel offen, sonst gaebe es keine Navigation */
+  .nav-panel[data-open="false"] { display: none; }
+
+  .nav-panel {
+    padding-top: var(--bp-space-sm);
   }
 
   .nav-links {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 0 var(--bp-space-md);
+    flex-direction: column;
+    gap: 0;
   }
 
   .nav-link {
-    font-size: 16px;
+    font-size: 20px;
     padding: 12px 0;          /* Tippfläche mindestens 44px hoch */
   }
 
-  /* scrollt mit, damit die Umschaltung nicht über Bildern klebt */
   .lang-toggle {
-    position: absolute;
-    top: var(--bp-space-md);
-    right: var(--bp-space-sm);
+    position: static;
+    margin-top: var(--bp-space-xs);
+    padding-bottom: var(--bp-space-xs);
   }
 
-  .lang-toggle button { padding: 8px; }
+  .lang-toggle { font-size: 15px; }
+  .lang-toggle button { padding: 12px 14px 12px 0; }
 
   main { padding: var(--bp-space-md) var(--bp-space-md) var(--bp-space-lg); }
 

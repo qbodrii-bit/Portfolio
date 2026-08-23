@@ -1,3 +1,32 @@
+/* Menuknopf auf dem Telefon.
+   Ohne JavaScript bleibt das Panel offen (siehe site.css), damit die
+   Navigation in jedem Fall erreichbar ist. */
+(function () {
+  var masthead = document.querySelector('.masthead');
+  var toggle = document.querySelector('.nav-toggle');
+  var panel = document.getElementById('hauptmenue');
+  if (!masthead || !toggle || !panel) return;
+
+  function setOpen(open) {
+    toggle.setAttribute('aria-expanded', String(open));
+    panel.setAttribute('data-open', String(open));
+  }
+
+  masthead.setAttribute('data-js', 'true');
+  setOpen(false);
+
+  toggle.addEventListener('click', function () {
+    setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+  });
+
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+      setOpen(false);
+      toggle.focus();
+    }
+  });
+})();
+
 /* Sprachumschaltung DE / EN.
    Jedes Element mit data-de und data-en tauscht seinen Text;
    die Wahl bleibt im Browser gespeichert. */

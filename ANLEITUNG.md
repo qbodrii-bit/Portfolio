@@ -40,6 +40,11 @@ Bild der Arbeit. Nur wenn dort ein anderes Bild passt, eines auswählen.
 Eine Bildunterschrift ist nur bei Serien nötig (wie bei *Street Food*, wo jedes
 Foto einen eigenen Titel hat). Sonst leer lassen.
 
+## Am Telefon
+
+Auf dem Telefon steckt die Navigation hinter dem Menüzeichen oben rechts:
+antippen öffnet Work, Biography, Contact und die Sprachwahl DE / EN.
+
 ## Nach dem Speichern
 
 Die Seiten werden automatisch neu gebaut, das dauert ein bis zwei Minuten.
