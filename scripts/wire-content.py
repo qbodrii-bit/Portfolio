@@ -237,9 +237,7 @@ for w in works:
       </a>""")
 
 work_main = ("""  <main>
-    <header class="page-head">
-      <h1 data-de="Work" data-en="Work">Work</h1>
-    </header>
+    <h1 class="visually-hidden" data-de="Work" data-en="Work">Work</h1>
 
     <div class="work-grid">
 """
@@ -269,9 +267,7 @@ stmt_de = artist.get("statement_de", "")
 stmt_en = artist.get("statement_en", "")
 
 bio_main = f"""  <main>
-    <header class="page-head">
-      <h1 data-de="Biography" data-en="Biography">Biography</h1>
-    </header>
+    <h1 class="visually-hidden" data-de="Biography" data-en="Biography">Biography</h1>
 
     <p class="bio-statement" data-de="{e(stmt_de)}" data-en="{e(stmt_en)}">{e(stmt_de)}</p>
 
@@ -298,9 +294,7 @@ place_de = artist.get("place_de", "Boram Park — Saarbrücken, Deutschland")
 place_en = artist.get("place_en", "Boram Park — Saarbrücken, Germany")
 
 contact_main = f"""  <main>
-    <header class="page-head">
-      <h1 data-de="Contact" data-en="Contact">Contact</h1>
-    </header>
+    <h1 class="visually-hidden" data-de="Contact" data-en="Contact">Contact</h1>
 
     <div class="contact-block">
       <a class="contact-email" href="mailto:{mail}">{mail}</a>
