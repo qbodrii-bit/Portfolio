@@ -1,0 +1,6 @@
+# Zeilenenden im Arbeitsverzeichnis wie im Repository: LF.
+# Sonst unterscheiden sich Windows und die GitHub Action bei jedem Hash.
+* text=auto eol=lf
+*.jpg binary
+*.png binary
+*.pdf binary

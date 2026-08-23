@@ -34,8 +34,8 @@ def asset(name):
     if not os.path.exists(path):
         return f"assets/{name}"
     with open(path, "rb") as f:
-        digest = hashlib.sha1(f.read()).hexdigest()[:8]
-    return f"assets/{name}?v={digest}"
+        content = f.read().replace(b"\r\n", b"\n")   # plattformunabhaengig
+    return f"assets/{name}?v={hashlib.sha1(content).hexdigest()[:8]}"
 
 
 # ---------------------------------------------------------------- Daten laden
