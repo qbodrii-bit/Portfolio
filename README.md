@@ -4,11 +4,13 @@
 작가용 사용 설명서는 [`ANLEITUNG.md`](ANLEITUNG.md) (독일어).
 
 ```
-index.html            홈 (표지 사진 + 이름)
+index.html            홈 (표지 사진 한 장)
 work.html             작품 그리드
 werk-<slug>.html      작품 상세 (작품 수만큼 자동 생성)
 biography.html        학력 + 전시 이력
 contact.html          이메일
+assets/site.css       사이트 전체 스타일 (한 파일)
+assets/site.js        DE/EN 전환
 content/              모든 내용의 원본 (아래 참조)
 scripts/              content → HTML 생성 스크립트
 .pages.yml            Pages CMS 편집 화면 정의 (독일어 라벨)
@@ -28,7 +30,8 @@ python scripts/prepare-images.py   # 큰 이미지 축소(2400px) + _sizes.json 
 python scripts/wire-content.py     # content/ → 모든 페이지 재생성 (표준 라이브러리만)
 ```
 
-두 스크립트 모두 여러 번 돌려도 결과가 같다. HTML은 **직접 고치지 않는다** — 다음 생성 때 덮어쓴다.
+두 스크립트 모두 여러 번 돌려도 결과가 같다. HTML은 **직접 고치지 않는다** — 매번 통째로 다시 쓰기 때문에 손으로 고친 내용은 사라진다.
+디자인을 바꾸려면 `assets/site.css`를, 페이지 구조를 바꾸려면 `scripts/wire-content.py`의 템플릿을 고친다.
 
 ## 내용 구조
 

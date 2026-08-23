@@ -36,7 +36,8 @@ typography:
   weights_absent: [500, 600, 700]
 
 components:
-  nav-link: { weight: 900, size: "26px" }
+  nav-logo: { weight: 900, size: "26px" }
+  nav-link: { weight: 900, size: "18px" }
   work-thumb: { border: "none", shadow: "none" }
   exhibition-row: { border-bottom: "1px solid #E5E5E5" }
 ---
@@ -49,7 +50,7 @@ components:
 
 ### Narrative
 
-이 사이트는 좌측 내비게이션을 "작은 유틸리티 링크 목록"이 아니라 **마스트헤드(masthead) 그 자체**로 다룬다. Work / Biography / Contact 세 단어가 페이지 왼쪽에 굵고 크게(weight 900) 세로로 쌓여, 브랜드 로고와 내비게이션의 역할을 동시에 수행한다 — 이것이 5개 레퍼런스(ericlanz.net, romansigner.ch, hausig.eu, lenareckord.de, tamakiyoshida.com) 중 어느 하나도 정확히 하지 않는 조합이다. Roman Signer와 Hausig는 왼쪽 세로 내비게이션을 쓰지만 작은 유틸리티 텍스트로 취급하고, Tamaki Yoshida는 이름을 볼드하게 다루지만 상단 중앙에 배치한다. 이 사이트는 두 관습을 하나로 합친다: **위치는 왼쪽, 취급은 마스트헤드.**
+이 사이트는 좌측 내비게이션을 "작은 유틸리티 링크 목록"이 아니라 **마스트헤드(masthead) 그 자체**로 다룬다. 맨 위에 작가 이름 "Boram Park"가 워드마크로 앉고(weight 900, 26px), 그 아래 Work / Biography / Contact 세 단어가 세로로 쌓인다(weight 900, 18px). 이름이 로고 역할을 맡고 링크는 한 단계 낮은 목소리로 따라온다 — 이것이 5개 레퍼런스(ericlanz.net, romansigner.ch, hausig.eu, lenareckord.de, tamakiyoshida.com) 중 어느 하나도 정확히 하지 않는 조합이다. Roman Signer와 Hausig는 왼쪽 세로 내비게이션을 쓰지만 작은 유틸리티 텍스트로 취급하고, Tamaki Yoshida는 이름을 볼드하게 다루지만 상단 중앙에 배치한다. 이 사이트는 두 관습을 하나로 합친다: **위치는 왼쪽, 취급은 마스트헤드.**
 
 색은 존재하지 않는다. 배경은 순수 백색(`#FFFFFF`), 텍스트는 소프트 블랙(`#0F0F0F`) — 두 번째 브랜드 컬러는 의도적으로 없다. 작품 이미지가 유일한 색채 공급원이 되도록, 사이트 자체는 철저히 무채색을 유지한다. 대비는 색이 아니라 **굵기**에서 나온다: 900(마스트헤드/섹션 타이틀)과 400(본문/메타데이터) 단 두 웨이트만 쓰고, 그 사이의 500·600·700은 의도적으로 비운다.
 
@@ -59,7 +60,7 @@ Biography 페이지는 Roman Signer의 전시 리스트 관습을 그대로 계�
 
 ### Key Characteristics
 
-- 좌측 고정 마스트헤드형 내비게이션 (Work / Biography / Contact, weight 900, 26px)
+- 좌측 고정 마스트헤드 (워드마크 "Boram Park" 26px/900 + Work / Biography / Contact 18px/900)
 - 무채색 전용 팔레트 — 브랜드 컬러 없음, 대비는 굵기(900 vs 400)로만 표현
 - 순수 백색 배경 — 작품 이미지가 유일한 색채
 - Work 그리드: 그림자·테두리·라운드 없는 flat 썸네일, 촘촘한 16px 갭
@@ -95,7 +96,8 @@ body {
 body { background: var(--bg); color: var(--fg); }
 
 /* 3. 좌측 nav를 마스트헤드로 */
-.nav-link { font-weight: 900; font-size: 26px; letter-spacing: -0.01em; }
+.nav-logo { font-weight: 900; font-size: 26px; letter-spacing: -0.02em; }
+.nav-link { font-weight: 900; font-size: 18px; letter-spacing: -0.01em; }
 ```
 
 **절대 하지 말아야 할 것 하나**: 좌측 nav를 작은 유틸리티 텍스트(14px 이하, weight 400)로 만들지 말 것 — 이 사이트의 정체성이 곧 "굵은 좌측 마스트헤드"이므로, 여기서 타협하면 다른 미니멀 아트 포트폴리오와 구별되지 않는다.
@@ -148,7 +150,7 @@ Work 그리드는 촘촘하다 — 썸네일 사이 16px 갭으로 "카탈로그
 - **Gutter**: 16px
 
 ### Navigation Structure
-- **Type**: 좌측 세로 고정(sticky) 마스트헤드 — 상단 로고 없이 nav 자체가 로고 역할
+- **Type**: 좌측 세로 고정(sticky) 마스트헤드 — 맨 위 워드마크가 로고, 그 아래 nav
 - **Position**: `position: sticky; top: 0; height: 100vh;` 왼쪽 240px 컬럼
 - **Background**: 투명 (페이지와 동일한 `--bp-bg`)
 - **Border**: 없음 — 컬럼 간 여백만으로 분리
@@ -165,7 +167,7 @@ Work 그리드는 촘촘하다 — 썸네일 사이 16px 갭으로 "카탈로그
 
 ### Content Width
 - **Prose max-width**: 640px (Biography 스테이트먼트 텍스트)
-- **Sidebar width**: 240px (좌측 마스트헤드 nav)
+- **Sidebar width**: 240px (≤1100px 200px, ≤780px 가로 배치로 전환)
 
 ---
 
@@ -268,3 +270,21 @@ Work 그리드는 촘촘하다 — 썸네일 사이 16px 갭으로 "카탈로그
 - **모션/애니메이션 세부 미검증** — 스크롤 reveal 등 모션은 Step 1.7 사용자 선택에 따라 결정되며, 이 문서 자체는 정적 스펙만 담는다.
 - **다크모드 없음** — light 단일 테마만 정의.
 - **콘텐츠 시드 없음** — 실제 작품/전시 데이터가 아직 없어 placeholder 콘텐츠로 목업한다.
+
+---
+
+## 20. Responsive (Nachtrag, Branch `mobile-und-layout`)
+
+세 구간으로만 나눈다. 값은 `assets/site.css` 하단 미디어 쿼리가 유일한 출처다.
+
+| 구간 | 변화 |
+|---|---|
+| `> 1100px` | 기준 레이아웃. 사이드바 240px, 여백 96/64, Work 2열 |
+| `≤ 1100px` | 사이드바 200px, 워드마크 22px, 여백 64/32 |
+| `≤ 780px` | 사이드바 해제 — 워드마크 위, 링크는 가로 한 줄. 언어 토글은 `fixed` 대신 `absolute`(이미지 위에 붙어 있지 않고 같이 스크롤됨). Work 1열, 썸네일 3:4, 홈 히어로 4:3, 링크 터치 영역 45px |
+| `≤ 400px` | 여백 16px까지 축소 |
+
+규칙 두 가지:
+
+- **이미지에 `height: auto`를 반드시 유지할 것.** `width`/`height` 속성이 붙은 `<img>`는 이 선언이 없으면 `aspect-ratio`를 무시하고 원본 높이로 늘어난다.
+- **`body`에 `align-content: start`.** 그리드 행이 `min-height: 100vh`를 채우려고 늘어나면서 짧은 페이지(홈·Contact)에 빈 구멍이 생긴다.

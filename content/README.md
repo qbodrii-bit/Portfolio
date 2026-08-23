@@ -56,7 +56,8 @@ content/
 
 ## 사이트 연결 상태
 
-리포 루트의 페이지들이 이 디렉터리를 `content/…` 로 참조한다.
+리포 루트의 페이지들이 이 디렉터리를 `content/…` 로 참조한다. 페이지는 `scripts/wire-content.py`가
+통째로 생성하고, 스타일은 전부 `assets/site.css`에 있다.
 
 - `index.html` — 표지 이미지 + 이름/분야
 - `work.html` — 작품 12점 그리드 (각 항목 → `werk-<slug>.html`)

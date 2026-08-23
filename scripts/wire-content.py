@@ -1,24 +1,27 @@
 # -*- coding: utf-8 -*-
-"""content/ -> HTML-Seiten im Repo-Root neu schreiben.
+"""content/ -> alle HTML-Seiten im Repo-Root erzeugen.
 
 Aufruf: python scripts/wire-content.py      (nur Standardbibliothek)
 
-Liest content/works/<slug>.json, content/artist.json, content/site.json und
+Liest content/works/<slug>.json, content/artist.json und content/site.json und
 schreibt index/work/biography/contact.html sowie werk-<slug>.html je Arbeit.
+Das Aussehen steckt komplett in assets/site.css - hier steht nur die Struktur.
 Bildgroessen kommen aus content/images/_sizes.json (scripts/prepare-images.py);
 fehlt die Datei, werden width/height weggelassen.
-Idempotent - mehrfaches Ausfuehren aendert nichts weiter.
+Die Seiten werden jedes Mal vollstaendig neu geschrieben; von Hand geaenderte
+HTML-Dateien gehen dabei verloren.
 """
 import glob
 import html
 import json
 import os
-import re
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SITE = ROOT                      # Seiten liegen im Repo-Root
+SITE = ROOT
 CONTENT = os.path.join(ROOT, "content")
 e = html.escape
+
+FONT = "https://fonts.googleapis.com/css2?family=Outfit:wght@400;900&display=swap"
 
 
 # ---------------------------------------------------------------- Daten laden
@@ -31,7 +34,7 @@ def load(path, default=None):
 
 
 def rel(src):
-    """CMS speichert '/content/images/...'; im HTML brauchen wir relative Pfade."""
+    """Im CMS steht '/content/images/...'; die Seiten brauchen relative Pfade."""
     return src.lstrip("/")
 
 
@@ -57,19 +60,66 @@ if not works:
     raise SystemExit("content/works/ ist leer - keine Arbeiten zu schreiben.")
 
 
-# ------------------------------------------------------------------ Helfer
-def read(name):
-    with open(os.path.join(SITE, name), encoding="utf-8") as f:
-        return f.read()
+# ---------------------------------------------------------------- Bausteine
+NAV = [("work.html", "Work", "Work"),
+       ("biography.html", "Biography", "Biography"),
+       ("contact.html", "Contact", "Contact")]
+
+
+def masthead(active):
+    links = []
+    for href, de, en in NAV:
+        mark = ' data-active="true"' if href == active else ""
+        links.append(f'      <a class="nav-link"{mark} href="{href}" '
+                     f'data-de="{de}" data-en="{en}">{de}</a>')
+    return ("""  <nav class="masthead" aria-label="Hauptnavigation">
+    <a class="nav-logo" href="index.html">Boram Park</a>
+    <div class="nav-links">
+"""
+            + "\n".join(links)
+            + """
+    </div>
+  </nav>""")
+
+
+LANG_TOGGLE = """  <div class="lang-toggle" role="group" aria-label="Sprache">
+    <button type="button" data-set-lang="de" aria-pressed="true">DE</button>
+    <span aria-hidden="true">／</span>
+    <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
+  </div>"""
+
+
+def page(title, description, section, active, main):
+    body_attr = f' data-section="{section}"' if section else ""
+    return f"""<!doctype html>
+<html lang="de" data-lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{title}</title>
+<meta name="description" content="{e(description)}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="{FONT}" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body{body_attr}>
+
+{masthead(active)}
+
+{LANG_TOGGLE}
+
+{main}
+
+  <script src="assets/site.js"></script>
+</body>
+</html>
+"""
 
 
 def write(name, text):
     with open(os.path.join(SITE, name), "w", encoding="utf-8", newline="\n") as f:
         f.write(text)
-
-
-def set_main(src, main_html):
-    return re.sub(r"  <main>.*?</main>", main_html.rstrip(), src, count=1, flags=re.S)
 
 
 def dims(src):
@@ -95,6 +145,35 @@ def alt(w):
     return f"{e(w['title'])}, {w['year_label']} — Boram Park"
 
 
+# --------------------------------------------------------------- index.html
+lead = works[0]
+cover = site.get("cover_image") or lead["images"][0]["src"]
+cover_slug = site.get("cover_link_slug") or lead["slug"]
+cover_year = site.get("cover_caption_year") or lead["year_label"]
+cover_title = site.get("cover_caption_title") or lead["title"]
+cover_title_en = site.get("cover_caption_title_en") or lead["title_en"]
+tag_de = site.get("tagline_de", "Fotografie — Installation — Video")
+tag_en = site.get("tagline_en", "Photography — Installation — Video")
+
+index_main = f"""  <main>
+    <h1 class="visually-hidden">Boram Park — {e(tag_de)}</h1>
+    <p class="home-tagline" data-de="{e(tag_de)}" data-en="{e(tag_en)}">{e(tag_de)}</p>
+
+    <a class="hero-work" href="werk-{cover_slug}.html">
+      <img class="hero-thumb" src="{rel(cover)}"{dims(cover)} alt="{e(cover_title)}, {cover_year} — Boram Park">
+      <div class="hero-caption">
+        <span class="hero-year">{cover_year}</span>
+        <span class="hero-title" data-de="{e(cover_title)}" data-en="{e(cover_title_en)}">{e(cover_title)}</span>
+      </div>
+    </a>
+
+    <a class="home-enter" href="work.html" data-de="Alle Arbeiten ansehen →" data-en="View all works →">Alle Arbeiten ansehen →</a>
+  </main>"""
+
+write("index.html", page("Boram Park — Portfolio",
+                         f"Boram Park — {tag_de}. Arbeiten, Biografie und Kontakt.",
+                         "", "", index_main))
+
 # ---------------------------------------------------------------- work.html
 items = []
 for w in works:
@@ -108,91 +187,21 @@ for w in works:
         <div class="work-medium" data-de="{e(meta_short(w, 'de'))}" data-en="{e(meta_short(w, 'en'))}">{e(meta_short(w, 'de'))}</div>
       </a>""")
 
-work_main = ("  <main>\n"
-             """    <header class="page-head">
+work_main = ("""  <main>
+    <header class="page-head">
       <h1 data-de="Work" data-en="Work">Work</h1>
     </header>
 
     <div class="work-grid">
-""" + "\n".join(items) + """
+"""
+             + "\n".join(items)
+             + """
     </div>
   </main>""")
 
-src = read("work.html")
-src = src.replace("""  .thumb {
-    aspect-ratio: 4 / 5;
-    background: var(--bp-hairline);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--bp-fg-muted);
-    font-size: 11px;
-    font-family: ui-monospace, "SF Mono", monospace;
-  }""", """  .thumb {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-    background: var(--bp-hairline);
-  }""")
-YEAR_CSS = "  .work-year { color: var(--bp-fg-muted); font-weight: var(--bp-font-weight-normal); }"
-MEDIUM_CSS = "  .work-medium { color: var(--bp-fg-muted); font-size: 13px; margin-top: 2px; }"
-if MEDIUM_CSS not in src:
-    src = src.replace(YEAR_CSS, YEAR_CSS + "\n" + MEDIUM_CSS, 1)
-delays = "\n".join(
-    f"  .work-grid .work-item:nth-child({n}) {{ animation-delay: {0.05 * n:.2f}s; }}"
-    for n in range(1, len(works) + 1))
-src = re.sub(r"(?:  \.work-grid \.work-item:nth-child\(\d+\)[^\n]*\n)+", delays + "\n", src)
-write("work.html", set_main(src, work_main))
-
-# --------------------------------------------------------------- index.html
-lead = works[0]
-cover = site.get("cover_image") or lead["images"][0]["src"]
-cover_slug = site.get("cover_link_slug") or lead["slug"]
-cover_year = site.get("cover_caption_year") or lead["year_label"]
-cover_title = site.get("cover_caption_title") or lead["title"]
-cover_title_en = site.get("cover_caption_title_en") or lead["title_en"]
-tag_de = site.get("tagline_de", "Fotografie — Installation — Video")
-tag_en = site.get("tagline_en", "Photography — Installation — Video")
-
-index_main = f"""  <main>
-    <div class="home-hero">
-      <h1 class="home-name">Boram Park</h1>
-      <p class="home-tagline" data-de="{e(tag_de)}" data-en="{e(tag_en)}">{e(tag_de)}</p>
-    </div>
-
-    <a class="hero-work" href="werk-{cover_slug}.html">
-      <img class="hero-thumb" src="{rel(cover)}"{dims(cover)} alt="{e(cover_title)}, {cover_year} — Boram Park">
-      <div class="hero-caption">
-        <span class="hero-year">{cover_year}</span>
-        <span class="hero-title" data-de="{e(cover_title)}" data-en="{e(cover_title_en)}">{e(cover_title)}</span>
-      </div>
-    </a>
-
-    <a class="home-enter" href="work.html" data-de="Alle Arbeiten ansehen →" data-en="View all works →">Alle Arbeiten ansehen →</a>
-  </main>"""
-
-src = read("index.html")
-src = src.replace("""  .hero-thumb {
-    aspect-ratio: 16 / 9;
-    max-height: 62vh;
-    background: var(--bp-hairline);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--bp-fg-muted);
-    font-size: 12px;
-    font-family: ui-monospace, "SF Mono", monospace;
-  }""", """  .hero-thumb {
-    display: block;
-    width: 100%;
-    max-height: 62vh;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    background: var(--bp-hairline);
-  }""")
-write("index.html", set_main(src, index_main))
+write("work.html", page("Boram Park — Work",
+                        "Arbeiten von Boram Park: Fotografie, Installation und Video.",
+                        "work", "work.html", work_main))
 
 # ----------------------------------------------------------- biography.html
 edu_rows = "\n".join(f"""      <div class="exhibition-row">
@@ -227,7 +236,10 @@ bio_main = f"""  <main>
 {ex_rows}
     </div>
   </main>"""
-write("biography.html", set_main(read("biography.html"), bio_main))
+
+write("biography.html", page("Boram Park — Biography",
+                             "Boram Park: Ausbildung und Ausstellungen.",
+                             "biography", "biography.html", bio_main))
 
 # ------------------------------------------------------------- contact.html
 mail = artist["email"]
@@ -247,78 +259,28 @@ contact_main = f"""  <main>
       <p class="contact-note" data-de="{e(place_de)}" data-en="{e(place_en)}">{e(place_de)}</p>
     </div>
   </main>"""
-src = read("contact.html")
-src = re.sub(r'\s*<div class="contact-social">.*?</div>', "", src, count=1, flags=re.S)
-write("contact.html", set_main(src, contact_main))
+
+write("contact.html", page("Boram Park — Contact",
+                           f"Kontakt zu Boram Park: {mail}",
+                           "contact", "contact.html", contact_main))
 
 # ------------------------------------------------- werk-<slug>.html (Detail)
-base = read("work.html")
-head, body_rest = base.split("</style>", 1)
-DETAIL_CSS = """
-  /* ---------- Work detail ---------- */
-  .work-meta {
-    font-size: 14px;
-    color: var(--bp-fg-muted);
-    margin: var(--bp-space-sm) 0 0;
-  }
-
-  .work-text {
-    max-width: 640px;
-    font-size: 16px;
-    line-height: 1.6;
-    margin: var(--bp-space-md) 0 var(--bp-space-xl);
-  }
-
-  .work-figures {
-    display: flex;
-    flex-direction: column;
-    gap: var(--bp-space-sm);
-    max-width: 1400px;
-  }
-
-  .work-figures figure { margin: 0; }
-
-  .work-figures img {
-    display: block;
-    width: 100%;
-    height: auto;
-    max-height: 84vh;
-    object-fit: contain;
-    object-position: left center;
-  }
-
-  .work-figures figcaption {
-    font-size: 14px;
-    color: var(--bp-fg-muted);
-    margin-top: var(--bp-space-xs);
-  }
-
-  .back-link {
-    display: inline-block;
-    margin-top: var(--bp-space-xl);
-    font-size: 14px;
-    color: var(--bp-fg-muted);
-  }
-
-  .back-link:hover { color: var(--bp-fg); }
-"""
-head = head + DETAIL_CSS + "</style>"
-
 for w in works:
     figs = []
     for im in w["images"]:
         cap = ""
         if im.get("caption_de"):
-            cde, cen = im["caption_de"], im.get("caption_en") or im["caption_de"]
-            cap = (f'\n        <figcaption data-de="{e(cde)}" data-en="{e(cen)}">{e(cde)}</figcaption>')
+            cde = im["caption_de"]
+            cen = im.get("caption_en") or cde
+            cap = f'\n        <figcaption data-de="{e(cde)}" data-en="{e(cen)}">{e(cde)}</figcaption>'
         figs.append(f"""      <figure>
         <img src="{rel(im['src'])}"{dims(im['src'])} loading="lazy" alt="{alt(w)}">{cap}
       </figure>""")
 
     text_block = ""
     if w["text_de"]:
-        text_block = (f'\n    <p class="work-text" data-de="{e(w["text_de"])}" data-en="{e(w["text_en"])}">'
-                      f'{e(w["text_de"])}</p>\n')
+        text_block = (f'\n    <p class="work-text" data-de="{e(w["text_de"])}" '
+                      f'data-en="{e(w["text_en"])}">{e(w["text_de"])}</p>\n')
 
     main = f"""  <main>
     <header class="page-head">
@@ -333,10 +295,9 @@ for w in works:
     <a class="back-link" href="work.html" data-de="← Alle Arbeiten" data-en="← All works">← Alle Arbeiten</a>
   </main>"""
 
-    page = set_main(head + body_rest, main)
-    page = page.replace("<title>Boram — Work</title>",
-                        "<title>" + e(w["title"]) + " — Boram Park</title>", 1)
-    write(detail_href(w), page)
+    desc = w["text_de"][:150] if w["text_de"] else meta_line(w, "de")
+    write(detail_href(w), page(f"{e(w['title'])} — Boram Park", desc,
+                               "work", "work.html", main))
 
 # Detailseiten geloeschter Arbeiten entfernen
 keep = {detail_href(w) for w in works}
