@@ -54,7 +54,7 @@ for path in sorted(glob.glob(os.path.join(CONTENT, "works", "*.json"))):
         w.setdefault(key, "")
     w["images"] = [im for im in w.get("images", []) if im.get("src")]
     works.append(w)
-works.sort(key=lambda w: (w["order"], w["slug"]))
+works.sort(key=lambda w: (-int(w.get("year") or 0), w["order"], w["slug"]))
 
 if not works:
     raise SystemExit("content/works/ ist leer - keine Arbeiten zu schreiben.")
@@ -141,6 +141,16 @@ def detail_href(w):
     return f"werk-{w['slug']}.html"
 
 
+def thumb_src(w):
+    """Vorschaubild: eigenes Feld, sonst das erste Bild der Arbeit."""
+    return w.get("thumbnail") or w["images"][0]["src"]
+
+
+def aspect(src):
+    wh = SIZES.get(rel(src))
+    return round(wh[0] / wh[1], 3) if wh and wh[1] else 1.5
+
+
 def alt(w):
     return f"{e(w['title'])}, {w['year_label']} — Boram Park"
 
@@ -180,9 +190,9 @@ write("index.html", page("Boram Park — Portfolio", home_desc, "", "", index_ma
 # ---------------------------------------------------------------- work.html
 items = []
 for w in works:
-    im = w["images"][0]
-    items.append(f"""      <a class="work-item" href="{detail_href(w)}">
-        <img class="thumb" src="{rel(im['src'])}"{dims(im['src'])} loading="lazy" alt="{alt(w)}">
+    src = thumb_src(w)
+    items.append(f"""      <a class="work-item" style="--ar: {aspect(src)}" href="{detail_href(w)}">
+        <img class="thumb" src="{rel(src)}"{dims(src)} loading="lazy" alt="{alt(w)}">
         <div class="work-caption">
           <span class="work-year">{w['year_label']}</span>
           <span class="work-title" data-de="{e(w['title'])}" data-en="{e(w['title_en'])}">{e(w['title'])}</span>

@@ -43,6 +43,9 @@ content/images/<slug>/      작품 이미지 (_sizes.json은 빌드가 만드는
 content/source/             원본 PDF·고해상도 사진 (사이트에 쓰이지 않는 아카이브)
 ```
 
+Work 페이지는 **연도 내림차순**으로 정렬하고, 같은 해 안에서만 `order` 값을 본다.
+썸네일은 기본이 첫 이미지이며, `thumbnail` 필드로 다른 이미지를 지정할 수 있다(Lebensfluss가 그 예).
+
 작품을 추가하려면 `content/works/`에 JSON 파일 하나를 더 넣고 스크립트를 돌리면 된다.
 파일을 지우면 해당 상세 페이지도 함께 지워진다. 자세한 내용은 [`content/README.md`](content/README.md).
 

@@ -206,15 +206,27 @@ main {
 
 .home-enter:hover { opacity: 0.55; }
 
-/* ---------- Work: Raster ---------- */
+/* ---------- Work: Collage ----------
+   Kein festes Raster: jede Vorschau behaelt ihr eigenes Seitenverhaeltnis.
+   --ar (Breite/Hoehe) setzt scripts/wire-content.py pro Kachel; Wachstum und
+   Basisbreite folgen daraus, sodass eine Zeile auf gleiche Hoehe ausgleicht. */
 .work-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: var(--bp-space-sm);
   max-width: 1400px;
 }
 
+/* haelt die letzte Zeile auf natuerlicher Groesse, statt sie aufzublaehen */
+.work-grid::after {
+  content: "";
+  flex: 999999 0 0;
+}
+
 .work-item {
+  --ar: 1.5;
+  flex: var(--ar) 1 calc(var(--ar) * 260px);
+  min-width: 0;
   display: block;
   opacity: 0;
   animation: reveal 0.5s ease forwards;
@@ -224,15 +236,14 @@ main {
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
   background: var(--bp-hairline);
 }
 
 .work-caption {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  gap: var(--bp-space-sm);
+  gap: 2px var(--bp-space-sm);
   margin-top: var(--bp-space-xs);
   font-size: 14px;
 }
@@ -424,8 +435,8 @@ main {
   .home-tagline { font-size: 16px; margin-bottom: var(--bp-space-md); }
   .hero-thumb { aspect-ratio: 4 / 3; max-height: none; }
 
-  .work-grid { grid-template-columns: 1fr; gap: var(--bp-space-md); }
-  .thumb { aspect-ratio: 3 / 4; }
+  .work-grid { gap: var(--bp-space-md); }
+  .work-item { flex: 1 1 100%; }
 
   .work-text { margin: var(--bp-space-md) 0 var(--bp-space-lg); }
   .work-figures { gap: var(--bp-space-md); }

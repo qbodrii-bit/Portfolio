@@ -63,7 +63,7 @@ Biography 페이지는 Roman Signer의 전시 리스트 관습을 그대로 계�
 - 좌측 고정 마스트헤드 (워드마크 "Boram Park" 26px/900 + Work / Biography / Contact 18px/900)
 - 무채색 전용 팔레트 — 브랜드 컬러 없음, 대비는 굵기(900 vs 400)로만 표현
 - 순수 백색 배경 — 작품 이미지가 유일한 색채
-- Work 그리드: 그림자·테두리·라운드 없는 flat 썸네일, 촘촘한 16px 갭
+- Work 콜라주: 각 썸네일이 원본 비율 그대로, 한 줄씩 높이를 맞춰 배치 — 크롭 없음, 16px 갭
 - Biography: 날짜-제목-장소 헤어라인 리스트, 역순 정렬
 - 섹션 간 96px 수직 여백 vs 그리드 내부 16px — 의도적 비대칭 리듬
 - 언어 토글(DE/EN)은 마스트헤드와 분리해 우측 상단에 독립 배치
@@ -146,7 +146,7 @@ Work 그리드는 촘촘하다 — 썸네일 사이 16px 갭으로 "카탈로그
 ### Grid System
 - **Content max-width**: 1400px
 - **Grid type**: 좌측 고정 컬럼(240px) + 우측 fluid 메인
-- **Column count (Work grid)**: 데스크톱 2열, 태블릿 이하 1열
+- **Work 콜라주**: 고정 열 수 없음 — 줄당 개수는 각 이미지 비율이 정한다(기본 높이 260px). 780px 이하는 한 줄에 하나
 - **Gutter**: 16px
 
 ### Navigation Structure
@@ -293,3 +293,11 @@ Work 그리드는 촘촘하다 — 썸네일 사이 16px 갭으로 "카탈로그
 Die Quellen sind es nicht (Adobe RGB, ProPhoto RGB, Display P3, CMYK) — die
 Umrechnung passiert in `scripts/extract-pdf-assets.py` und `scripts/prepare-images.py`.
 Ohne sie wirken die Fotos flau und zu kühl. Siehe `content/README.md`.
+
+**Work 콜라주 원리**: `.work-item`의 `flex-grow`와 `flex-basis`를 이미지 비율(`--ar`)에
+비례시키면 같은 줄의 항목들이 같은 배율로 늘어나 높이가 저절로 맞는다. `--ar`은
+`scripts/wire-content.py`가 `_sizes.json`을 보고 타일마다 인라인으로 넣는다.
+마지막 줄은 `.work-grid::after`의 큰 `flex-grow`가 남은 공간을 먹어 원래 크기로 남는다.
+
+**Work 정렬**: 연도 내림차순이 먼저고, 같은 해 안에서만 `order` 값이 순서를 정한다.
+새 작품은 연도만 맞으면 자동으로 위로 올라온다.
