@@ -1,0 +1,14 @@
+# 작업 도구 (사이트와 무관)
+.agents/
+.claude/
+.impeccable/
+insane-build/
+skills-lock.json
+
+# 파이썬
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+Thumbs.db

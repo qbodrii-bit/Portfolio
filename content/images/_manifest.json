@@ -1,0 +1,358 @@
+{
+  "cover": [
+    {
+      "file": "content/images/cover/01.jpg",
+      "w": 1915,
+      "h": 1351,
+      "source_page": 1,
+      "orig": "1915x1351",
+      "kb": 141
+    }
+  ],
+  "haeutung-reispapier": [
+    {
+      "file": "content/images/haeutung-reispapier/01.jpg",
+      "w": 627,
+      "h": 1004,
+      "source_page": 2,
+      "orig": "627x1004",
+      "kb": 74
+    },
+    {
+      "file": "content/images/haeutung-reispapier/02.jpg",
+      "w": 659,
+      "h": 1004,
+      "source_page": 2,
+      "orig": "659x1004",
+      "kb": 48
+    },
+    {
+      "file": "content/images/haeutung-reispapier/03.jpg",
+      "w": 2400,
+      "h": 1718,
+      "source_page": 3,
+      "orig": "2898x2075",
+      "kb": 413
+    }
+  ],
+  "haeutung-leuchtkasten": [
+    {
+      "file": "content/images/haeutung-leuchtkasten/01.jpg",
+      "w": 2050,
+      "h": 1371,
+      "source_page": 4,
+      "orig": "2050x1371",
+      "kb": 189
+    },
+    {
+      "file": "content/images/haeutung-leuchtkasten/02.jpg",
+      "w": 2345,
+      "h": 1659,
+      "source_page": 5,
+      "orig": "2345x1659",
+      "kb": 301
+    }
+  ],
+  "haeutung-kleiderbuegel": [
+    {
+      "file": "content/images/haeutung-kleiderbuegel/01.jpg",
+      "w": 1579,
+      "h": 2189,
+      "source_page": 6,
+      "orig": "1579x2189",
+      "kb": 275
+    },
+    {
+      "file": "content/images/haeutung-kleiderbuegel/02.jpg",
+      "w": 2400,
+      "h": 1701,
+      "source_page": 7,
+      "orig": "3514x2490",
+      "kb": 788
+    },
+    {
+      "file": "content/images/haeutung-kleiderbuegel/03.jpg",
+      "w": 2400,
+      "h": 1693,
+      "source_page": 8,
+      "orig": "3518x2481",
+      "kb": 439
+    }
+  ],
+  "beruehrung": [
+    {
+      "file": "content/images/beruehrung/01.jpg",
+      "w": 1584,
+      "h": 2190,
+      "source_page": 9,
+      "orig": "1584x2190",
+      "kb": 626
+    }
+  ],
+  "huelle": [
+    {
+      "file": "content/images/huelle/01.jpg",
+      "w": 988,
+      "h": 1506,
+      "source_page": 10,
+      "orig": "988x1506",
+      "kb": 235
+    },
+    {
+      "file": "content/images/huelle/02.jpg",
+      "w": 1000,
+      "h": 1506,
+      "source_page": 10,
+      "orig": "1000x1506",
+      "kb": 323
+    }
+  ],
+  "haeutung-kosmetikmaske": [
+    {
+      "file": "content/images/haeutung-kosmetikmaske/01.jpg",
+      "w": 960,
+      "h": 948,
+      "source_page": 11,
+      "orig": "960x948",
+      "kb": 158
+    },
+    {
+      "file": "content/images/haeutung-kosmetikmaske/02.jpg",
+      "w": 961,
+      "h": 948,
+      "source_page": 11,
+      "orig": "961x948",
+      "kb": 180
+    },
+    {
+      "file": "content/images/haeutung-kosmetikmaske/03.jpg",
+      "w": 955,
+      "h": 948,
+      "source_page": 11,
+      "orig": "955x948",
+      "kb": 166
+    },
+    {
+      "file": "content/images/haeutung-kosmetikmaske/04.jpg",
+      "w": 955,
+      "h": 945,
+      "source_page": 11,
+      "orig": "955x945",
+      "kb": 187
+    }
+  ],
+  "ein-monat": [
+    {
+      "file": "content/images/ein-monat/01.jpg",
+      "w": 2059,
+      "h": 1459,
+      "source_page": 12,
+      "orig": "2059x1459",
+      "kb": 256
+    }
+  ],
+  "lebensfluss": [
+    {
+      "file": "content/images/lebensfluss/01.jpg",
+      "w": 1528,
+      "h": 926,
+      "source_page": 13,
+      "orig": "1528x926",
+      "kb": 156
+    },
+    {
+      "file": "content/images/lebensfluss/02.jpg",
+      "w": 1528,
+      "h": 927,
+      "source_page": 13,
+      "orig": "1528x927",
+      "kb": 145
+    },
+    {
+      "file": "content/images/lebensfluss/03.jpg",
+      "w": 1528,
+      "h": 907,
+      "source_page": 13,
+      "orig": "1528x907",
+      "kb": 192
+    },
+    {
+      "file": "content/images/lebensfluss/04.jpg",
+      "w": 1532,
+      "h": 907,
+      "source_page": 13,
+      "orig": "1532x907",
+      "kb": 190
+    }
+  ],
+  "uebergabe": [
+    {
+      "file": "content/images/uebergabe/01.jpg",
+      "w": 1634,
+      "h": 919,
+      "source_page": 14,
+      "orig": "1634x919",
+      "kb": 231
+    },
+    {
+      "file": "content/images/uebergabe/02.jpg",
+      "w": 1528,
+      "h": 926,
+      "source_page": 15,
+      "orig": "1528x926",
+      "kb": 193
+    },
+    {
+      "file": "content/images/uebergabe/03.jpg",
+      "w": 1528,
+      "h": 927,
+      "source_page": 15,
+      "orig": "1528x927",
+      "kb": 219
+    },
+    {
+      "file": "content/images/uebergabe/04.jpg",
+      "w": 1528,
+      "h": 907,
+      "source_page": 15,
+      "orig": "1528x907",
+      "kb": 212
+    },
+    {
+      "file": "content/images/uebergabe/05.jpg",
+      "w": 1532,
+      "h": 907,
+      "source_page": 15,
+      "orig": "1532x907",
+      "kb": 224
+    }
+  ],
+  "street-food": [
+    {
+      "file": "content/images/street-food/01.jpg",
+      "w": 1542,
+      "h": 2181,
+      "source_page": 16,
+      "orig": "1542x2181",
+      "kb": 707
+    },
+    {
+      "file": "content/images/street-food/02.jpg",
+      "w": 2400,
+      "h": 1684,
+      "source_page": 17,
+      "orig": "3985x2796",
+      "kb": 694
+    },
+    {
+      "file": "content/images/street-food/03.jpg",
+      "w": 2339,
+      "h": 1654,
+      "source_page": 18,
+      "orig": "2339x1654",
+      "kb": 795
+    },
+    {
+      "file": "content/images/street-food/04.jpg",
+      "w": 2400,
+      "h": 1697,
+      "source_page": 19,
+      "orig": "3508x2481",
+      "kb": 643
+    }
+  ],
+  "ein-hammer-installation": [
+    {
+      "file": "content/images/ein-hammer-installation/01.jpg",
+      "w": 1583,
+      "h": 1231,
+      "source_page": 20,
+      "orig": "1583x1231",
+      "kb": 647
+    }
+  ],
+  "ein-hammer-video": [
+    {
+      "file": "content/images/ein-hammer-video/01.jpg",
+      "w": 2400,
+      "h": 1600,
+      "source_page": null,
+      "orig": null,
+      "kb": 341,
+      "source_drive": "drive/ein-hammer_installationsansicht.jpg"
+    },
+    {
+      "file": "content/images/ein-hammer-video/02.jpg",
+      "w": 970,
+      "h": 558,
+      "source_page": 22,
+      "orig": "970x558",
+      "kb": 45
+    },
+    {
+      "file": "content/images/ein-hammer-video/03.jpg",
+      "w": 986,
+      "h": 558,
+      "source_page": 22,
+      "orig": "986x558",
+      "kb": 37
+    },
+    {
+      "file": "content/images/ein-hammer-video/04.jpg",
+      "w": 981,
+      "h": 558,
+      "source_page": 22,
+      "orig": "981x558",
+      "kb": 33
+    },
+    {
+      "file": "content/images/ein-hammer-video/05.jpg",
+      "w": 982,
+      "h": 559,
+      "source_page": 22,
+      "orig": "982x559",
+      "kb": 39
+    },
+    {
+      "file": "content/images/ein-hammer-video/06.jpg",
+      "w": 986,
+      "h": 558,
+      "source_page": 22,
+      "orig": "986x558",
+      "kb": 43
+    },
+    {
+      "file": "content/images/ein-hammer-video/07.jpg",
+      "w": 971,
+      "h": 558,
+      "source_page": 22,
+      "orig": "971x558",
+      "kb": 55
+    },
+    {
+      "file": "content/images/ein-hammer-video/08.jpg",
+      "w": 972,
+      "h": 558,
+      "source_page": 22,
+      "orig": "972x558",
+      "kb": 30
+    },
+    {
+      "file": "content/images/ein-hammer-video/09.jpg",
+      "w": 986,
+      "h": 558,
+      "source_page": 22,
+      "orig": "986x558",
+      "kb": 36
+    },
+    {
+      "file": "content/images/ein-hammer-video/10.jpg",
+      "w": 2400,
+      "h": 1344,
+      "source_page": null,
+      "orig": null,
+      "kb": 229,
+      "source_drive": "drive/ein-hammer_still-ajona.jpg"
+    }
+  ]
+}

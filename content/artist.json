@@ -1,0 +1,53 @@
+{
+  "name": "Boram Park",
+  "born": {
+    "year": 1991,
+    "place_de": "Seoul, Südkorea",
+    "place_en": "Seoul, South Korea"
+  },
+  "email": "g.bodrii@gmail.com",
+  "education": [
+    {
+      "period": "2023–",
+      "institution_de": "Hochschule der Bildenden Künste Saar (HBKsaar), Saarbrücken",
+      "institution_en": "Hochschule der Bildenden Künste Saar (HBKsaar), Saarbrücken",
+      "degree_de": "Bachelor of Arts, Freie Kunst",
+      "degree_en": "Bachelor of Arts, Fine Arts"
+    },
+    {
+      "period": "2011–2016",
+      "institution_de": "Kyung Hee University, College of Fine Arts (Seoul, Südkorea)",
+      "institution_en": "Kyung Hee University, College of Fine Arts (Seoul, South Korea)",
+      "degree_de": "Bachelor of Fine Arts, Bildhauerei",
+      "degree_en": "Bachelor of Fine Arts, Sculpture"
+    }
+  ],
+  "exhibitions": [
+    {
+      "year": 2026,
+      "title": "Passageways",
+      "venue": "Klaus Faber AG, Saarbrücken"
+    },
+    {
+      "year": 2026,
+      "title": "Momentaufhanme",
+      "venue": "Atelieraltesthonet, Saarbrücken",
+      "source_note": "Schreibweise wie im PDF; vermutlich 'Momentaufnahme, Atelier Altes Thonet' - bei der Kuenstlerin pruefen."
+    },
+    {
+      "year": 2025,
+      "title": "Das andere Foto",
+      "venue": "Innovation Center, Universität des Saarlandes, Saarbrücken"
+    },
+    {
+      "year": 2025,
+      "title": "Körperdecke",
+      "venue": "Kunst im Stadtraum Tübingen"
+    },
+    {
+      "year": 2024,
+      "title": "OPUS",
+      "venue": "Opus Kulturmagazins, Saarbrücken"
+    }
+  ]
+}
