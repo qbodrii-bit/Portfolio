@@ -12,34 +12,32 @@
   "text_en": "For the video, 33 everyday objects were struck with a judge's gavel. The reaction of the objects is more in focus than the blow itself. I am interested in how material properties and their effects only reveal themselves through the impact.",
   "images": [
     {
-      "src": "/content/images/ein-hammer-video/01.jpg"
+      "src": "/content/images/ein-hammer-video/01.jpg",
+      "full_row": false
     },
     {
-      "src": "/content/images/ein-hammer-video/02.jpg"
+      "src": "/content/images/ein-hammer-video/1.jpg",
+      "full_row": false
     },
     {
-      "src": "/content/images/ein-hammer-video/03.jpg"
+      "src": "/content/images/ein-hammer-video/2.jpg",
+      "full_row": false
     },
     {
-      "src": "/content/images/ein-hammer-video/04.jpg"
+      "src": "/content/images/ein-hammer-video/3.jpg",
+      "full_row": false
     },
     {
-      "src": "/content/images/ein-hammer-video/05.jpg"
+      "src": "/content/images/ein-hammer-video/4.jpg",
+      "full_row": false
     },
     {
-      "src": "/content/images/ein-hammer-video/06.jpg"
+      "src": "/content/images/ein-hammer-video/6.jpg",
+      "full_row": false
     },
     {
-      "src": "/content/images/ein-hammer-video/07.jpg"
-    },
-    {
-      "src": "/content/images/ein-hammer-video/08.jpg"
-    },
-    {
-      "src": "/content/images/ein-hammer-video/09.jpg"
-    },
-    {
-      "src": "/content/images/ein-hammer-video/10.jpg"
+      "src": "/content/images/ein-hammer-video/9.jpg",
+      "full_row": false
     }
   ]
 }
