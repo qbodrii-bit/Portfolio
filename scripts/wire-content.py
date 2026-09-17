@@ -26,6 +26,15 @@ e = html.escape
 
 FONT = "https://fonts.googleapis.com/css2?family=Outfit:wght@400;900&display=swap"
 
+# Verwaltungsseite (admin.html): steht in keinem Menue und traegt noindex.
+# Sie ist nur ueber ihre Adresse erreichbar - absichtlich auch nicht in einer
+# robots.txt, denn die ist oeffentlich und wuerde die Adresse erst verraten.
+REPO = "qbodrii-bit/Portfolio"
+WORKFLOW = "build.yml"
+# Die Sammlung laesst sich spaeter noch direkter ansteuern; die Adresse dafuer
+# nach dem ersten Login aus der Adresszeile uebernehmen.
+CMS_URL = "https://app.pagescms.org/"
+
 
 def asset(name):
     """Dateiname mit kurzem Hash, damit Browser nach einer Aenderung
@@ -200,15 +209,22 @@ def masthead(active, current_slug=None):
   </nav>""")
 
 
-def page(title, description, section, active, main, current_slug=None):
+def page(title, description, section, active, main, current_slug=None,
+         noindex=False, header=None, script=True, lang="de"):
+    """header=None nimmt die normale Navigation; die Verwaltungsseite reicht
+    stattdessen eine schlichte Kopfzeile herein, laesst das Skript weg und
+    steht auf Koreanisch (lang="ko") - sie richtet sich an die Kuenstlerin."""
     body_attr = f' data-section="{section}"' if section else ""
+    robots = '\n<meta name="robots" content="noindex, nofollow">' if noindex else ""
+    head = masthead(active, current_slug) if header is None else header
+    tail = f'\n  <script src="{asset("site.js")}"></script>\n' if script else ""
     return f"""<!doctype html>
-<html lang="de" data-lang="de">
+<html lang="{lang}" data-lang="{lang}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title}</title>
-<meta name="description" content="{e(description)}">
+<meta name="description" content="{e(description)}">{robots}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="{FONT}" rel="stylesheet">
@@ -216,12 +232,10 @@ def page(title, description, section, active, main, current_slug=None):
 </head>
 <body{body_attr}>
 
-{masthead(active, current_slug)}
+{head}
 
 {main}
-
-  <script src="{asset("site.js")}"></script>
-</body>
+{tail}</body>
 </html>
 """
 
@@ -368,6 +382,86 @@ for w in works:
     desc = w["text_de"][:150] if w["text_de"] else meta_line(w, "de")
     write(detail_href(w), page(f"{e(w['title'])} — Boram Park", desc,
                                "work", "", main, current_slug=w["slug"]))
+
+# ------------------------------------------------------------- admin.html
+# Interne Uebersicht fuer die Kuenstlerin: ein Weg ins Pages CMS, der Stand des
+# letzten Aufbaus und eine Liste aller Seiten. Bewusst ohne Navigation, ohne
+# Sprachumschalter und mit noindex - sie gehoert nicht zum Portfolio.
+ADMIN_HEADER = """  <nav class="masthead" aria-label="Kopfzeile">
+    <div class="masthead-bar">
+      <a class="nav-logo" href="index.html">Boram Park</a>
+    </div>
+  </nav>"""
+
+BADGE = f"https://github.com/{REPO}/actions/workflows/{WORKFLOW}"
+
+
+def admin_row(title, meta, href):
+    return f"""        <div class="admin-row">
+          <span class="admin-row-title">{e(title)}</span>
+          <span class="admin-row-meta">{e(meta)}</span>
+          <a class="admin-row-link" href="{href}">보기</a>
+        </div>"""
+
+
+work_rows = "\n".join(
+    admin_row(sub_label(w, "de"),
+              f"{w['year_label']} · 이미지 {len(w['images'])}장",
+              detail_href(w))
+    for w in works)
+
+other_rows = "\n".join([
+    admin_row("약력",
+              f"학력 {len(artist['education'])}건, "
+              f"전시 {len(artist['exhibitions'])}건",
+              "biography.html"),
+    admin_row("연락처", artist.get("email", ""), "contact.html"),
+    admin_row("홈", "표지 이미지와 이름 아래 문구", "index.html"),
+])
+
+admin_main = f"""  <main>
+    <header class="page-head">
+      <h1>관리</h1>
+      <p class="admin-lead">작가용 내부 페이지입니다. 메뉴에 없고 검색에도 잡히지 않습니다.
+        이 주소를 아는 사람만 볼 수 있습니다. 내용을 고치려면 GitHub 로그인이 필요하므로,
+        페이지가 보인다고 해서 남이 수정할 수는 없습니다.</p>
+    </header>
+
+    <div class="admin-block">
+      <a class="admin-button" href="{CMS_URL}">사이트 편집하기</a>
+      <p class="admin-note">GitHub 계정으로 로그인합니다. 작품, 이미지, 약력, 홈 화면을
+        모두 폼으로 고칠 수 있습니다. 코드는 볼 일이 없습니다.</p>
+    </div>
+
+    <section class="admin-block">
+      <h2 class="admin-heading">사이트 상태</h2>
+      <a href="{BADGE}"><img class="admin-badge" src="{BADGE}/badge.svg"
+        alt="마지막 업데이트 상태" width="164" height="20"></a>
+      <p class="admin-note">저장하고 1~2분이 지나면 사이트에 반영됩니다.
+        여기가 <em>passing</em>이면 정상입니다. <em>failing</em>이면 문제가 생긴 것이니
+        알려주세요.</p>
+    </section>
+
+    <section class="admin-block">
+      <h2 class="admin-heading">작품 <span class="admin-row-meta">{len(works)}</span></h2>
+      <div class="admin-list">
+{work_rows}
+      </div>
+      <p class="admin-note">연도 뒤 숫자는 그 작품 페이지에 실린 이미지 장수입니다.
+        업로드가 제대로 들어갔는지 여기서 확인하세요.</p>
+    </section>
+
+    <section class="admin-block">
+      <h2 class="admin-heading">다른 페이지</h2>
+      <div class="admin-list">
+{other_rows}
+      </div>
+    </section>
+  </main>"""
+
+write("admin.html", page("관리 — Boram Park", "작가용 내부 페이지.",
+                         "", "", admin_main,
+                         noindex=True, header=ADMIN_HEADER, script=False, lang="ko"))
 
 # die fruehere Uebersichtsseite gibt es nicht mehr
 old_index = os.path.join(SITE, "work.html")

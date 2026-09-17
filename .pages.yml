@@ -1,10 +1,13 @@
-# Pages CMS (pagescms.org) — Redaktionsoberfläche für boram-park.
-# Anmeldung mit dem GitHub-Konto, das dieses Repository besitzt.
-# Nach dem Speichern erzeugt GitHub Actions die HTML-Seiten neu.
+# Pages CMS (pagescms.org) — 작가용 편집 화면 정의.
+# 이 저장소를 소유한 GitHub 계정으로 로그인한다.
+# 저장하면 GitHub Actions가 HTML을 다시 만들고 Vercel이 배포한다. 1~2분 걸린다.
+#
+# 화면 라벨은 한국어(작가가 한국 사람), 입력하는 값은 독일어/영어(사이트는 독일 관객용).
+# 그래서 항목마다 어느 언어로 써야 하는지 괄호로 적어 둔다.
 
 media:
   - name: images
-    label: Bilder
+    label: 이미지
     input: content/images
     output: /content/images
     extensions: [jpg, jpeg, png, webp]
@@ -12,7 +15,7 @@ media:
 
 content:
   - name: works
-    label: Arbeiten
+    label: 작품
     type: collection
     path: content/works
     format: json
@@ -28,175 +31,187 @@ content:
         order: desc
     fields:
       - name: order
-        label: Reihenfolge
+        label: 같은 해 안에서의 순서
         type: number
         required: true
         description: >
-          Die Work-Seite sortiert zuerst nach Jahr, neueste Arbeit oben.
-          Diese Zahl entscheidet nur innerhalb desselben Jahres - kleiner steht weiter oben.
+          작품 목록은 연도 내림차순(최신이 위)이다.
+          이 숫자는 같은 해 작품끼리만 비교하며, 작을수록 위에 온다.
       - name: title
-        label: Titel
+        label: 제목 (독일어)
         type: string
         required: true
+        description: 사이트에 그대로 나가는 원제.
       - name: title_en
-        label: Titel (englisch)
+        label: 제목 (영어)
         type: string
+        description: EN 화면에서 쓰인다. 비우면 EN 화면에서 빈칸으로 보일 수 있으니 채우는 편이 좋다.
       - name: year
-        label: Jahr
+        label: 연도
         type: number
         required: true
+        description: 목록 정렬에 쓰는 숫자. 네 자리로 적는다.
       - name: year_label
-        label: Jahresangabe
+        label: 연도 표기
         type: string
-        description: Nur ausfüllen, wenn etwas anderes als das Jahr stehen soll, z. B. 2025–2026.
+        description: 연도와 다르게 보여야 할 때만 입력. 예 2025–2026. 비우면 위 연도를 그대로 쓴다.
       - name: material_de
-        label: Material
+        label: 재료 (독일어)
         type: string
-        description: z. B. Reispapier, Kleiderbügel
+        description: 예 Reispapier, Kleiderbügel
       - name: material_en
-        label: Material (englisch)
+        label: 재료 (영어)
         type: string
+        description: 예 Rice paper, Clothes hanger
       - name: medium_de
-        label: Technik
+        label: 매체·기법 (독일어)
         type: string
-        description: z. B. Fotografie, Installation, Video, 07:26 loop
+        description: 예 Fotografie, Installation, Video, 07:26 loop
       - name: medium_en
-        label: Technik (englisch)
+        label: 매체·기법 (영어)
         type: string
+        description: 예 Photography, Installation, Video
       - name: text_de
-        label: Werktext
+        label: 작품 텍스트 (독일어)
         type: text
-        description: Der Text, der auf der Werkseite unter dem Titel steht.
+        description: 작품 페이지에서 제목 아래에 놓이는 설명 글.
       - name: text_en
-        label: Werktext (englisch)
+        label: 작품 텍스트 (영어)
         type: text
       - name: images
-        label: Bilder
+        label: 이미지
         type: object
         list: true
         fields:
           - name: src
-            label: Bild
+            label: 이미지 파일
             type: image
             required: true
             options:
               media: images
           - name: caption_de
-            label: Bildunterschrift
+            label: 캡션 (독일어)
             type: string
-            description: Nur bei Serien nötig, z. B. Toast · Fotografie · 2025.
+            description: 연작처럼 사진마다 제목이 따로 있을 때만 입력. 예 Toast · Fotografie · 2025
           - name: caption_en
-            label: Bildunterschrift (englisch)
+            label: 캡션 (영어)
             type: string
 
   - name: artist
-    label: Künstlerin / CV
+    label: 작가 / 약력
     type: file
     path: content/artist.json
     format: json
     fields:
       - name: name
-        label: Name
+        label: 이름
         type: string
       - name: born
-        label: Geboren
+        label: 출생
         type: object
         fields:
           - name: year
-            label: Jahr
+            label: 연도
             type: number
           - name: place_de
-            label: Ort
+            label: 지역 (독일어)
             type: string
           - name: place_en
-            label: Ort (englisch)
+            label: 지역 (영어)
             type: string
       - name: email
-        label: E-Mail
+        label: 이메일
         type: string
+        description: 연락처 페이지에 그대로 나간다.
       - name: place_de
-        label: Fußzeile Kontakt
+        label: 연락처 하단 문구 (독일어)
         type: string
+        description: 예 Boram Park — Saarbrücken, Deutschland
       - name: place_en
-        label: Fußzeile Kontakt (englisch)
+        label: 연락처 하단 문구 (영어)
         type: string
       - name: statement_de
-        label: Kurztext Biografie
+        label: 약력 소개 글 (독일어)
         type: text
+        description: 약력 페이지 맨 위에 놓이는 짧은 글.
       - name: statement_en
-        label: Kurztext Biografie (englisch)
+        label: 약력 소개 글 (영어)
         type: text
       - name: contact_note_de
-        label: Hinweis auf der Kontaktseite
+        label: 연락처 페이지 안내 문구 (독일어)
         type: string
+        description: 예 Für Ausstellungsanfragen und Presse.
       - name: contact_note_en
-        label: Hinweis auf der Kontaktseite (englisch)
+        label: 연락처 페이지 안내 문구 (영어)
         type: string
       - name: education
-        label: Ausbildung
+        label: 학력
         type: object
         list: true
         fields:
           - name: period
-            label: Zeitraum
+            label: 기간
             type: string
+            description: 예 2019–2023
           - name: institution_de
-            label: Institution
+            label: 학교 (독일어)
             type: string
           - name: institution_en
-            label: Institution (englisch)
+            label: 학교 (영어)
             type: string
           - name: degree_de
-            label: Abschluss
+            label: 과정·학위 (독일어)
             type: string
           - name: degree_en
-            label: Abschluss (englisch)
+            label: 과정·학위 (영어)
             type: string
       - name: exhibitions
-        label: Ausstellungen
+        label: 전시 이력
         type: object
         list: true
         fields:
           - name: year
-            label: Jahr
+            label: 연도
             type: number
           - name: title
-            label: Titel
+            label: 전시명
             type: string
           - name: venue
-            label: Ort
+            label: 장소
             type: string
           - name: source_note
-            label: Interne Notiz
+            label: 내부 메모
             type: string
+            description: 사이트에 나가지 않는다. 확인이 필요한 항목을 적어두는 칸.
 
   - name: site
-    label: Startseite
+    label: 홈 화면
     type: file
     path: content/site.json
     format: json
     fields:
       - name: cover_image
-        label: Bild auf der Startseite
+        label: 표지 이미지
         type: image
         options:
           media: images
       - name: cover_caption_title
-        label: Bildunterschrift Titel
+        label: 표지 캡션 제목 (독일어)
         type: string
       - name: cover_caption_title_en
-        label: Bildunterschrift Titel (englisch)
+        label: 표지 캡션 제목 (영어)
         type: string
       - name: cover_caption_year
-        label: Bildunterschrift Jahr
+        label: 표지 캡션 연도
         type: string
       - name: cover_link_slug
-        label: Verlinkte Arbeit
+        label: 표지를 누르면 열릴 작품
         type: string
-        description: Dateiname der Arbeit ohne .json, z. B. haeutung-reispapier.
+        description: 작품 파일 이름에서 .json을 뺀 것. 예 haeutung-reispapier
       - name: tagline_de
-        label: Zeile unter dem Namen
+        label: 이름 아래 문구 (독일어)
         type: string
+        description: 비워두면 아무것도 나오지 않는다.
       - name: tagline_en
-        label: Zeile unter dem Namen (englisch)
+        label: 이름 아래 문구 (영어)
         type: string

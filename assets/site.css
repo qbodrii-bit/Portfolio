@@ -399,6 +399,84 @@ main {
   margin: var(--bp-space-sm) 0 0;
 }
 
+/* ---------- Verwaltung (admin.html) ----------
+   Interne Seite, nicht im Menue. Gleiche Mittel wie der Rest: kein Farbton,
+   Haarlinien statt Rahmen, Grau statt Gewicht.
+   Sie steht auf Koreanisch; Outfit hat keine koreanischen Zeichen, deshalb
+   haengen hier koreanische Systemschriften hinten an. Outfit bleibt vorn und
+   traegt weiter die Wortmarke und alle lateinischen Zeichen. */
+html[lang="ko"] {
+  --bp-font-family: "Outfit", "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic",
+                    -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.admin-lead {
+  max-width: 560px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--bp-fg-muted);
+  margin: var(--bp-space-sm) 0 0;
+  text-wrap: pretty;
+}
+
+.admin-block { margin: 0 0 var(--bp-space-xl); }
+
+.admin-heading {
+  font-size: 14px;
+  font-weight: var(--bp-font-weight-normal);
+  color: var(--bp-fg-muted);
+  margin: 0 0 var(--bp-space-sm);
+}
+
+.admin-button {
+  display: inline-block;
+  padding: var(--bp-space-sm) var(--bp-space-md);
+  border: 1px solid var(--bp-fg);
+  font-size: 16px;
+}
+
+.admin-button:hover {
+  background: var(--bp-fg);
+  color: var(--bp-bg);
+}
+
+.admin-note {
+  max-width: 560px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--bp-fg-muted);
+  margin: var(--bp-space-sm) 0 0;
+  text-wrap: pretty;
+}
+
+.admin-badge { display: block; }
+
+.admin-list {
+  max-width: 720px;
+  border-top: 1px solid var(--bp-hairline);
+}
+
+.admin-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: baseline;
+  gap: var(--bp-space-sm);
+  padding: var(--bp-space-xs) 0;
+  border-bottom: 1px solid var(--bp-hairline);
+  font-size: 14px;
+}
+
+.admin-row-meta { color: var(--bp-fg-muted); }
+
+.admin-row-link { color: var(--bp-fg-muted); }
+
+.admin-row-link:hover { color: var(--bp-fg); }
+
+@media (max-width: 780px) {
+  .admin-row { grid-template-columns: 1fr auto; }
+  .admin-row-meta { grid-column: 1 / -1; order: 3; }
+}
+
 /* ---------- Bewegung ---------- */
 @keyframes reveal {
   from { opacity: 0; transform: translateY(8px); }

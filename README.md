@@ -1,18 +1,21 @@
 # Boram Park — Portfolio
 
 박보람 작가 포트폴리오 사이트. 빌드 도구 없는 정적 HTML이라 그대로 열면 바로 보인다.
-작가용 사용 설명서는 [`ANLEITUNG.md`](ANLEITUNG.md) (독일어).
+작가용 사용 설명서는 [`사용설명서.md`](사용설명서.md).
+
+사이트에 나가는 글은 독일어·영어(독일 관객용), 편집 도구는 한국어(작가가 한국 사람)다.
 
 ```
 index.html            홈 (표지 사진 한 장)
 werk-<slug>.html      작품 상세 (작품 수만큼 자동 생성)
 biography.html        학력 + 전시 이력
 contact.html          이메일
+admin.html            작가용 관리 화면 (메뉴에 없음, noindex, 주소로만 접근)
 assets/site.css       사이트 전체 스타일 (한 파일)
 assets/site.js        DE/EN 전환
 content/              모든 내용의 원본 (아래 참조)
 scripts/              content → HTML 생성 스크립트
-.pages.yml            Pages CMS 편집 화면 정의 (독일어 라벨)
+.pages.yml            Pages CMS 편집 화면 정의 (한국어 라벨, 값은 독일어/영어)
 .github/workflows/    푸시되면 이미지 정리 + 페이지 재생성
 design.md             디자인 시스템 기준 (색·서체·여백 규칙)
 ```
