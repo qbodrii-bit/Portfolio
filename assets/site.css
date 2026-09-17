@@ -223,7 +223,7 @@ main {
   min-width: 0;
 }
 
-.page-head { margin: 0 0 var(--bp-space-lg); }
+.page-head { margin: 0 0 var(--gap-after, var(--bp-space-lg)); }
 
 .page-head h1 {
   font-size: 40px;
@@ -304,18 +304,28 @@ main {
   max-width: 640px;
   font-size: 16px;
   line-height: 1.6;
-  margin: var(--bp-space-md) 0 var(--bp-space-xl);
+  margin: var(--bp-space-md) 0 var(--gap-after, var(--bp-space-xl));
   text-wrap: pretty;
 }
 
+/* Groesse, Ausrichtung und Abstaende kommen aus dem CMS (Feld "레이아웃"):
+   --gap auf der Liste, --w und data-align je Bild. Ohne Angaben gilt das
+   Folgende - links buendig, volle Breite, 16px Abstand. */
 .work-figures {
   display: flex;
   flex-direction: column;
-  gap: var(--bp-space-sm);
+  gap: var(--gap, var(--bp-space-sm));
   max-width: 1400px;
 }
 
-.work-figures figure { margin: 0; }
+.work-figures figure {
+  margin: 0;
+  width: var(--w, 100%);
+  align-self: flex-start;
+}
+
+.work-figures figure[data-align="center"] { align-self: center; text-align: center; }
+.work-figures figure[data-align="right"]  { align-self: flex-end; text-align: right; }
 
 .work-figures img {
   display: block;
@@ -325,6 +335,11 @@ main {
   object-fit: contain;
   object-position: left center;
 }
+
+/* hohe Bilder werden durch max-height schmaler als ihre Box -
+   object-position schiebt sie dann an dieselbe Kante wie die Box */
+.work-figures [data-align="center"] img { object-position: center; }
+.work-figures [data-align="right"] img  { object-position: right center; }
 
 .work-figures figcaption {
   font-size: 14px;
@@ -623,14 +638,16 @@ html[lang="ko"] {
 
   main { padding: var(--bp-space-md) var(--bp-space-md) var(--bp-space-lg); }
 
-  .page-head { margin-bottom: var(--bp-space-md); }
+  .page-head { margin-bottom: min(var(--gap-after, var(--bp-space-md)), var(--bp-space-lg)); }
   .page-head h1 { font-size: 28px; }
 
   .home-tagline { font-size: 16px; margin-bottom: var(--bp-space-md); }
   .hero-thumb { aspect-ratio: 4 / 3; max-height: none; }
 
-  .work-text { margin: var(--bp-space-md) 0 var(--bp-space-lg); }
-  .work-figures { gap: var(--bp-space-md); }
+  /* auf dem Telefon: Bilder immer volle Breite, grosse Abstaende gedeckelt */
+  .work-text { margin: var(--bp-space-md) 0 min(var(--gap-after, var(--bp-space-lg)), var(--bp-space-lg)); }
+  .work-figures { gap: min(var(--gap, var(--bp-space-md)), var(--bp-space-lg)); }
+  .work-figures figure { width: 100%; }
   .work-figures img { max-height: 70vh; }
   .back-link { margin-top: var(--bp-space-lg); padding: 8px 0; }
 

@@ -263,6 +263,29 @@ def alt(w):
     return f"{e(w['title'])}, {w['year_label']} — Boram Park"
 
 
+# Layout aus dem CMS. Leere oder unsinnige Werte fallen stillschweigend auf die
+# Vorgaben in site.css zurueck, damit ein Tippfehler nie den Aufbau bricht.
+ALIGNS = ("left", "center", "right")
+
+
+def as_int(value, lo, hi):
+    try:
+        n = int(round(float(value)))
+    except (TypeError, ValueError):
+        return None
+    return max(lo, min(hi, n))
+
+
+def as_align(value):
+    return value if value in ALIGNS else None
+
+
+def style_attr(**props):
+    """style="--w: 60%; ..." nur mit gesetzten Werten, sonst gar nichts."""
+    bits = [f"--{k.replace('_', '-')}: {v}" for k, v in props.items() if v is not None]
+    return f' style="{"; ".join(bits)}"' if bits else ""
+
+
 # --------------------------------------------------------------- index.html
 lead = works[0]
 cover = site.get("cover_image") or lead["images"][0]["src"]
@@ -352,6 +375,12 @@ write("contact.html", page("Boram Park — Contact",
 
 # ------------------------------------------------- werk-<slug>.html (Detail)
 for w in works:
+    layout = w.get("layout") or {}
+    base_align = as_align(layout.get("align")) or "left"
+    gap = as_int(layout.get("gap"), 0, 400)
+    text_gap = as_int(layout.get("text_gap"), 0, 400)
+    gap_after = style_attr(gap_after=None if text_gap is None else f"{text_gap}px")
+
     figs = []
     for im in w["images"]:
         cap = ""
@@ -359,22 +388,28 @@ for w in works:
             cde = im["caption_de"]
             cen = im.get("caption_en") or cde
             cap = f'\n        <figcaption data-de="{e(cde)}" data-en="{e(cen)}">{e(cde)}</figcaption>'
-        figs.append(f"""      <figure>
+        width = as_int(im.get("width"), 10, 100)
+        align = as_align(im.get("align")) or base_align
+        mark = "" if align == "left" else f' data-align="{align}"'
+        size = style_attr(w=None if width in (None, 100) else f"{width}%")
+        figs.append(f"""      <figure{mark}{size}>
         <img src="{rel(im['src'])}"{dims(im['src'])} loading="lazy" alt="{alt(w)}">{cap}
       </figure>""")
 
     text_block = ""
+    head_style = gap_after
     if w["text_de"]:
-        text_block = (f'\n    <p class="work-text" data-de="{e(w["text_de"])}" '
+        text_block = (f'\n    <p class="work-text"{gap_after} data-de="{e(w["text_de"])}" '
                       f'data-en="{e(w["text_en"])}">{e(w["text_de"])}</p>\n')
+        head_style = ""
 
     main = f"""  <main>
-    <header class="page-head">
+    <header class="page-head"{head_style}>
       <h1 data-de="{e(w['title'])}" data-en="{e(w['title_en'])}">{e(w['title'])}</h1>
       <p class="work-meta" data-de="{e(meta_line(w, 'de'))}" data-en="{e(meta_line(w, 'en'))}">{e(meta_line(w, 'de'))}</p>
     </header>
 {text_block}
-    <div class="work-figures">
+    <div class="work-figures"{style_attr(gap=None if gap is None else f"{gap}px")}>
 {chr(10).join(figs)}
     </div>
   </main>"""

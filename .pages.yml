@@ -78,6 +78,40 @@ content:
       - name: text_en
         label: 작품 텍스트 (영어)
         type: text
+      - name: layout
+        label: 레이아웃
+        type: object
+        description: >
+          작품 페이지의 이미지 배치. 전부 비워두면 지금 모양(왼쪽 정렬, 좁은 간격) 그대로다.
+          휴대폰에서는 화면이 좁아 이미지가 항상 가로 전체를 쓰고, 큰 간격은 알맞게 줄어든다.
+        fields:
+          - name: align
+            label: 이미지 정렬
+            type: select
+            description: 모든 이미지의 기본 정렬. 이미지마다 따로 바꿀 수도 있다. 비우면 왼쪽.
+            options:
+              placeholder: 왼쪽
+              values:
+                - name: left
+                  label: 왼쪽
+                - name: center
+                  label: 가운데
+                - name: right
+                  label: 오른쪽
+          - name: gap
+            label: 이미지 사이 간격 (px)
+            type: number
+            description: 이미지와 이미지 사이의 빈 공간. 비우면 16. 참고로 32 보통, 64 넓게, 96 아주 넓게.
+            options:
+              min: 0
+              max: 400
+          - name: text_gap
+            label: 글과 첫 이미지 사이 간격 (px)
+            type: number
+            description: 작품 텍스트(없으면 제목) 아래부터 첫 이미지까지. 비우면 글이 있을 때 96, 없을 때 64.
+            options:
+              min: 0
+              max: 400
       - name: images
         label: 이미지
         type: object
@@ -89,6 +123,26 @@ content:
             required: true
             options:
               media: images
+          - name: width
+            label: 크기 (%)
+            type: number
+            description: 본문 폭에 대한 가로 비율. 100이면 꽉 차게, 50이면 절반. 비우면 100.
+            options:
+              min: 10
+              max: 100
+          - name: align
+            label: 정렬
+            type: select
+            description: 이 이미지만 다르게 놓고 싶을 때. 비우면 위 레이아웃의 이미지 정렬을 따른다.
+            options:
+              placeholder: 레이아웃 설정 따름
+              values:
+                - name: left
+                  label: 왼쪽
+                - name: center
+                  label: 가운데
+                - name: right
+                  label: 오른쪽
           - name: caption_de
             label: 캡션 (독일어)
             type: string
