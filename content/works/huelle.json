@@ -12,7 +12,8 @@
   "text_en": "Rice paper is laid directly onto the body and changes its form while drying. A fragile shell emerges between protection and vulnerability. I am interested in the relationship between the surface of the body and the material.",
   "images": [
     {
-      "src": "/content/images/huelle/01.jpg"
+      "src": "/content/images/huelle/01.jpg",
+      "align": "right"
     },
     {
       "src": "/content/images/huelle/02.jpg"
