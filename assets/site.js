@@ -108,3 +108,62 @@
     });
   });
 })();
+
+/* Bildschutz: Rechtsklick, Ziehen und Speichern-/Drucken-Kuerzel auf den
+   Werkbildern sperren; waehrend einer moeglichen Bildschirmaufnahme die Bilder
+   verschleiern. Eine Bildschirmaufnahme laesst sich im Browser nicht wirklich
+   verhindern (macOS/Windows/Telefon nehmen sie am System vorbei auf) - das hier
+   macht es nur umstaendlich. Das Aussehen steht in site.css unter "Bildschutz". */
+(function () {
+  var root = document.documentElement;
+  var IMAGES = '.hero-thumb, .work-figures, .hero-work';
+
+  function onImage(target) {
+    return target && target.closest && target.closest(IMAGES);
+  }
+
+  document.addEventListener('contextmenu', function (event) {
+    if (onImage(event.target)) event.preventDefault();
+  });
+
+  document.addEventListener('dragstart', function (event) {
+    if (onImage(event.target)) event.preventDefault();
+  });
+
+  function shield(on) {
+    root.classList.toggle('bp-shield', on);
+  }
+
+  document.addEventListener('keydown', function (event) {
+    var key = (event.key || '').toLowerCase();
+    var mod = event.metaKey || event.ctrlKey;
+    // Seite speichern / drucken / Quelltext
+    if (mod && (key === 's' || key === 'p' || key === 'u')) {
+      event.preventDefault();
+      return;
+    }
+    // Cmd+Shift (macOS 3/4/5) und Win+Shift+S (Windows): die Zahl bzw. das S
+    // erreicht den Browser nicht mehr, darum schon beim Modifier verschleiern
+    if (event.shiftKey && event.metaKey) shield(true);
+    if (key === 'printscreen') shield(true);
+  });
+
+  document.addEventListener('keyup', function (event) {
+    if ((event.key || '').toLowerCase() === 'printscreen') {
+      // die Taste meldet sich erst nach der Aufnahme: Zwischenablage leeren
+      try {
+        navigator.clipboard.writeText('');
+      } catch (err) {
+        /* ohne Clipboard-API nichts zu tun */
+      }
+    }
+    if (!event.metaKey && !event.shiftKey) shield(false);
+  });
+
+  // nach Cmd+Shift+4 kommt das keyup oft nicht an: die naechste Mausbewegung
+  // ohne Modifier hebt den Schleier wieder auf
+  document.addEventListener('mousemove', function (event) {
+    if (!event.metaKey && !event.shiftKey &&
+        root.classList.contains('bp-shield')) shield(false);
+  });
+})();

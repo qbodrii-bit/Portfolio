@@ -501,6 +501,33 @@ html[lang="ko"] {
   .admin-row-meta { grid-column: 1 / -1; order: 3; }
 }
 
+/* ---------- Bildschutz ----------
+   Werkbilder lassen sich nicht ziehen, markieren oder per langem Druck
+   (iOS) sichern. pointer-events: none laesst Rechtsklick und Tippen auf das
+   umgebende Element fallen - der Link um das Titelbild bleibt klickbar.
+   Das ist eine Huerde, kein Schutz: die Bilddatei selbst bleibt oeffentlich. */
+.hero-thumb,
+.work-figures img {
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  pointer-events: none;
+}
+
+/* site.js setzt die Klasse, solange eine Bildschirmaufnahme droht
+   (Cmd/Win+Shift oder Druck-Taste gedrueckt) */
+html.bp-shield .hero-thumb,
+html.bp-shield .work-figures img {
+  filter: blur(28px);
+  opacity: 0.25;
+}
+
+@media print {
+  .hero-thumb,
+  .work-figures img { visibility: hidden; }
+}
+
 /* ---------- Bewegung ---------- */
 @keyframes reveal {
   from { opacity: 0; transform: translateY(8px); }
