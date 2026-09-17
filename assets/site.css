@@ -329,22 +329,14 @@ main {
 .work-figures figure[data-align="center"] { align-self: center; text-align: center; }
 .work-figures figure[data-align="right"]  { align-self: flex-end; text-align: right; }
 
+/* Bewusst ohne max-height: die Groesse bestimmt allein das CMS. Ein Deckel
+   nach Bildschirmhoehe hat hohe Bilder je nach Monitor verschieden stark
+   verkleinert. Ist ein Bild zu hoch, wird im CMS "크기 (%)" kleiner gestellt. */
 .work-figures img {
   display: block;
   width: 100%;
   height: auto;
-  max-height: 84vh;
-  object-fit: contain;
-  object-position: left center;
 }
-
-/* hohe Bilder werden durch max-height schmaler als ihre Box -
-   object-position schiebt sie dann an dieselbe Kante wie die Box */
-.work-figures [data-align="center"] img { object-position: center; }
-.work-figures [data-align="right"] img  { object-position: right center; }
-
-/* eigene Groesse: das Bild zeigt genau diese Breite, ohne Hoehendeckel */
-.work-figures [data-sized="true"] img { max-height: none; }
 
 /* Raster (2x2 usw.): Zeilen fuellen sich von links nach rechts */
 .work-figures[data-columns] {
@@ -667,7 +659,6 @@ html[lang="ko"] {
   .work-text { margin: var(--bp-space-md) 0 min(var(--gap-after, var(--bp-space-lg)), var(--bp-space-lg)); }
   .work-figures { gap: min(var(--gap, var(--bp-space-md)), var(--bp-space-lg)); }
   .work-figures[data-columns] { grid-template-columns: minmax(0, 1fr); }
-  .work-figures img { max-height: 70vh; }
   .back-link { margin-top: var(--bp-space-lg); padding: 8px 0; }
 
   .section-label { font-size: 14px; }

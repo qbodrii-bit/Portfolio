@@ -401,8 +401,6 @@ for w in works:
             size_css = f"{pct}%"
         align = as_align(im.get("align")) or base_align
         mark = "" if align == "left" else f' data-align="{align}"'
-        if size_css:
-            mark += ' data-sized="true"'
         if columns > 1 and im.get("full_row"):
             mark += ' data-full-row="true"'
         figs.append(f"""      <figure{mark}{style_attr(w=size_css)}>
