@@ -11,6 +11,7 @@
   "text_de": "Für das Video wurden 33 Alltagsobjekte mit einem Richterhammer geschlagen. Die Reaktion der Objekte steht dabei stärker im Fokus als der Schlag selbst. Mich interessiert, wie sich Materialeigenschaften und ihre Wirkung erst durch den Schlag zeigen.",
   "text_en": "For the video, 33 everyday objects were struck with a judge's gavel. The reaction of the objects is more in focus than the blow itself. I am interested in how material properties and their effects only reveal themselves through the impact.",
   "layout": {
+    "columns": "2",
     "gap": 32
   },
   "images": [
