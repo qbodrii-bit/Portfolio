@@ -377,6 +377,7 @@ write("contact.html", page("Boram Park — Contact",
 for w in works:
     layout = w.get("layout") or {}
     base_align = as_align(layout.get("align")) or "left"
+    columns = as_int(layout.get("columns"), 1, 4) or 1
     gap = as_int(layout.get("gap"), 0, 400)
     text_gap = as_int(layout.get("text_gap"), 0, 400)
     gap_after = style_attr(gap_after=None if text_gap is None else f"{text_gap}px")
@@ -388,11 +389,23 @@ for w in works:
             cde = im["caption_de"]
             cen = im.get("caption_en") or cde
             cap = f'\n        <figcaption data-de="{e(cde)}" data-en="{e(cen)}">{e(cde)}</figcaption>'
-        width = as_int(im.get("width"), 10, 100)
+        # Groesse in Prozent der Originalbreite (100 = Originalgroesse);
+        # ohne bekannte Pixelmasse ersatzweise Prozent der Spalte.
+        pct = as_int(im.get("width"), 10, 100)
+        natural = SIZES.get(rel(im["src"]))
+        if pct is None:
+            size_css = None
+        elif natural:
+            size_css = f"{round(natural[0] * pct / 100)}px"
+        else:
+            size_css = f"{pct}%"
         align = as_align(im.get("align")) or base_align
         mark = "" if align == "left" else f' data-align="{align}"'
-        size = style_attr(w=None if width in (None, 100) else f"{width}%")
-        figs.append(f"""      <figure{mark}{size}>
+        if size_css:
+            mark += ' data-sized="true"'
+        if columns > 1 and im.get("full_row"):
+            mark += ' data-full-row="true"'
+        figs.append(f"""      <figure{mark}{style_attr(w=size_css)}>
         <img src="{rel(im['src'])}"{dims(im['src'])} loading="lazy" alt="{alt(w)}">{cap}
       </figure>""")
 
@@ -403,13 +416,16 @@ for w in works:
                       f'data-en="{e(w["text_en"])}">{e(w["text_de"])}</p>\n')
         head_style = ""
 
+    grid_cols = columns if columns > 1 else None
+    grid_attr = f' data-columns="{columns}"' if columns > 1 else ""
+
     main = f"""  <main>
     <header class="page-head"{head_style}>
       <h1 data-de="{e(w['title'])}" data-en="{e(w['title_en'])}">{e(w['title'])}</h1>
       <p class="work-meta" data-de="{e(meta_line(w, 'de'))}" data-en="{e(meta_line(w, 'en'))}">{e(meta_line(w, 'de'))}</p>
     </header>
 {text_block}
-    <div class="work-figures"{style_attr(gap=None if gap is None else f"{gap}px")}>
+    <div class="work-figures"{grid_attr}{style_attr(gap=None if gap is None else f"{gap}px", cols=grid_cols)}>
 {chr(10).join(figs)}
     </div>
   </main>"""

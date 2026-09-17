@@ -308,9 +308,10 @@ main {
   text-wrap: pretty;
 }
 
-/* Groesse, Ausrichtung und Abstaende kommen aus dem CMS (Feld "레이아웃"):
-   --gap auf der Liste, --w und data-align je Bild. Ohne Angaben gilt das
-   Folgende - links buendig, volle Breite, 16px Abstand. */
+/* Raster, Groesse, Ausrichtung und Abstaende kommen aus dem CMS (Feld "레이아웃"):
+   --gap und --cols auf der Liste, --w (Pixel, aus Prozent der Originalbreite)
+   und data-align je Bild. Ohne Angaben gilt das Folgende - eine Spalte,
+   links buendig, volle Breite, 16px Abstand. */
 .work-figures {
   display: flex;
   flex-direction: column;
@@ -321,6 +322,7 @@ main {
 .work-figures figure {
   margin: 0;
   width: var(--w, 100%);
+  max-width: 100%;          /* Originalgroesse nie breiter als Spalte oder Zelle */
   align-self: flex-start;
 }
 
@@ -340,6 +342,21 @@ main {
    object-position schiebt sie dann an dieselbe Kante wie die Box */
 .work-figures [data-align="center"] img { object-position: center; }
 .work-figures [data-align="right"] img  { object-position: right center; }
+
+/* eigene Groesse: das Bild zeigt genau diese Breite, ohne Hoehendeckel */
+.work-figures [data-sized="true"] img { max-height: none; }
+
+/* Raster (2x2 usw.): Zeilen fuellen sich von links nach rechts */
+.work-figures[data-columns] {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  align-items: start;
+}
+
+.work-figures[data-columns] figure { align-self: start; justify-self: start; }
+.work-figures[data-columns] figure[data-align="center"] { justify-self: center; }
+.work-figures[data-columns] figure[data-align="right"]  { justify-self: end; }
+.work-figures[data-columns] [data-full-row="true"] { grid-column: 1 / -1; }
 
 .work-figures figcaption {
   font-size: 14px;
@@ -521,6 +538,8 @@ html[lang="ko"] {
   .nav-logo { font-size: 22px; margin-bottom: var(--bp-space-md); }
   main { padding: var(--bp-space-lg) var(--bp-space-md); }
   .masthead { padding: var(--bp-space-lg) var(--bp-space-md); }
+  .work-figures[data-columns="3"],
+  .work-figures[data-columns="4"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .page-head h1 { font-size: 34px; }
 }
 
@@ -644,10 +663,10 @@ html[lang="ko"] {
   .home-tagline { font-size: 16px; margin-bottom: var(--bp-space-md); }
   .hero-thumb { aspect-ratio: 4 / 3; max-height: none; }
 
-  /* auf dem Telefon: Bilder immer volle Breite, grosse Abstaende gedeckelt */
+  /* auf dem Telefon: Raster wird einspaltig, grosse Abstaende gedeckelt */
   .work-text { margin: var(--bp-space-md) 0 min(var(--gap-after, var(--bp-space-lg)), var(--bp-space-lg)); }
   .work-figures { gap: min(var(--gap, var(--bp-space-md)), var(--bp-space-lg)); }
-  .work-figures figure { width: 100%; }
+  .work-figures[data-columns] { grid-template-columns: minmax(0, 1fr); }
   .work-figures img { max-height: 70vh; }
   .back-link { margin-top: var(--bp-space-lg); padding: 8px 0; }
 
