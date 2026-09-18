@@ -12,7 +12,9 @@
   "text_en": "Visitors strike an object that belongs to them. The decision to damage their own property rests with them alone. The meaning of the act only comes about through the visitors' decision.",
   "images": [
     {
-      "src": "/content/images/ein-hammer-installation/01.jpg"
+      "src": "/content/images/ein-hammer-installation/01.jpg",
+      "width": 50,
+      "full_row": false
     }
   ]
 }
