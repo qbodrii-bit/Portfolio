@@ -12,7 +12,9 @@
   "text_en": "A hand wrapped in rice paper recalls a thin, shell-like surface. On the glass door it meets everyone who enters or crosses the room.",
   "images": [
     {
-      "src": "/content/images/beruehrung/01.jpg"
+      "src": "/content/images/beruehrung/01.jpg",
+      "width": 50,
+      "full_row": false
     }
   ]
 }
