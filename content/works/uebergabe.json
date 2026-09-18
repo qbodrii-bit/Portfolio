@@ -12,16 +12,24 @@
   "text_en": "Frozen wine melts and passes its liquid on to a coin tissue. As the ice disappears, the forms of both materials change. I am interested in the moment when one form passes into another.",
   "images": [
     {
-      "src": "/content/images/uebergabe/01.jpg"
+      "src": "/content/images/uebergabe/01.jpg",
+      "width": 50,
+      "full_row": false
     },
     {
-      "src": "/content/images/uebergabe/02.jpg"
+      "src": "/content/images/uebergabe/02.jpg",
+      "width": 50,
+      "full_row": false
     },
     {
-      "src": "/content/images/uebergabe/03.jpg"
+      "src": "/content/images/uebergabe/03.jpg",
+      "width": 27,
+      "full_row": false
     },
     {
-      "src": "/content/images/uebergabe/05.jpg"
+      "src": "/content/images/uebergabe/05.jpg",
+      "width": 38,
+      "full_row": false
     }
   ]
 }
