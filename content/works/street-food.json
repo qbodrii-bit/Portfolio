@@ -8,6 +8,9 @@
   "medium_en": "Photography",
   "text_de": "Alltägliche Gegenstände oder Materialien werden in einen ungewohnten Zusammenhang gesetzt. Dadurch verändern sich ihre Wahrnehmung und Bedeutung. Die Serie „Street Food“ untersucht diesen Perspektivwechsel im öffentlichen Raum.",
   "text_en": "Everyday objects or materials are placed in an unfamiliar context. Their perception and meaning change as a result. The series “Street Food” examines this shift of perspective in public space.",
+  "layout": {
+    "gap": 64
+  },
   "images": [
     {
       "src": "/content/images/street-food/01.jpg",
