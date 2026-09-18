@@ -11,23 +11,28 @@
   "text_de": "Durch Hitze verformt sich die Kosmetikmaske und bildet Falten und Risse. Die Fotografien zeigen unterschiedliche Zustände dieser Veränderung. Die Serie richtet den Blick auf die Oberfläche des Materials.",
   "text_en": "Heat deforms the cosmetic mask, forming folds and cracks. The photographs show different states of this transformation. The series directs the gaze onto the surface of the material.",
   "layout": {
-    "columns": "2"
+    "columns": "2",
+    "gap": 32
   },
   "images": [
     {
       "src": "/content/images/haeutung-kosmetikmaske/01.jpg",
+      "width": 50,
       "full_row": false
     },
     {
       "src": "/content/images/haeutung-kosmetikmaske/02.jpg",
+      "width": 20,
       "full_row": false
     },
     {
       "src": "/content/images/haeutung-kosmetikmaske/03.jpg",
+      "width": 27,
       "full_row": false
     },
     {
       "src": "/content/images/haeutung-kosmetikmaske/04.jpg",
+      "width": 50,
       "full_row": false
     }
   ]
