@@ -2,8 +2,8 @@
   "order": 7,
   "title": "Häutung",
   "title_en": "Moulting",
-  "year": 2025,
-  "year_label": "2025",
+  "year": 2026,
+  "year_label": "2026",
   "material_de": "Reispapier, Kleiderbügel",
   "material_en": "Rice paper, coat hangers",
   "medium_de": "Installation",
@@ -12,13 +12,19 @@
   "text_en": "Dried rice-paper shells are hung up like pieces of clothing. They recall absent bodies without depicting them. A fragile in-between state emerges between material and body.",
   "images": [
     {
-      "src": "/content/images/haeutung-kleiderbuegel/01.jpg"
+      "src": "/content/images/haeutung-kleiderbuegel/01.jpg",
+      "width": 50,
+      "full_row": false
     },
     {
-      "src": "/content/images/haeutung-kleiderbuegel/02.jpg"
+      "src": "/content/images/haeutung-kleiderbuegel/02.jpg",
+      "width": 50,
+      "full_row": false
     },
     {
-      "src": "/content/images/haeutung-kleiderbuegel/03.jpg"
+      "src": "/content/images/haeutung-kleiderbuegel/03.jpg",
+      "width": 50,
+      "full_row": false
     }
   ]
 }
