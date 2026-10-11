@@ -18,17 +18,17 @@
     {
       "src": "/content/images/Tübingen.png",
       "width": 50,
-      "full_row": false
+      "full_row": true
     },
     {
       "src": "/content/images/haeutung-leuchtkasten/01.jpg",
-      "width": 50,
+      "width": 30,
       "full_row": false
     },
     {
       "src": "/content/images/haeutung-leuchtkasten/02.jpg",
-      "width": 50,
-      "full_row": true
+      "width": 30,
+      "full_row": false
     }
   ]
 }
