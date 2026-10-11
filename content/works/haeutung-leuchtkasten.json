@@ -22,12 +22,12 @@
     },
     {
       "src": "/content/images/haeutung-leuchtkasten/01.jpg",
-      "width": 70,
+      "width": 50,
       "full_row": false
     },
     {
       "src": "/content/images/haeutung-leuchtkasten/02.jpg",
-      "width": 70,
+      "width": 50,
       "full_row": true
     }
   ]
