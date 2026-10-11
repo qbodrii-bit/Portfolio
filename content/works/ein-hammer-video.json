@@ -17,7 +17,7 @@
   "images": [
     {
       "src": "/content/images/ein-hammer-video/01.jpg",
-      "full_row": false
+      "full_row": true
     },
     {
       "src": "/content/images/ein-hammer-video/1.jpg",
