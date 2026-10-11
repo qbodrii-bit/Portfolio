@@ -12,7 +12,9 @@
   "text_en": "Every day I burned a cosmetic mask and documented the small differences. Although the procedure stayed the same, each mask reacted differently. The installation follows the structure of a calendar and makes these changes visible.",
   "images": [
     {
-      "src": "/content/images/ein-monat/01.jpg"
+      "src": "/content/images/ein-monat/01.jpg",
+      "width": 50,
+      "full_row": true
     }
   ]
 }
