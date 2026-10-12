@@ -441,8 +441,9 @@ NL = "\n"
 
 def cell_html(cell, w):
     """Eine Zelle: Bild mit optionaler Bildunterschrift, oder Text."""
-    ratio = as_int(cell.get("w"), 1, 100)
-    style = {"col": None if ratio is None else ratio}
+    # Das Verhaeltnis steht als fr-Wert in --cols der Zeile; die Zelle selbst
+    # braucht es nicht noch einmal.
+    style = {}
 
     if cell.get("t") == "img":
         # fill = Anteil der Zelle, den das Bild einnimmt (100 = ganze Zelle).
@@ -594,15 +595,17 @@ write("admin.html", page("관리 — Boram Park", "작가용 내부 페이지.",
                          noindex=True, header=ADMIN_HEADER, script=False, lang="ko"))
 
 
+
 # --------------------------------------------------------- admin-layout.html
-# Der Editor. Schritt 2 zeigt nur an - keine Knoepfe, kein Speichern.
-# Die Werkliste steht hier im HTML und nicht im Skript: so ist sie zugleich
-# die erlaubte Liste. Aus "?w=" wird nie ein Pfad gebaut, sondern nur ein
-# Eintrag dieser Liste ausgewaehlt.
+# Der Editor. Die Werkliste steht hier im HTML und nicht im Skript: so ist sie
+# zugleich die erlaubte Liste. Aus "?w=" wird nie ein Pfad gebaut, sondern nur
+# ein Eintrag dieser Liste ausgewaehlt.
 layout_options = "\n".join(
     f'          <option value="{w["slug"]}" data-path="content/works/{w["slug"]}.json" '
     f'data-page="{detail_href(w)}">{e(sub_label(w, "de"))}</option>'
     for w in works)
+
+TOKEN_URL = (f"https://github.com/settings/personal-access-tokens/new")
 
 layout_main = f"""  <main class="layout-main">
     <div class="layout-bar">
@@ -615,17 +618,34 @@ layout_main = f"""  <main class="layout-main">
         <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
       </div>
       <a class="layout-link" href="{CMS_URL}">사진 올리러 가기</a>
+      <button type="button" class="layout-save" id="speichern" disabled>저장</button>
     </div>
 
-    <p class="layout-note">보기 전용입니다. 아직 고칠 수 없습니다 —
-      줄과 여백이 어떻게 나뉘어 있는지 확인하는 화면입니다.
-      마우스를 올리면 경계가 보입니다.</p>
-
     <div class="layout-stage">
-      <div class="work-blocks" id="buehne"></div>
+      <div class="work-blocks" id="buehne" data-repo="{REPO}"></div>
     </div>
 
     <p class="layout-check" id="pruefung"></p>
+
+    <details class="lay-key" id="schluessel">
+      <summary>저장용 열쇠 <span class="lay-key-stand">열쇠 없음 — 지금은 보기만 됩니다</span></summary>
+      <div class="lay-key-body">
+        <p>저장하려면 GitHub 열쇠가 한 번 필요합니다. 이 브라우저에만 저장되고,
+          사이트나 저장소에는 들어가지 않습니다.
+          <strong>공용 컴퓨터에서는 쓰지 마세요.</strong></p>
+        <p class="lay-key-zeile">
+          <input type="password" class="lay-key-feld" autocomplete="off"
+                 spellcheck="false" placeholder="열쇠를 붙여넣으세요">
+          <button type="button" class="lay-key-save">등록</button>
+          <button type="button" class="lay-key-weg">지우기</button>
+        </p>
+        <p class="lay-key-hilfe">열쇠가 만료되었을 때만 새로 만들면 됩니다 —
+          <a href="{TOKEN_URL}">새 열쇠 만들기</a> →
+          Repository access는 <em>Only select repositories</em>에서 이 저장소,
+          Permissions는 <em>Contents: Read and write</em> 하나만 켭니다.</p>
+      </div>
+    </details>
+
     <noscript><p class="layout-note">이 화면은 자바스크립트가 필요합니다.
       <a href="admin.html">관리 화면으로 돌아가기</a></p></noscript>
   </main>"""

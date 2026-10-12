@@ -787,34 +787,6 @@ body[data-section="layout"] .masthead {
 
 .layout-stage { margin-top: var(--bp-space-lg); }
 
-/* Ein Baustein zeigt seine Grenze erst, wenn man ihn ansteuert. */
-.layout-block { position: relative; }
-
-.layout-block::after {
-  content: attr(data-label);
-  position: absolute;
-  right: 0;
-  top: -19px;
-  font-size: 11px;
-  color: var(--bp-fg-muted);
-  background: var(--bp-bg);
-  padding: 0 4px;
-  opacity: 0;
-  pointer-events: none;
-  white-space: nowrap;
-}
-
-.layout-block:hover { outline: 1px dashed var(--bp-hairline); outline-offset: 6px; }
-.layout-block:hover::after { opacity: 1; }
-
-/* Leerraum ist sonst unsichtbar - beim Darueberfahren schraffiert anzeigen,
-   damit die Kuenstlerin sieht, dass dort ein Block sitzt und keine Luecke. */
-.layout-block[data-kind="gap"]:hover {
-  outline-style: solid;
-  background: repeating-linear-gradient(135deg,
-    rgba(15, 15, 15, .05) 0 7px, transparent 7px 14px);
-}
-
 .layout-check {
   font-size: 12px;
   color: var(--bp-fg-muted);
@@ -833,3 +805,207 @@ body[data-section="layout"] .masthead {
   .layout-bar { gap: 8px; }
   .layout-lang { margin-left: 0; }
 }
+
+/* ---------- Layout-Editor: Bedienung ----------
+   Alles hier liegt ueber dem Inhalt - outline und absolute Position, nie
+   Rahmen oder Innenabstand. Die Buehne zeigt echte Masse; was man anfasst,
+   darf sie nicht verschieben. */
+.layout-save {
+  font: inherit;
+  font-size: 13px;
+  padding: 6px 17px;
+  border: 0;
+  border-radius: 3px;
+  background: var(--bp-fg);
+  color: var(--bp-bg);
+  cursor: pointer;
+}
+
+.layout-save:disabled { background: #C9C9C9; cursor: not-allowed; }
+
+.lay-block { position: relative; }
+.lay-block:hover { outline: 1px dashed var(--bp-hairline); outline-offset: 6px; }
+.lay-block:focus-within { outline: 1px solid var(--bp-fg); outline-offset: 6px; }
+
+/* Leiste ueber der Zeile. Die Bruecke darunter (::after) deckt die Luecke,
+   sonst verliert man beim Hinfahren den Hover und die Leiste verschwindet. */
+.lay-bar {
+  position: absolute;
+  left: 50%;
+  top: -44px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  background: var(--bp-bg);
+  border: 1px solid var(--bp-hairline);
+  border-radius: 4px;
+  box-shadow: 0 4px 10px rgba(15, 15, 15, .14);
+  white-space: nowrap;
+  z-index: 12;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .12s ease, visibility 0s linear .4s;  /* Nachlauf beim Verlassen */
+}
+
+.lay-bar::after { content: ''; position: absolute; left: -14px; right: -14px; top: 100%; height: 16px; }
+
+.lay-block:hover > .lay-bar,
+.lay-block:focus-within > .lay-bar { opacity: 1; visibility: visible; transition-delay: 0s; }
+
+.lay-bar button {
+  font: inherit;
+  font-size: 13px;
+  width: 30px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 3px;
+  background: none;
+  color: var(--bp-fg);
+  cursor: pointer;
+}
+
+.lay-bar button:hover { background: #F2F2F2; }
+.lay-bar button[data-on] { background: var(--bp-fg); color: var(--bp-bg); }
+.lay-sep { width: 1px; height: 18px; background: var(--bp-hairline); margin: 0 4px; }
+
+.lay-num { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--bp-fg-muted); padding: 0 4px; }
+.lay-num input { width: 42px; font: inherit; font-size: 11px; text-align: right; padding: 2px 4px; border: 1px solid var(--bp-hairline); border-radius: 3px; }
+
+/* Trenner zwischen zwei Zellen: ziehen aendert nur diese beiden Anteile */
+.lay-trenner {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 13px;
+  transform: translateX(-50%);
+  cursor: col-resize;
+  z-index: 8;
+  touch-action: none;
+}
+
+.lay-trenner::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  transform: translateX(-50%);
+  background: transparent;
+}
+
+.lay-block:hover .lay-trenner::after { background: var(--bp-hairline); }
+.lay-trenner:hover::after { background: var(--bp-fg); }
+
+/* Zellenknoepfe: nur beim Darueberfahren, oben rechts in der Zelle */
+.lay-cellbar { position: absolute; right: 5px; top: 5px; display: none; gap: 3px; z-index: 9; }
+.work-cell:hover > .lay-cellbar { display: flex; }
+
+.lay-cellbar button {
+  font: inherit;
+  font-size: 11px;
+  padding: 3px 7px;
+  border: 1px solid var(--bp-hairline);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, .94);
+  color: var(--bp-fg);
+  cursor: pointer;
+}
+
+.lay-cellbar button:hover { background: var(--bp-fg); color: var(--bp-bg); border-color: var(--bp-fg); }
+
+/* Textfeld sitzt genau dort, wo spaeter der Absatz steht - gleiche Schrift,
+   gleiche Zeilenhoehe, gleiche Breite, damit die Buehne nicht luegt. */
+.lay-feld {
+  display: block;
+  width: 100%;
+  max-width: 640px;
+  font: inherit;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--bp-fg);
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  resize: none;
+  overflow: hidden;
+}
+
+.lay-feld:focus { outline: 0; }
+.lay-feld::placeholder { color: #C4C4C4; }
+
+/* Leerraum: sonst unsichtbar, beim Darueberfahren schraffiert mit Griff unten */
+.lay-block[data-kind="gap"]:hover { outline-style: solid; background: repeating-linear-gradient(135deg, rgba(15, 15, 15, .05) 0 7px, transparent 7px 14px); }
+
+.lay-gaplabel, .lay-gapdel {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.lay-gaplabel { left: 50%; transform: translate(-50%, -50%); color: var(--bp-fg-muted); background: var(--bp-bg); padding: 2px 8px; border: 1px solid var(--bp-hairline); border-radius: 3px; }
+.lay-gapdel { right: 4px; color: var(--bp-fg-muted); background: var(--bp-bg); border: 1px solid var(--bp-hairline); border-radius: 3px; padding: 2px 7px; cursor: pointer; font-family: inherit; }
+.lay-block[data-kind="gap"]:hover .lay-gaplabel { opacity: 1; }
+.lay-block[data-kind="gap"]:hover .lay-gapdel { opacity: 1; pointer-events: auto; }
+.lay-gapdel:hover { background: var(--bp-fg); color: var(--bp-bg); border-color: var(--bp-fg); }
+
+.lay-griff { position: absolute; left: 0; right: 0; bottom: -5px; height: 11px; cursor: ns-resize; z-index: 8; touch-action: none; }
+.lay-griff::after { content: ''; position: absolute; left: 50%; transform: translateX(-50%); top: 4px; width: 44px; height: 3px; border-radius: 2px; background: transparent; }
+.lay-block[data-kind="gap"]:hover .lay-griff::after { background: var(--bp-fg); }
+
+/* Neue Zeile einfuegen: duenne Linie zwischen den Bloecken */
+.lay-plus {
+  position: absolute;
+  left: 50%;
+  top: -11px;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  line-height: 1;
+  font-size: 13px;
+  border: 1px solid var(--bp-fg);
+  border-radius: 50%;
+  background: var(--bp-bg);
+  color: var(--bp-fg);
+  cursor: pointer;
+  opacity: 0;
+  z-index: 11;
+}
+
+.lay-plus-ende { position: relative; top: 0; left: 0; transform: none; display: block; margin: var(--bp-space-md) auto 0; opacity: .4; }
+.lay-block:hover > .lay-plus, .lay-plus:hover { opacity: 1; }
+
+/* Bildauswahl */
+.lay-waehler { position: fixed; inset: 0; background: rgba(15, 15, 15, .4); display: grid; place-items: center; z-index: 50; }
+.lay-waehler-innen { background: var(--bp-bg); border-radius: 4px; padding: var(--bp-space-md); width: min(900px, 92vw); max-height: 86vh; overflow: auto; }
+.lay-waehler-kopf { display: flex; justify-content: space-between; align-items: center; font-size: 14px; margin: 0 0 var(--bp-space-sm); }
+.lay-waehler-zu { font: inherit; font-size: 12px; padding: 4px 10px; border: 1px solid var(--bp-hairline); border-radius: 3px; background: none; cursor: pointer; }
+.lay-waehler-gitter { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+.lay-waehler-gitter button { padding: 0; border: 1px solid var(--bp-hairline); border-radius: 3px; background: none; cursor: pointer; overflow: hidden; aspect-ratio: 4 / 3; }
+.lay-waehler-gitter button:hover { border-color: var(--bp-fg); }
+.lay-waehler-gitter img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.lay-waehler-fuss { font-size: 12px; color: var(--bp-fg-muted); margin: var(--bp-space-sm) 0 0; }
+
+/* Schluessel */
+.lay-key { margin-top: var(--bp-space-lg); font-size: 13px; color: var(--bp-fg-muted); border-top: 1px solid var(--bp-hairline); padding-top: var(--bp-space-sm); }
+.lay-key summary { cursor: pointer; }
+.lay-key-stand { color: var(--bp-fg-muted); font-size: 12px; }
+.lay-key[data-hat="1"] .lay-key-stand { color: var(--bp-fg); }
+.lay-key-body { max-width: 640px; line-height: 1.8; }
+.lay-key-zeile { display: flex; gap: 8px; flex-wrap: wrap; }
+.lay-key-feld { flex: 1; min-width: 220px; font: inherit; font-size: 13px; padding: 5px 8px; border: 1px solid var(--bp-hairline); border-radius: 3px; }
+.lay-key-body button { font: inherit; font-size: 12px; padding: 5px 12px; border: 1px solid var(--bp-hairline); border-radius: 3px; background: none; cursor: pointer; }
+.lay-key-body button:hover { background: var(--bp-fg); color: var(--bp-bg); border-color: var(--bp-fg); }
+.lay-key-hilfe { font-size: 12px; }
+.lay-key-hilfe a { text-decoration: underline; }
