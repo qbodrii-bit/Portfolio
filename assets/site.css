@@ -705,3 +705,131 @@ html.bp-shield .work-cell img {
   .nav-panel { padding: var(--bp-space-lg) var(--bp-space-sm) var(--bp-space-md); }
   .page-head h1 { font-size: 26px; }
 }
+
+/* ---------- Verwaltung: Layout-Editor (admin-layout.html) ----------
+   Die Buehne zeigt echte Werk-Bausteine (.work-blocks/.work-row/.work-cell),
+   damit hier dasselbe steht wie spaeter auf der Seite. Alles, was zum Editor
+   gehoert, liegt darueber: outline und absolute Position, nie Rahmen oder
+   Innenabstand - sonst verschoebe die Bedienung das, was sie zeigen soll. */
+body[data-section="layout"] {
+  display: block;          /* die Seite hat keine Navigationsspalte */
+}
+
+/* Ohne das Raster wuerde die Kopfzeile ihre volle Bildschirmhoehe behalten
+   (.masthead ist sonst eine 100vh hohe Spalte) und die Buehne nach unten
+   schieben. Hier ist sie nur ein schmaler Streifen oben. */
+body[data-section="layout"] .masthead {
+  position: static;
+  height: auto;
+  padding: var(--bp-space-md) var(--bp-space-md) 0;
+}
+
+.layout-main {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: var(--bp-space-md) var(--bp-space-md) var(--bp-space-xl);
+}
+
+.layout-bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: var(--bp-space-sm);
+  flex-wrap: wrap;
+  background: var(--bp-bg);
+  border-bottom: 1px solid var(--bp-hairline);
+  padding: 10px 0;
+}
+
+.layout-select {
+  font: inherit;
+  font-size: 14px;
+  padding: 5px 8px;
+  border: 1px solid var(--bp-hairline);
+  border-radius: 3px;
+  background: var(--bp-bg);
+}
+
+.layout-state { font-size: 12px; color: var(--bp-fg-muted); }
+
+.layout-lang {
+  margin-left: auto;
+  display: flex;
+  border: 1px solid var(--bp-hairline);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.layout-lang button {
+  font: inherit;
+  font-size: 13px;
+  padding: 5px 13px;
+  border: 0;
+  background: var(--bp-bg);
+  color: var(--bp-fg-muted);
+  cursor: pointer;
+}
+
+.layout-lang button[aria-pressed="true"] { background: var(--bp-fg); color: var(--bp-bg); }
+
+.layout-link { font-size: 13px; color: var(--bp-fg-muted); text-decoration: underline; }
+.layout-link:hover { color: var(--bp-fg); }
+
+.layout-note {
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--bp-fg-muted);
+  margin: var(--bp-space-md) 0;
+  max-width: 640px;
+}
+
+.layout-stage { margin-top: var(--bp-space-lg); }
+
+/* Ein Baustein zeigt seine Grenze erst, wenn man ihn ansteuert. */
+.layout-block { position: relative; }
+
+.layout-block::after {
+  content: attr(data-label);
+  position: absolute;
+  right: 0;
+  top: -19px;
+  font-size: 11px;
+  color: var(--bp-fg-muted);
+  background: var(--bp-bg);
+  padding: 0 4px;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.layout-block:hover { outline: 1px dashed var(--bp-hairline); outline-offset: 6px; }
+.layout-block:hover::after { opacity: 1; }
+
+/* Leerraum ist sonst unsichtbar - beim Darueberfahren schraffiert anzeigen,
+   damit die Kuenstlerin sieht, dass dort ein Block sitzt und keine Luecke. */
+.layout-block[data-kind="gap"]:hover {
+  outline-style: solid;
+  background: repeating-linear-gradient(135deg,
+    rgba(15, 15, 15, .05) 0 7px, transparent 7px 14px);
+}
+
+.layout-check {
+  font-size: 12px;
+  color: var(--bp-fg-muted);
+  margin-top: var(--bp-space-xl);
+  padding-top: var(--bp-space-sm);
+  border-top: 1px solid var(--bp-hairline);
+}
+
+.layout-check[data-bad] { color: #C0392B; }
+
+/* Die Verwaltungsliste hat jetzt zwei Links je Zeile. */
+.admin-row-links { display: flex; gap: var(--bp-space-sm); justify-content: flex-end; }
+
+@media (max-width: 780px) {
+  .layout-main { padding: var(--bp-space-sm) var(--bp-space-md) var(--bp-space-lg); }
+  .layout-bar { gap: 8px; }
+  .layout-lang { margin-left: 0; }
+}

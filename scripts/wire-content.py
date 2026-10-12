@@ -284,14 +284,20 @@ def masthead(active, current_slug=None):
 
 
 def page(title, description, section, active, main, current_slug=None,
-         noindex=False, header=None, script=True, lang="de"):
+         noindex=False, header=None, script=True, lang="de", js=None):
     """header=None nimmt die normale Navigation; die Verwaltungsseite reicht
     stattdessen eine schlichte Kopfzeile herein, laesst das Skript weg und
-    steht auf Koreanisch (lang="ko") - sie richtet sich an die Kuenstlerin."""
+    steht auf Koreanisch (lang="ko") - sie richtet sich an die Kuenstlerin.
+
+    js nimmt ein zusaetzliches Skript nur fuer diese eine Seite auf. Der Editor
+    laeuft bewusst ohne site.js: dessen Tastenfang nimmt Strg+S weg (site.js,
+    Abschnitt Bildschutz), und das waere im Editor gerade die falsche Taste."""
     body_attr = f' data-section="{section}"' if section else ""
     robots = '\n<meta name="robots" content="noindex, nofollow">' if noindex else ""
     head = masthead(active, current_slug) if header is None else header
     tail = f'\n  <script src="{asset("site.js")}"></script>\n' if script else ""
+    if js:
+        tail += f'  <script src="{asset(js)}"></script>\n'
     return f"""<!doctype html>
 <html lang="{lang}" data-lang="{lang}">
 <head>
@@ -516,18 +522,22 @@ ADMIN_HEADER = """  <nav class="masthead" aria-label="Kopfzeile">
 BADGE = f"https://github.com/{REPO}/actions/workflows/{WORKFLOW}"
 
 
-def admin_row(title, meta, href):
+def admin_row(title, meta, href, edit=None):
+    extra = (f'\n          <a class="admin-row-link" href="{edit}">편집</a>'
+             if edit else "")
     return f"""        <div class="admin-row">
           <span class="admin-row-title">{e(title)}</span>
           <span class="admin-row-meta">{e(meta)}</span>
-          <a class="admin-row-link" href="{href}">보기</a>
+          <span class="admin-row-links">
+            <a class="admin-row-link" href="{href}">보기</a>{extra}
+          </span>
         </div>"""
 
 
 work_rows = "\n".join(
     admin_row(sub_label(w, "de"),
               f"{w['year_label']} · 이미지 {len(block_images(w))}장",
-              detail_href(w))
+              detail_href(w), edit=f"admin-layout.html?w={w['slug']}")
     for w in works)
 
 other_rows = "\n".join([
@@ -582,6 +592,48 @@ admin_main = f"""  <main>
 write("admin.html", page("관리 — Boram Park", "작가용 내부 페이지.",
                          "", "", admin_main,
                          noindex=True, header=ADMIN_HEADER, script=False, lang="ko"))
+
+
+# --------------------------------------------------------- admin-layout.html
+# Der Editor. Schritt 2 zeigt nur an - keine Knoepfe, kein Speichern.
+# Die Werkliste steht hier im HTML und nicht im Skript: so ist sie zugleich
+# die erlaubte Liste. Aus "?w=" wird nie ein Pfad gebaut, sondern nur ein
+# Eintrag dieser Liste ausgewaehlt.
+layout_options = "\n".join(
+    f'          <option value="{w["slug"]}" data-path="content/works/{w["slug"]}.json" '
+    f'data-page="{detail_href(w)}">{e(sub_label(w, "de"))}</option>'
+    for w in works)
+
+layout_main = f"""  <main class="layout-main">
+    <div class="layout-bar">
+      <select id="werk" class="layout-select" aria-label="작품">
+{layout_options}
+      </select>
+      <span class="layout-state" id="zustand">불러오는 중…</span>
+      <div class="layout-lang" role="group" aria-label="Sprache">
+        <button type="button" data-set-lang="de" aria-pressed="true">DE</button>
+        <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <a class="layout-link" href="{CMS_URL}">사진 올리러 가기</a>
+    </div>
+
+    <p class="layout-note">보기 전용입니다. 아직 고칠 수 없습니다 —
+      줄과 여백이 어떻게 나뉘어 있는지 확인하는 화면입니다.
+      마우스를 올리면 경계가 보입니다.</p>
+
+    <div class="layout-stage">
+      <div class="work-blocks" id="buehne"></div>
+    </div>
+
+    <p class="layout-check" id="pruefung"></p>
+    <noscript><p class="layout-note">이 화면은 자바스크립트가 필요합니다.
+      <a href="admin.html">관리 화면으로 돌아가기</a></p></noscript>
+  </main>"""
+
+write("admin-layout.html", page("배치 — Boram Park", "작가용 내부 페이지.",
+                                "layout", "", layout_main, noindex=True,
+                                header=ADMIN_HEADER, script=False, lang="ko",
+                                js="admin-layout.js"))
 
 # die fruehere Uebersichtsseite gibt es nicht mehr
 old_index = os.path.join(SITE, "work.html")

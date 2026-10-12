@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ko" data-lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>배치 — Boram Park</title>
+<meta name="description" content="작가용 내부 페이지.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css?v=8a77fb7d">
+</head>
+<body data-section="layout">
+
+  <nav class="masthead" aria-label="Kopfzeile">
+    <div class="masthead-bar">
+      <a class="nav-logo" href="index.html">Boram Park</a>
+    </div>
+  </nav>
+
+  <main class="layout-main">
+    <div class="layout-bar">
+      <select id="werk" class="layout-select" aria-label="작품">
+          <option value="uebergabe" data-path="content/works/uebergabe.json" data-page="werk-uebergabe.html">Übergabe</option>
+          <option value="beruehrung" data-path="content/works/beruehrung.json" data-page="werk-beruehrung.html">Berührung</option>
+          <option value="huelle" data-path="content/works/huelle.json" data-page="werk-huelle.html">Hülle</option>
+          <option value="street-food" data-path="content/works/street-food.json" data-page="werk-street-food.html">Street Food (Serie)</option>
+          <option value="haeutung-kleiderbuegel" data-path="content/works/haeutung-kleiderbuegel.json" data-page="werk-haeutung-kleiderbuegel.html">Häutung · Kleiderbügel</option>
+          <option value="haeutung-reispapier" data-path="content/works/haeutung-reispapier.json" data-page="werk-haeutung-reispapier.html">Häutung · Reispapier</option>
+          <option value="haeutung-leuchtkasten" data-path="content/works/haeutung-leuchtkasten.json" data-page="werk-haeutung-leuchtkasten.html">Häutung · Leuchtkasten</option>
+          <option value="haeutung-kosmetikmaske" data-path="content/works/haeutung-kosmetikmaske.json" data-page="werk-haeutung-kosmetikmaske.html">Häutung · Kosmetikmaske</option>
+          <option value="ein-monat" data-path="content/works/ein-monat.json" data-page="werk-ein-monat.html">Ein Monat</option>
+          <option value="lebensfluss" data-path="content/works/lebensfluss.json" data-page="werk-lebensfluss.html">Lebensfluss</option>
+          <option value="ein-hammer-installation" data-path="content/works/ein-hammer-installation.json" data-page="werk-ein-hammer-installation.html">Ein Hammer · Installation</option>
+          <option value="ein-hammer-video" data-path="content/works/ein-hammer-video.json" data-page="werk-ein-hammer-video.html">Ein Hammer · Video</option>
+      </select>
+      <span class="layout-state" id="zustand">불러오는 중…</span>
+      <div class="layout-lang" role="group" aria-label="Sprache">
+        <button type="button" data-set-lang="de" aria-pressed="true">DE</button>
+        <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <a class="layout-link" href="https://app.pagescms.org/">사진 올리러 가기</a>
+    </div>
+
+    <p class="layout-note">보기 전용입니다. 아직 고칠 수 없습니다 —
+      줄과 여백이 어떻게 나뉘어 있는지 확인하는 화면입니다.
+      마우스를 올리면 경계가 보입니다.</p>
+
+    <div class="layout-stage">
+      <div class="work-blocks" id="buehne"></div>
+    </div>
+
+    <p class="layout-check" id="pruefung"></p>
+    <noscript><p class="layout-note">이 화면은 자바스크립트가 필요합니다.
+      <a href="admin.html">관리 화면으로 돌아가기</a></p></noscript>
+  </main>
+  <script src="assets/admin-layout.js?v=ac1b58be"></script>
+</body>
+</html>
