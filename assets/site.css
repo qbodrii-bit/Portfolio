@@ -300,63 +300,61 @@ main {
   margin: var(--bp-space-sm) 0 0;
 }
 
-.work-text {
-  max-width: 640px;
-  font-size: 16px;
-  line-height: 1.6;
-  margin: var(--bp-space-md) 0 var(--gap-after, var(--bp-space-xl));
-  text-wrap: pretty;
-}
-
-/* Raster, Groesse, Ausrichtung und Abstaende kommen aus dem CMS (Feld "레이아웃"):
-   --gap und --cols auf der Liste, --w (Prozent der Spalte bzw. Zelle) und
-   data-align je Bild. Ohne Angaben gilt das Folgende - eine Spalte,
-   links buendig, volle Breite, 16px Abstand. */
-.work-figures {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gap, var(--bp-space-sm));
+/* Bloecke: eine Arbeit ist eine Folge von Zeilen und Leerraeumen.
+   Eine Zeile teilt sich in Zellen (--cols als fr-Verhaeltnis), jede Zelle
+   traegt ein Bild oder Text. Erzeugt von scripts/wire-content.py; derselbe
+   Aufbau steht im Editor (assets/admin-layout.js) - beide zusammen aendern. */
+.work-blocks {
   max-width: 1400px;
 }
 
-.work-figures figure {
-  margin: 0;
-  width: var(--w, 100%);
-  /* nie breiter als Spalte/Zelle - und nie breiter als die eigenen Pixel,
-     damit ein knapp aufgeloestes Foto lieber kleiner als unscharf steht */
-  max-width: min(100%, var(--max, 100%));
-  align-self: flex-start;
+.work-row {
+  display: grid;
+  grid-template-columns: var(--cols, 1fr);
+  gap: var(--gap, var(--bp-space-sm));
+  align-items: start;
 }
 
-.work-figures figure[data-align="center"] { align-self: center; text-align: center; }
-.work-figures figure[data-align="right"]  { align-self: flex-end; text-align: right; }
+.work-row[data-va="center"] { align-items: center; }
 
-/* Bewusst ohne max-height: die Groesse bestimmt allein das CMS. Ein Deckel
+/* Leerraum ist ein eigener Block, kein Aussenabstand einer Zeile - so steht
+   im Editor genau das auf dem Schirm, was spaeter auf der Seite steht. */
+.work-space { height: var(--h, 0); }
+
+.work-cell {
+  margin: 0;
+  min-width: 0;                       /* sonst sprengt ein breites Bild die Spalte */
+  width: var(--w, 100%);              /* Anteil der Zelle, den das Bild einnimmt */
+  /* nie breiter als die Zelle - und nie breiter als die eigenen Pixel,
+     damit ein knapp aufgeloestes Foto lieber kleiner als unscharf steht */
+  max-width: min(100%, var(--max, 100%));
+  justify-self: start;
+}
+
+.work-cell[data-align="center"] { justify-self: center; text-align: center; }
+.work-cell[data-align="right"]  { justify-self: end;    text-align: right; }
+
+/* Bewusst ohne max-height: die Groesse bestimmt allein der Editor. Ein Deckel
    nach Bildschirmhoehe hat hohe Bilder je nach Monitor verschieden stark
-   verkleinert. Ist ein Bild zu hoch, wird im CMS "크기 (%)" kleiner gestellt.
-   Das Bild selbst bleibt dabei immer unverzerrt (width 100% der figure). */
-.work-figures img {
+   verkleinert. Das Bild bleibt immer unverzerrt (volle Breite der Zelle). */
+.work-cell img {
   display: block;
   width: 100%;
   height: auto;
 }
 
-/* Raster (2x2 usw.): Zeilen fuellen sich von links nach rechts */
-.work-figures[data-columns] {
-  display: grid;
-  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
-  align-items: start;
-}
-
-.work-figures[data-columns] figure { align-self: start; justify-self: start; }
-.work-figures[data-columns] figure[data-align="center"] { justify-self: center; }
-.work-figures[data-columns] figure[data-align="right"]  { justify-self: end; }
-.work-figures[data-columns] [data-full-row="true"] { grid-column: 1 / -1; }
-
-.work-figures figcaption {
+.work-cell figcaption {
   font-size: 14px;
   color: var(--bp-fg-muted);
   margin-top: var(--bp-space-xs);
+}
+
+.work-text {
+  max-width: 640px;
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+  text-wrap: pretty;
 }
 
 .back-link {
@@ -510,7 +508,7 @@ html[lang="ko"] {
    umgebende Element fallen - der Link um das Titelbild bleibt klickbar.
    Das ist eine Huerde, kein Schutz: die Bilddatei selbst bleibt oeffentlich. */
 .hero-thumb,
-.work-figures img {
+.work-cell img {
   -webkit-user-drag: none;
   user-select: none;
   -webkit-user-select: none;
@@ -521,14 +519,14 @@ html[lang="ko"] {
 /* site.js setzt die Klasse, solange eine Bildschirmaufnahme droht
    (Cmd/Win+Shift oder Druck-Taste gedrueckt) */
 html.bp-shield .hero-thumb,
-html.bp-shield .work-figures img {
+html.bp-shield .work-cell img {
   filter: blur(28px);
   opacity: 0.25;
 }
 
 @media print {
   .hero-thumb,
-  .work-figures img { visibility: hidden; }
+  .work-cell img { visibility: hidden; }
 }
 
 /* ---------- Bewegung ---------- */
@@ -560,8 +558,8 @@ html.bp-shield .work-figures img {
   .nav-logo { font-size: 22px; margin-bottom: var(--bp-space-md); }
   main { padding: var(--bp-space-lg) var(--bp-space-md); }
   .masthead { padding: var(--bp-space-lg) var(--bp-space-md); }
-  .work-figures[data-columns="3"],
-  .work-figures[data-columns="4"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* Tablet: drei und mehr Zellen werden zwei */
+  .work-row { grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
   .page-head h1 { font-size: 34px; }
 }
 
@@ -686,9 +684,9 @@ html.bp-shield .work-figures img {
   .hero-thumb { aspect-ratio: 4 / 3; max-height: none; }
 
   /* auf dem Telefon: Raster wird einspaltig, grosse Abstaende gedeckelt */
-  .work-text { margin: var(--bp-space-md) 0 min(var(--gap-after, var(--bp-space-lg)), var(--bp-space-lg)); }
-  .work-figures { gap: min(var(--gap, var(--bp-space-md)), var(--bp-space-lg)); }
-  .work-figures[data-columns] { grid-template-columns: minmax(0, 1fr); }
+  .work-space { height: min(var(--h, 0), var(--bp-space-lg)); }
+  .work-row { gap: min(var(--gap, var(--bp-space-md)), var(--bp-space-lg)); }
+  .work-row { grid-template-columns: minmax(0, 1fr); }
   .back-link { margin-top: var(--bp-space-lg); padding: 8px 0; }
 
   .section-label { font-size: 14px; }

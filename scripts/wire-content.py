@@ -65,6 +65,81 @@ SIZES = load(os.path.join("images", "_sizes.json"), {}) or {}
 artist = load("artist.json")
 site = load("site.json", {}) or {}
 
+# Layout aus dem CMS. Leere oder unsinnige Werte fallen stillschweigend auf die
+# Vorgaben in site.css zurueck, damit ein Tippfehler nie den Aufbau bricht.
+ALIGNS = ("left", "center", "right")
+
+
+def as_int(value, lo, hi):
+    try:
+        n = int(round(float(value)))
+    except (TypeError, ValueError):
+        return None
+    return max(lo, min(hi, n))
+
+
+def as_align(value):
+    return value if value in ALIGNS else None
+
+
+def style_attr(**props):
+    """style="--w: 60%; ..." nur mit gesetzten Werten, sonst gar nichts."""
+    bits = [f"--{k.replace('_', '-')}: {v}" for k, v in props.items() if v is not None]
+    return f' style="{"; ".join(bits)}"' if bits else ""
+
+
+def clean_blocks(raw):
+    """Nur Bloecke behalten, die sich zeichnen lassen.
+
+    Bildzellen ohne src fallen weg, Zeilen ohne Zellen auch. Zwei Leerraeume
+    nebeneinander werden einer (der groessere), und am Anfang oder Ende steht
+    keiner - sonst haengt die Seite vorne oder hinten durch. Dieselbe Regel
+    gilt im Editor, siehe assets/admin-layout.js.
+    """
+    blocks = []
+    for b in raw if isinstance(raw, list) else []:
+        if not isinstance(b, dict):
+            continue
+        if b.get("t") == "gap":
+            h = as_int(b.get("h"), 0, 400)
+            if h:
+                blocks.append({"t": "gap", "h": h})
+        elif b.get("t") == "row":
+            cells = [c for c in b.get("cells", [])
+                     if isinstance(c, dict) and (c.get("t") != "img" or c.get("src"))]
+            if cells:
+                blocks.append({"t": "row", "gap": b.get("gap"), "va": b.get("va"),
+                               "cells": cells})
+    merged = []
+    for b in blocks:
+        if b["t"] == "gap" and merged and merged[-1]["t"] == "gap":
+            merged[-1]["h"] = max(merged[-1]["h"], b["h"])
+        else:
+            merged.append(b)
+    while merged and merged[0]["t"] == "gap":
+        merged.pop(0)
+    while merged and merged[-1]["t"] == "gap":
+        merged.pop()
+    return merged
+
+
+def block_images(w):
+    """Alle Bildzellen in Reihenfolge - fuer Startbild und Verwaltungsliste."""
+    return [c for b in w["blocks"] if b["t"] == "row"
+            for c in b["cells"] if c.get("t") == "img"]
+
+
+def block_text(w, lang):
+    """Erster nicht leerer Text - fuer die Seitenbeschreibung."""
+    for b in w["blocks"]:
+        if b["t"] != "row":
+            continue
+        for c in b["cells"]:
+            if c.get("t") == "text" and (c.get(lang) or "").strip():
+                return c[lang].strip()
+    return ""
+
+
 works = []
 for path in sorted(glob.glob(os.path.join(CONTENT, "works", "*.json"))):
     with open(path, encoding="utf-8") as f:
@@ -72,10 +147,9 @@ for path in sorted(glob.glob(os.path.join(CONTENT, "works", "*.json"))):
     w["slug"] = os.path.splitext(os.path.basename(path))[0]
     w.setdefault("order", 999)
     w.setdefault("year_label", str(w.get("year", "")))
-    for key in ("title_en", "material_de", "material_en", "medium_de", "medium_en",
-                "text_de", "text_en"):
+    for key in ("title_en", "material_de", "material_en", "medium_de", "medium_en"):
         w.setdefault(key, "")
-    w["images"] = [im for im in w.get("images", []) if im.get("src")]
+    w["blocks"] = clean_blocks(w.get("blocks"))
     works.append(w)
 works.sort(key=lambda w: (-int(w.get("year") or 0), w["order"], w["slug"]))
 
@@ -263,32 +337,9 @@ def alt(w):
     return f"{e(w['title'])}, {w['year_label']} — Boram Park"
 
 
-# Layout aus dem CMS. Leere oder unsinnige Werte fallen stillschweigend auf die
-# Vorgaben in site.css zurueck, damit ein Tippfehler nie den Aufbau bricht.
-ALIGNS = ("left", "center", "right")
-
-
-def as_int(value, lo, hi):
-    try:
-        n = int(round(float(value)))
-    except (TypeError, ValueError):
-        return None
-    return max(lo, min(hi, n))
-
-
-def as_align(value):
-    return value if value in ALIGNS else None
-
-
-def style_attr(**props):
-    """style="--w: 60%; ..." nur mit gesetzten Werten, sonst gar nichts."""
-    bits = [f"--{k.replace('_', '-')}: {v}" for k, v in props.items() if v is not None]
-    return f' style="{"; ".join(bits)}"' if bits else ""
-
-
 # --------------------------------------------------------------- index.html
 lead = works[0]
-cover = site.get("cover_image") or lead["images"][0]["src"]
+cover = site.get("cover_image") or (block_images(lead) or [{"src": ""}])[0]["src"]
 cover_slug = site.get("cover_link_slug") or lead["slug"]
 cover_year = site.get("cover_caption_year") or lead["year_label"]
 cover_title = site.get("cover_caption_title") or lead["title"]
@@ -374,63 +425,81 @@ write("contact.html", page("Boram Park — Contact",
                            "contact", "contact.html", contact_main))
 
 # ------------------------------------------------- werk-<slug>.html (Detail)
-for w in works:
-    layout = w.get("layout") or {}
-    base_align = as_align(layout.get("align")) or "left"
-    columns = as_int(layout.get("columns"), 1, 4) or 1
-    gap = as_int(layout.get("gap"), 0, 400)
-    text_gap = as_int(layout.get("text_gap"), 0, 400)
-    gap_after = style_attr(gap_after=None if text_gap is None else f"{text_gap}px")
+# Eine Arbeit ist eine Folge von Bloecken: Zeilen mit Zellen (Bild oder Text)
+# und ausdrueckliche Leerraeume dazwischen. Die Zuordnung Block -> HTML steht
+# doppelt - bei Aenderungen beide anfassen:
+#   hier (erzeugt die Seite) und assets/admin-layout.js (zeigt dasselbe im Editor)
+GAP_DEFAULT = 16
+NL = "\n"
 
-    figs = []
-    for im in w["images"]:
+
+def cell_html(cell, w):
+    """Eine Zelle: Bild mit optionaler Bildunterschrift, oder Text."""
+    ratio = as_int(cell.get("w"), 1, 100)
+    style = {"col": None if ratio is None else ratio}
+
+    if cell.get("t") == "img":
+        # fill = Anteil der Zelle, den das Bild einnimmt (100 = ganze Zelle).
+        # Getrennt vom Spaltenverhaeltnis: das teilt die Zeile auf, fill sagt,
+        # wie viel davon das Bild davon braucht.
+        fill = as_int(cell.get("fill"), 10, 100)
+        style["w"] = None if fill is None else f"{fill}%"
+        # Deckel gegen Hochskalieren - greift nur bei zu kleinen Dateien
+        natural = SIZES.get(rel(cell["src"]))
+        style["max"] = f"{natural[0]}px" if natural else None
+        align = as_align(cell.get("align"))
+        mark = f' data-align="{align}"' if align else ""
         cap = ""
-        if im.get("caption_de"):
-            cde = im["caption_de"]
-            cen = im.get("caption_en") or cde
-            cap = f'\n        <figcaption data-de="{e(cde)}" data-en="{e(cen)}">{e(cde)}</figcaption>'
-        # Groesse in Prozent der Spaltenbreite (100 = volle Spalte bzw. Zelle).
-        # Bewusst nicht aus den Pixelmassen gerechnet: prepare-images.py
-        # Gleiche Prozentwerte ergaeben sonst je nach Aufloesung der Datei
-        # verschiedene Groessen, und jedes erneute Hochladen desselben Fotos
-        # in anderer Aufloesung wuerde die Seite umbauen.
-        pct = as_int(im.get("width"), 10, 100)
-        size_css = None if pct is None else f"{pct}%"
-        # Deckel: nie ueber die eigene Pixelbreite hinaus vergroessern, sonst
-        # wird ein knapp aufgeloestes Foto unscharf gezogen. Der Deckel greift
-        # nur, wenn die Datei zu klein ist - er bestimmt nie das Layout.
-        natural = SIZES.get(rel(im["src"]))
-        max_css = f"{natural[0]}px" if natural else None
-        align = as_align(im.get("align")) or base_align
-        mark = "" if align == "left" else f' data-align="{align}"'
-        if columns > 1 and im.get("full_row"):
-            mark += ' data-full-row="true"'
-        figs.append(f"""      <figure{mark}{style_attr(w=size_css, max=max_css)}>
-        <img src="{rel(im['src'])}"{dims(im['src'])} loading="lazy" alt="{alt(w)}">{cap}
-      </figure>""")
+        if cell.get("caption_de"):
+            cde = cell["caption_de"]
+            cen = cell.get("caption_en") or cde
+            cap = (NL + f'        <figcaption data-de="{e(cde)}" data-en="{e(cen)}">'
+                   f'{e(cde)}</figcaption>')
+        img = f'{rel(cell["src"])}'
+        return (f'      <figure class="work-cell"{mark}{style_attr(**style)}>' + NL
+                + f'        <img src="{img}"{dims(cell["src"])} '
+                  f'loading="lazy" alt="{alt(w)}">{cap}' + NL
+                + '      </figure>')
 
-    text_block = ""
-    head_style = gap_after
-    if w["text_de"]:
-        text_block = (f'\n    <p class="work-text"{gap_after} data-de="{e(w["text_de"])}" '
-                      f'data-en="{e(w["text_en"])}">{e(w["text_de"])}</p>\n')
-        head_style = ""
+    de = (cell.get("de") or "").strip()
+    en = (cell.get("en") or "").strip() or de
+    align = as_align(cell.get("align"))
+    mark = f' data-align="{align}"' if align else ""
+    if not de:
+        return f'      <div class="work-cell"{mark}{style_attr(**style)}></div>'
+    return (f'      <div class="work-cell"{mark}{style_attr(**style)}>' + NL
+            + f'        <p class="work-text" data-de="{e(de)}" data-en="{e(en)}">'
+              f'{e(de)}</p>' + NL
+            + '      </div>')
 
-    grid_cols = columns if columns > 1 else None
-    grid_attr = f' data-columns="{columns}"' if columns > 1 else ""
 
+def block_html(block, w):
+    if block["t"] == "gap":
+        return f'    <div class="work-space" style="--h: {block["h"]}px"></div>'
+    gap = as_int(block.get("gap"), 0, 400)
+    gap = GAP_DEFAULT if gap is None else gap
+    cols = " ".join(str(as_int(c.get("w"), 1, 100) or 1) + "fr" for c in block["cells"])
+    mark = ' data-va="center"' if block.get("va") == "center" else ""
+    cells = NL.join(cell_html(c, w) for c in block["cells"])
+    return (f'    <div class="work-row"{mark} style="--gap: {gap}px; --cols: {cols}">' + NL
+            + cells + NL + '    </div>')
+
+
+for w in works:
+    body = NL.join(block_html(b, w) for b in w["blocks"])
     main = f"""  <main>
-    <header class="page-head"{head_style}>
+    <header class="page-head">
       <h1 data-de="{e(w['title'])}" data-en="{e(w['title_en'])}">{e(w['title'])}</h1>
       <p class="work-meta" data-de="{e(meta_line(w, 'de'))}" data-en="{e(meta_line(w, 'en'))}">{e(meta_line(w, 'de'))}</p>
     </header>
-{text_block}
-    <div class="work-figures"{grid_attr}{style_attr(gap=None if gap is None else f"{gap}px", cols=grid_cols)}>
-{chr(10).join(figs)}
+
+    <div class="work-blocks">
+{body}
     </div>
   </main>"""
 
-    desc = w["text_de"][:150] if w["text_de"] else meta_line(w, "de")
+    first_text = block_text(w, "de")
+    desc = first_text[:150] if first_text else meta_line(w, "de")
     write(detail_href(w), page(f"{e(w['title'])} — Boram Park", desc,
                                "work", "", main, current_slug=w["slug"]))
 
@@ -457,7 +526,7 @@ def admin_row(title, meta, href):
 
 work_rows = "\n".join(
     admin_row(sub_label(w, "de"),
-              f"{w['year_label']} · 이미지 {len(w['images'])}장",
+              f"{w['year_label']} · 이미지 {len(block_images(w))}장",
               detail_href(w))
     for w in works)
 

@@ -8,32 +8,57 @@
   "material_en": "Cosmetic sheet mask",
   "medium_de": "Fotografie",
   "medium_en": "Photography",
-  "text_de": "Durch Hitze verformt sich die Kosmetikmaske und bildet Falten und Risse. Die Fotografien zeigen unterschiedliche Zustände dieser Veränderung. Die Serie richtet den Blick auf die Oberfläche des Materials.",
-  "text_en": "Heat deforms the cosmetic mask, forming folds and cracks. The photographs show different states of this transformation. The series directs the gaze onto the surface of the material.",
-  "layout": {
-    "columns": "2",
-    "gap": 32
-  },
-  "images": [
+  "blocks": [
     {
-      "src": "/content/images/haeutung-kosmetikmaske/01.jpg",
-      "width": 55,
-      "full_row": false
+      "t": "row",
+      "gap": 32,
+      "cells": [
+        {
+          "t": "text",
+          "de": "Durch Hitze verformt sich die Kosmetikmaske und bildet Falten und Risse. Die Fotografien zeigen unterschiedliche Zustände dieser Veränderung. Die Serie richtet den Blick auf die Oberfläche des Materials.",
+          "en": "Heat deforms the cosmetic mask, forming folds and cracks. The photographs show different states of this transformation. The series directs the gaze onto the surface of the material."
+        }
+      ]
     },
     {
-      "src": "/content/images/haeutung-kosmetikmaske/02.jpg",
-      "width": 55,
-      "full_row": false
+      "t": "gap",
+      "h": 96
     },
     {
-      "src": "/content/images/haeutung-kosmetikmaske/03.jpg",
-      "width": 55,
-      "full_row": false
+      "t": "row",
+      "gap": 32,
+      "cells": [
+        {
+          "t": "img",
+          "src": "/content/images/haeutung-kosmetikmaske/01.jpg",
+          "fill": 55
+        },
+        {
+          "t": "img",
+          "src": "/content/images/haeutung-kosmetikmaske/02.jpg",
+          "fill": 55
+        }
+      ]
     },
     {
-      "src": "/content/images/haeutung-kosmetikmaske/04.jpg",
-      "width": 55,
-      "full_row": false
+      "t": "gap",
+      "h": 32
+    },
+    {
+      "t": "row",
+      "gap": 32,
+      "cells": [
+        {
+          "t": "img",
+          "src": "/content/images/haeutung-kosmetikmaske/03.jpg",
+          "fill": 55
+        },
+        {
+          "t": "img",
+          "src": "/content/images/haeutung-kosmetikmaske/04.jpg",
+          "fill": 55
+        }
+      ]
     }
   ]
 }

@@ -8,26 +8,51 @@
   "material_en": "Rice paper",
   "medium_de": "Fotografie",
   "medium_en": "Photography",
-  "text_de": "Nasses Reispapier wurde über Körperformen gelegt und trocknete zu dünnen, brüchigen Hüllen. Die Oberfläche zeigt Spuren einer körperlichen Form, ohne den Körper selbst sichtbar zu machen. Mich interessiert die Grenze zwischen Material und Körper.",
-  "text_en": "Wet rice paper was laid over body forms and dried into thin, brittle shells. The surface shows traces of a bodily form without making the body itself visible. I am interested in the boundary between material and body.",
-  "layout": {
-    "columns": "2",
-    "gap": 16
-  },
-  "images": [
+  "blocks": [
     {
-      "src": "/content/images/haeutung-reispapier/01.jpg",
-      "width": 59,
-      "full_row": false
+      "t": "row",
+      "gap": 16,
+      "cells": [
+        {
+          "t": "text",
+          "de": "Nasses Reispapier wurde über Körperformen gelegt und trocknete zu dünnen, brüchigen Hüllen. Die Oberfläche zeigt Spuren einer körperlichen Form, ohne den Körper selbst sichtbar zu machen. Mich interessiert die Grenze zwischen Material und Körper.",
+          "en": "Wet rice paper was laid over body forms and dried into thin, brittle shells. The surface shows traces of a bodily form without making the body itself visible. I am interested in the boundary between material and body."
+        }
+      ]
     },
     {
-      "src": "/content/images/haeutung-reispapier/02.jpg",
-      "width": 62,
-      "full_row": false
+      "t": "gap",
+      "h": 96
     },
     {
-      "src": "/content/images/haeutung-reispapier/03.jpg",
-      "full_row": true
+      "t": "row",
+      "gap": 16,
+      "cells": [
+        {
+          "t": "img",
+          "src": "/content/images/haeutung-reispapier/01.jpg",
+          "fill": 59
+        },
+        {
+          "t": "img",
+          "src": "/content/images/haeutung-reispapier/02.jpg",
+          "fill": 62
+        }
+      ]
+    },
+    {
+      "t": "gap",
+      "h": 16
+    },
+    {
+      "t": "row",
+      "gap": 16,
+      "cells": [
+        {
+          "t": "img",
+          "src": "/content/images/haeutung-reispapier/03.jpg"
+        }
+      ]
     }
   ]
 }

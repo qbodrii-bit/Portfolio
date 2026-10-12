@@ -8,26 +8,50 @@
   "material_en": "Rice paper, coat hangers",
   "medium_de": "Installation",
   "medium_en": "Installation",
-  "text_de": "Getrocknete Reispapierhüllen werden wie Kleidungsstücke aufgehängt. Sie erinnern an abwesende Körper, ohne sie darzustellen. Zwischen Material und Körper entsteht ein fragiler Zwischenzustand.",
-  "text_en": "Dried rice-paper shells are hung up like pieces of clothing. They recall absent bodies without depicting them. A fragile in-between state emerges between material and body.",
-  "layout": {
-    "columns": "2"
-  },
-  "images": [
+  "blocks": [
     {
-      "src": "/content/images/haeutung-kleiderbuegel/01.jpg",
-      "width": 41,
-      "full_row": true
+      "t": "row",
+      "gap": 16,
+      "cells": [
+        {
+          "t": "text",
+          "de": "Getrocknete Reispapierhüllen werden wie Kleidungsstücke aufgehängt. Sie erinnern an abwesende Körper, ohne sie darzustellen. Zwischen Material und Körper entsteht ein fragiler Zwischenzustand.",
+          "en": "Dried rice-paper shells are hung up like pieces of clothing. They recall absent bodies without depicting them. A fragile in-between state emerges between material and body."
+        }
+      ]
     },
     {
-      "src": "/content/images/haeutung-kleiderbuegel/02.jpg",
-      "width": 100,
-      "full_row": false
+      "t": "gap",
+      "h": 96
     },
     {
-      "src": "/content/images/haeutung-kleiderbuegel/03.jpg",
-      "width": 100,
-      "full_row": false
+      "t": "row",
+      "gap": 16,
+      "cells": [
+        {
+          "t": "img",
+          "src": "/content/images/haeutung-kleiderbuegel/01.jpg",
+          "fill": 41
+        }
+      ]
+    },
+    {
+      "t": "gap",
+      "h": 16
+    },
+    {
+      "t": "row",
+      "gap": 16,
+      "cells": [
+        {
+          "t": "img",
+          "src": "/content/images/haeutung-kleiderbuegel/02.jpg"
+        },
+        {
+          "t": "img",
+          "src": "/content/images/haeutung-kleiderbuegel/03.jpg"
+        }
+      ]
     }
   ]
 }

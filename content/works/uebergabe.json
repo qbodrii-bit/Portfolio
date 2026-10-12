@@ -8,32 +8,53 @@
   "material_en": "Ice cubes made of wine, coin tissue",
   "medium_de": "Video, 08:50 loop",
   "medium_en": "Video, 08:50 loop",
-  "text_de": "Gefrorener Wein schmilzt und gibt seine Flüssigkeit an ein Coin-Tissue ab. Während das Eis verschwindet, verändern sich die Formen beider Materialien. Mich interessiert der Moment, in dem eine Form in eine andere übergeht.",
-  "text_en": "Frozen wine melts and passes its liquid on to a coin tissue. As the ice disappears, the forms of both materials change. I am interested in the moment when one form passes into another.",
-  "layout": {
-    "columns": "2",
-    "gap": 16
-  },
-  "images": [
+  "blocks": [
     {
-      "src": "/content/images/uebergabe/01.jpg",
-      "width": 100,
-      "full_row": false
+      "t": "row",
+      "gap": 16,
+      "cells": [
+        {
+          "t": "text",
+          "de": "Gefrorener Wein schmilzt und gibt seine Flüssigkeit an ein Coin-Tissue ab. Während das Eis verschwindet, verändern sich die Formen beider Materialien. Mich interessiert der Moment, in dem eine Form in eine andere übergeht.",
+          "en": "Frozen wine melts and passes its liquid on to a coin tissue. As the ice disappears, the forms of both materials change. I am interested in the moment when one form passes into another."
+        }
+      ]
     },
     {
-      "src": "/content/images/uebergabe/02.jpg",
-      "width": 100,
-      "full_row": false
+      "t": "gap",
+      "h": 96
     },
     {
-      "src": "/content/images/uebergabe/03.jpg",
-      "width": 100,
-      "full_row": false
+      "t": "row",
+      "gap": 16,
+      "cells": [
+        {
+          "t": "img",
+          "src": "/content/images/uebergabe/01.jpg"
+        },
+        {
+          "t": "img",
+          "src": "/content/images/uebergabe/02.jpg"
+        }
+      ]
     },
     {
-      "src": "/content/images/uebergabe/05.jpg",
-      "width": 100,
-      "full_row": false
+      "t": "gap",
+      "h": 16
+    },
+    {
+      "t": "row",
+      "gap": 16,
+      "cells": [
+        {
+          "t": "img",
+          "src": "/content/images/uebergabe/03.jpg"
+        },
+        {
+          "t": "img",
+          "src": "/content/images/uebergabe/05.jpg"
+        }
+      ]
     }
   ]
 }

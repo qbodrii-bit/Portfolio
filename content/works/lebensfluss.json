@@ -6,30 +6,42 @@
   "year_label": "2024",
   "medium_de": "Video, 06:27 loop",
   "medium_en": "Video, 06:27 loop",
-  "layout": {
-    "columns": "2",
-    "gap": 16
-  },
-  "images": [
+  "blocks": [
     {
-      "src": "/content/images/lebensfluss/01.jpg",
-      "width": 100,
-      "full_row": false
+      "t": "gap",
+      "h": 64
     },
     {
-      "src": "/content/images/Lebensfluss_2.jpg",
-      "width": 100,
-      "full_row": false
+      "t": "row",
+      "gap": 16,
+      "cells": [
+        {
+          "t": "img",
+          "src": "/content/images/lebensfluss/01.jpg"
+        },
+        {
+          "t": "img",
+          "src": "/content/images/Lebensfluss_2.jpg"
+        }
+      ]
     },
     {
-      "src": "/content/images/Lebensfluss_3.jpg",
-      "width": 100,
-      "full_row": false
+      "t": "gap",
+      "h": 16
     },
     {
-      "src": "/content/images/Lebensfluss_4.jpg",
-      "width": 100,
-      "full_row": false
+      "t": "row",
+      "gap": 16,
+      "cells": [
+        {
+          "t": "img",
+          "src": "/content/images/Lebensfluss_3.jpg"
+        },
+        {
+          "t": "img",
+          "src": "/content/images/Lebensfluss_4.jpg"
+        }
+      ]
     }
   ]
 }

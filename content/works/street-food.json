@@ -6,39 +6,85 @@
   "year_label": "2025–2026",
   "medium_de": "Fotografie",
   "medium_en": "Photography",
-  "text_de": "Alltägliche Gegenstände oder Materialien werden in einen ungewohnten Zusammenhang gesetzt. Dadurch verändern sich ihre Wahrnehmung und Bedeutung. Die Serie „Street Food“ untersucht diesen Perspektivwechsel im öffentlichen Raum.",
-  "text_en": "Everyday objects or materials are placed in an unfamiliar context. Their perception and meaning change as a result. The series “Street Food” examines this shift of perspective in public space.",
-  "layout": {
-    "gap": 64
-  },
-  "images": [
+  "blocks": [
     {
-      "src": "/content/images/street-food/01.jpg",
-      "width": 43,
-      "full_row": true,
-      "caption_de": "Schwarzwurst · Fotografie · 2025",
-      "caption_en": "Schwarzwurst · Photography · 2025"
+      "t": "row",
+      "gap": 64,
+      "cells": [
+        {
+          "t": "text",
+          "de": "Alltägliche Gegenstände oder Materialien werden in einen ungewohnten Zusammenhang gesetzt. Dadurch verändern sich ihre Wahrnehmung und Bedeutung. Die Serie „Street Food“ untersucht diesen Perspektivwechsel im öffentlichen Raum.",
+          "en": "Everyday objects or materials are placed in an unfamiliar context. Their perception and meaning change as a result. The series “Street Food” examines this shift of perspective in public space."
+        }
+      ]
     },
     {
-      "src": "/content/images/street-food/02.jpg",
-      "width": 67,
-      "full_row": false,
-      "caption_de": "Toast · Fotografie · 2025",
-      "caption_en": "Toast · Photography · 2025"
+      "t": "gap",
+      "h": 96
     },
     {
-      "src": "/content/images/street-food/03.jpg",
-      "width": 65,
-      "full_row": false,
-      "caption_de": "Leberkäse · Fotografie · 2026",
-      "caption_en": "Leberkäse · Photography · 2026"
+      "t": "row",
+      "gap": 64,
+      "cells": [
+        {
+          "t": "img",
+          "src": "/content/images/street-food/01.jpg",
+          "fill": 43,
+          "caption_de": "Schwarzwurst · Fotografie · 2025",
+          "caption_en": "Schwarzwurst · Photography · 2025"
+        }
+      ]
     },
     {
-      "src": "/content/images/street-food/04.jpg",
-      "width": 67,
-      "full_row": false,
-      "caption_de": "Dickmanns · Fotografie · 2026",
-      "caption_en": "Dickmanns · Photography · 2026"
+      "t": "gap",
+      "h": 64
+    },
+    {
+      "t": "row",
+      "gap": 64,
+      "cells": [
+        {
+          "t": "img",
+          "src": "/content/images/street-food/02.jpg",
+          "fill": 67,
+          "caption_de": "Toast · Fotografie · 2025",
+          "caption_en": "Toast · Photography · 2025"
+        }
+      ]
+    },
+    {
+      "t": "gap",
+      "h": 64
+    },
+    {
+      "t": "row",
+      "gap": 64,
+      "cells": [
+        {
+          "t": "img",
+          "src": "/content/images/street-food/03.jpg",
+          "fill": 65,
+          "caption_de": "Leberkäse · Fotografie · 2026",
+          "caption_en": "Leberkäse · Photography · 2026"
+        }
+      ]
+    },
+    {
+      "t": "gap",
+      "h": 64
+    },
+    {
+      "t": "row",
+      "gap": 64,
+      "cells": [
+        {
+          "t": "img",
+          "src": "/content/images/street-food/04.jpg",
+          "fill": 67,
+          "caption_de": "Dickmanns · Fotografie · 2026",
+          "caption_en": "Dickmanns · Photography · 2026"
+        }
+      ]
     }
   ]
 }
