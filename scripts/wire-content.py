@@ -462,7 +462,7 @@ def cell_html(cell, w):
             cen = cell.get("caption_en") or cde
             cap = (NL + f'        <figcaption data-de="{e(cde)}" data-en="{e(cen)}">'
                    f'{e(cde)}</figcaption>')
-        img = f'{rel(cell["src"])}'
+        img = e(rel(cell["src"]))
         return (f'      <figure class="work-cell"{mark}{style_attr(**style)}>' + NL
                 + f'        <img src="{img}"{dims(cell["src"])} '
                   f'loading="lazy" alt="{alt(w)}">{cap}' + NL
@@ -605,8 +605,6 @@ layout_options = "\n".join(
     f'data-page="{detail_href(w)}">{e(sub_label(w, "de"))}</option>'
     for w in works)
 
-TOKEN_URL = (f"https://github.com/settings/personal-access-tokens/new")
-
 layout_main = f"""  <main class="layout-main">
     <div class="layout-bar">
       <select id="werk" class="layout-select" aria-label="작품">
@@ -622,27 +620,22 @@ layout_main = f"""  <main class="layout-main">
     </div>
 
     <div class="layout-stage">
-      <div class="work-blocks" id="buehne" data-repo="{REPO}"></div>
+      <div class="work-blocks" id="buehne"></div>
     </div>
 
     <p class="layout-check" id="pruefung"></p>
 
     <details class="lay-key" id="schluessel">
-      <summary>저장용 열쇠 <span class="lay-key-stand">열쇠 없음 — 지금은 보기만 됩니다</span></summary>
+      <summary>로그인 <span class="lay-key-stand">로그인하면 저장할 수 있습니다</span></summary>
       <div class="lay-key-body">
-        <p>저장하려면 GitHub 열쇠가 한 번 필요합니다. 이 브라우저에만 저장되고,
-          사이트나 저장소에는 들어가지 않습니다.
-          <strong>공용 컴퓨터에서는 쓰지 마세요.</strong></p>
+        <p>작가 본인 GitHub 계정으로 한 번 로그인하면 됩니다. 만료되지 않으니
+          다시 할 일은 거의 없습니다. 비밀번호는 GitHub 화면에서만 입력하고,
+          이 사이트는 보지 못합니다.</p>
         <p class="lay-key-zeile">
-          <input type="password" class="lay-key-feld" autocomplete="off"
-                 spellcheck="false" placeholder="열쇠를 붙여넣으세요">
-          <button type="button" class="lay-key-save">등록</button>
-          <button type="button" class="lay-key-weg">지우기</button>
+          <a class="lay-key-login" href="/api/login">GitHub으로 로그인</a>
+          <button type="button" class="lay-key-weg">로그아웃</button>
         </p>
-        <p class="lay-key-hilfe">열쇠가 만료되었을 때만 새로 만들면 됩니다 —
-          <a href="{TOKEN_URL}">새 열쇠 만들기</a> →
-          Repository access는 <em>Only select repositories</em>에서 이 저장소,
-          Permissions는 <em>Contents: Read and write</em> 하나만 켭니다.</p>
+        <p class="lay-key-hilfe">공용 컴퓨터에서 쓰셨다면 끝낸 뒤 <strong>로그아웃</strong>을 눌러 주세요.</p>
       </div>
     </details>
 

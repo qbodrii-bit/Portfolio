@@ -25,9 +25,6 @@
   if (!sel || !stage) return;
 
   var GAP_DEFAULT = 16;
-  var SPEICHER = 'bp-gh-token';
-  var REPO = stage.getAttribute('data-repo') || '';
-  var API = 'https://api.github.com/repos/' + REPO + '/contents/';
 
   var lang = 'de';
   var sizes = {};
@@ -122,7 +119,7 @@
               '">' + esc(cde) + '</figcaption>';
       }
       return '      <figure class="work-cell"' + mark + styleAttr(style) + '>\n' +
-             '        <img src="' + relSrc(cell.src) + '"' + dims(cell.src) +
+             '        <img src="' + esc(relSrc(cell.src)) + '"' + dims(cell.src) +
              ' loading="lazy" alt="' + esc(altText(w)) + '">' + cap + '\n' +
              '      </figure>';
     }
@@ -289,7 +286,7 @@
       return n + (b.t === 'row' ? b.cells.filter(function (c) { return c.t === 'img'; }).length : 0);
     }, 0);
     state.textContent = rows + '줄 · 사진 ' + imgs + '장' + (geaendert() ? ' · 저장 안 됨' : '');
-    if (saveBtn) saveBtn.disabled = sperre || !geaendert() || !token();
+    if (saveBtn) saveBtn.disabled = sperre || !geaendert() || !angemeldet();
   }
 
   function aufraeumen() {                      // = clean_blocks(), nach jeder Aenderung
@@ -445,130 +442,79 @@
     });
   }
 
-  // ---------------------------------------------------------------- Schluessel
-  function token() {
-    try { return localStorage.getItem(SPEICHER) || ''; } catch (e) { return ''; }
+  // ------------------------------------------------------------- Anmeldung
+  /* Der Zugang liegt in einem HttpOnly-Cookie, das dieses Skript nicht lesen
+     kann - genau das ist der Punkt. Ob jemand angemeldet ist, verraet ein
+     zweites, harmloses Cookie mit dem Namen. */
+  function angemeldet() {
+    return /(^|;\s*)bp_wer=/.test(document.cookie);
   }
 
-  function tokenSetzen(wert) {
-    try {
-      if (wert) localStorage.setItem(SPEICHER, wert);
-      else localStorage.removeItem(SPEICHER);
-    } catch (e) { /* privates Fenster: dann eben nur fuer diese Sitzung */ }
-    tokenStand();
-    stand();
+  function werBinIch() {
+    var m = /(^|;\s*)bp_wer=([^;]*)/.exec(document.cookie);
+    return m ? decodeURIComponent(m[2]) : '';
   }
 
-  function tokenStand() {
+  function anmeldeStand() {
     if (!tokenBox) return;
-    var da = !!token();
+    var da = angemeldet();
     tokenBox.setAttribute('data-hat', da ? '1' : '');
     var s = tokenBox.querySelector('.lay-key-stand');
-    if (s) s.textContent = da ? '열쇠 등록됨 — 저장할 수 있습니다'
-                              : '열쇠 없음 — 지금은 보기만 됩니다';
+    if (s) s.textContent = da ? werBinIch() + ' 로 로그인됨' : '로그인하면 저장할 수 있습니다';
   }
 
   if (tokenBox) {
-    // Nur auf den bekannten Adressen anbieten. Eine Kopie dieser Seite auf
-    // einer fremden Domain bekommt so kein Eingabefeld fuer den Schluessel.
-    var host = location.hostname;
-    var erlaubt = host === 'www.boram-park.com' || host === 'boram-park.com' ||
-                  host === 'localhost' || host === '127.0.0.1';
-    if (!erlaubt) {
-      tokenBox.remove();
-      tokenBox = null;
-    } else {
-      tokenBox.querySelector('.lay-key-save').addEventListener('click', function () {
-        var feld = tokenBox.querySelector('.lay-key-feld');
-        tokenSetzen(feld.value.trim());
-        feld.value = '';
-      });
-      tokenBox.querySelector('.lay-key-weg').addEventListener('click', function () {
-        tokenSetzen('');
-      });
-      tokenStand();
-    }
+    var ab = tokenBox.querySelector('.lay-key-weg');
+    if (ab) ab.addEventListener('click', function () {
+      document.cookie = 'bp_wer=; Path=/; Max-Age=0';
+      // Das eigentliche Cookie kann nur der Server loeschen.
+      location.href = '/api/logout';
+    });
+    anmeldeStand();
   }
 
   // ---------------------------------------------------------------- Speichern
-  function b64(text) {
-    // btoa allein geht schief: 'Ü' liegt unter 256 und wirft keinen Fehler,
-    // erzeugt aber die falschen Bytes. Erst nach UTF-8 kodieren.
-    var bytes = new TextEncoder().encode(text), s = '';
-    for (var i = 0; i < bytes.length; i += 0x8000) {
-      s += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
-    }
-    return btoa(s);
-  }
-
-  function entb64(s) {
-    var bin = atob(String(s).replace(/\s/g, ''));
-    return new TextDecoder('utf-8').decode(
-      Uint8Array.from(bin, function (c) { return c.charCodeAt(0); }));
-  }
-
-  function kopf() {
-    return { Authorization: 'Bearer ' + token(), Accept: 'application/vnd.github+json',
-             'X-GitHub-Api-Version': '2022-11-28' };
-  }
-
   function melden(text, schlecht) {
     check.textContent = text;
     if (schlecht) check.setAttribute('data-bad', '1');
     else check.removeAttribute('data-bad');
   }
 
-  function speichern(nochmal) {
-    if (!token() || !geaendert() || sperre) return;
+  /* Geschrieben wird ueber /api/save auf derselben Adresse. Der GitHub-Zugang
+     bleibt dort; hier geht nur raus, was angezeigt wird. Die Funktion laesst
+     ausserdem nur content/works/<slug>.json zu und prueft die Form - ein
+     abhanden gekommenes Cookie kann so nicht das Repo umschreiben. */
+  function speichern() {
+    if (!angemeldet() || !geaendert() || sperre) return;
     sperre = true; stand();
     melden('저장하는 중…');
 
-    fetch(API + pfad + '?ref=main', { headers: kopf(), cache: 'no-store' })
-      .then(function (r) {
-        if (r.status === 401) throw new Error('401');
-        if (r.status === 404) throw new Error('404');
-        if (!r.ok) throw new Error(String(r.status));
-        return r.json();
-      })
-      .then(function (datei) {
-        // Auf den frischen Stand aufsetzen, nicht blind ueberschreiben: Titel
-        // oder Jahr koennten inzwischen anderswo geaendert worden sein.
-        var frisch = JSON.parse(entb64(datei.content));
-        frisch.blocks = W.blocks;
-        var text = JSON.stringify(frisch, null, 2);     // wie json.dumps(indent=2)
-        if (text === entb64(datei.content)) {
-          sperre = false; melden('바뀐 것이 없습니다.'); stand(); return null;
-        }
-        return fetch(API + pfad, {
-          method: 'PUT', headers: kopf(),
-          body: JSON.stringify({
-            message: 'Update ' + pfad + ' (via Layout-Editor)',   // nie [skip ci]
-            content: b64(text), sha: datei.sha, branch: 'main'
-          })
-        });
-      })
-      .then(function (r) {
-        if (!r) return;
-        if (r.status === 409 || r.status === 422) {
-          if (nochmal) throw new Error('konflikt');
-          sperre = false;
-          return speichern(true);                       // einmal mit frischem sha
-        }
-        if (!r.ok) throw new Error(String(r.status));
+    fetch('/api/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'same-origin',
+      body: JSON.stringify({ slug: W.slug, blocks: W.blocks })
+    }).then(function (r) {
+      return r.json().then(function (d) { return { status: r.status, d: d }; });
+    }).then(function (a) {
+      if (a.status === 200) {
         sauber = JSON.stringify(W.blocks);
+        if (a.d.gleich) { melden('바뀐 것이 없습니다.'); sperre = false; stand(); return; }
         melden('저장했습니다 · 사이트를 다시 만드는 중입니다 (보통 1~2분)');
         stand();
         warten(0);
         setTimeout(function () { sperre = false; stand(); }, 10000);
-      })
-      .catch(function (err) {
-        sperre = false; stand();
-        var m = String(err.message);
-        if (m === '401') { tokenSetzen(''); melden('열쇠가 만료되었거나 취소되었습니다. 다시 등록해 주세요.', 1); }
-        else if (m === '404') melden('이 열쇠로는 저장소에 접근할 수 없습니다. 권한을 확인해 주세요.', 1);
-        else if (m === 'konflikt') melden('다른 곳에서 같은 작품이 수정되었습니다. 새로고침한 뒤 다시 해주세요.', 1);
-        else melden('저장하지 못했습니다 (' + m + '). 고친 내용은 그대로 있습니다.', 1);
-      });
+        return;
+      }
+      sperre = false; stand();
+      if (a.status === 401) { anmeldeStand(); melden('로그인이 풀렸습니다. 다시 로그인해 주세요.', 1); }
+      else if (a.status === 409) melden('다른 곳에서 같은 작품이 수정되었습니다. 새로고침한 뒤 다시 해주세요.', 1);
+      else if (a.d && a.d.fehler === 'form') melden('저장할 수 없는 모양입니다. 개발자에게 알려주세요.', 1);
+      else melden('저장하지 못했습니다. 고친 내용은 그대로 있습니다.', 1);
+    }).catch(function () {
+      sperre = false; stand();
+      melden('저장하지 못했습니다 — 인터넷 연결을 확인해 주세요.', 1);
+    });
   }
 
   /* Nicht die API fragen, sondern die fertige Seite: erst wenn dort dieselben
@@ -597,7 +543,7 @@
     return a.replace(/\s+/g, ' ').trim() === b.replace(/\s+/g, ' ').trim();
   }
 
-  if (saveBtn) saveBtn.addEventListener('click', function () { speichern(false); });
+  if (saveBtn) saveBtn.addEventListener('click', function () { speichern(); });
 
   window.addEventListener('beforeunload', function (ev) {
     if (geaendert()) { ev.preventDefault(); ev.returnValue = ''; }

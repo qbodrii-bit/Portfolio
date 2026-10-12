@@ -66,3 +66,26 @@ python -m http.server 8000
 - **영상 3점**(Lebensfluss, Übergabe, Ein Hammer)은 스틸 이미지만 있다. 영상 파일이나 Vimeo 링크가 없다.
 - **작가 스테이트먼트 없음** — `artist.json`의 `statement_de`는 CV 사실만으로 쓴 것이라, 작가 본인 문장이 있으면 교체해야 한다.
 - **배포 미연결** — Vercel(또는 Netlify)에 이 리포를 연결해야 실제 주소가 생긴다. 빌드 설정 없이 루트를 그대로 서빙하면 된다.
+
+## 로그인이 필요한 부분 (api/)
+
+`api/` 안의 네 파일은 Vercel이 자동으로 서버리스 함수로 만든다 (프레임워크 없는
+프로젝트에서도 `api/*.js`는 함수가 된다. 설정·빌드 불필요).
+
+```
+api/login.js     GitHub 인증으로 보냄
+api/callback.js  코드를 토큰으로 교환해 HttpOnly 쿠키에 암호화 보관
+api/save.js      쿠키의 토큰으로 작품 JSON 을 커밋. 쓸 수 있는 범위를 여기서 제한
+api/logout.js    쿠키 삭제
+```
+
+토큰은 브라우저 자바스크립트에서 읽을 수 없다. `save.js`는 요청 내용과 무관하게
+`content/works/<slug>.json` 만 쓰고, 블록 구조를 검사해 모르는 필드는 버린다.
+
+필요한 환경변수 (Vercel 대시보드):
+
+```
+GH_CLIENT_ID      GitHub App 의 Client ID
+GH_CLIENT_SECRET  GitHub App 의 Client secret
+COOKIE_SECRET     아무 긴 임의 문자열 (쿠키 암호화용)
+```

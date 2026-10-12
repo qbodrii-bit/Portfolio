@@ -1009,3 +1009,14 @@ body[data-section="layout"] .masthead {
 .lay-key-body button:hover { background: var(--bp-fg); color: var(--bp-bg); border-color: var(--bp-fg); }
 .lay-key-hilfe { font-size: 12px; }
 .lay-key-hilfe a { text-decoration: underline; }
+
+.lay-key-login {
+  font-size: 13px;
+  padding: 6px 14px;
+  border: 1px solid var(--bp-fg);
+  border-radius: 3px;
+  background: var(--bp-fg);
+  color: var(--bp-bg);
+}
+
+.lay-key-login:hover { background: var(--bp-bg); color: var(--bp-fg); }
