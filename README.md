@@ -28,7 +28,7 @@ design.md             디자인 시스템 기준 (색·서체·여백 규칙)
 **개발자** — `content/` 파일을 직접 고치고 스크립트를 돌린다.
 
 ```bash
-python scripts/prepare-images.py   # 색 프로파일 sRGB 변환 + 2400px 축소 + _sizes.json (pillow 필요)
+python scripts/prepare-images.py   # _sizes.json 기록만 (pillow 필요, 이미지 파일은 읽기만 함)
 python scripts/wire-content.py     # content/ → 모든 페이지 재생성 (표준 라이브러리만)
 ```
 

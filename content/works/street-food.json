@@ -14,28 +14,28 @@
   "images": [
     {
       "src": "/content/images/street-food/01.jpg",
-      "width": 30,
+      "width": 43,
       "full_row": true,
       "caption_de": "Schwarzwurst · Fotografie · 2025",
       "caption_en": "Schwarzwurst · Photography · 2025"
     },
     {
       "src": "/content/images/street-food/02.jpg",
-      "width": 30,
+      "width": 67,
       "full_row": false,
       "caption_de": "Toast · Fotografie · 2025",
       "caption_en": "Toast · Photography · 2025"
     },
     {
       "src": "/content/images/street-food/03.jpg",
-      "width": 30,
+      "width": 65,
       "full_row": false,
       "caption_de": "Leberkäse · Fotografie · 2026",
       "caption_en": "Leberkäse · Photography · 2026"
     },
     {
       "src": "/content/images/street-food/04.jpg",
-      "width": 30,
+      "width": 67,
       "full_row": false,
       "caption_de": "Dickmanns · Fotografie · 2026",
       "caption_en": "Dickmanns · Photography · 2026"

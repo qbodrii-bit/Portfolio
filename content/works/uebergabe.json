@@ -17,22 +17,22 @@
   "images": [
     {
       "src": "/content/images/uebergabe/01.jpg",
-      "width": 50,
+      "width": 100,
       "full_row": false
     },
     {
       "src": "/content/images/uebergabe/02.jpg",
-      "width": 50,
+      "width": 100,
       "full_row": false
     },
     {
       "src": "/content/images/uebergabe/03.jpg",
-      "width": 50,
+      "width": 100,
       "full_row": false
     },
     {
       "src": "/content/images/uebergabe/05.jpg",
-      "width": 50,
+      "width": 100,
       "full_row": false
     }
   ]

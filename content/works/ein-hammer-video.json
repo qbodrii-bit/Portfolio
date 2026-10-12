@@ -21,22 +21,22 @@
     },
     {
       "src": "/content/images/ein-hammer-video/1.jpg",
-      "width": 50,
+      "width": 100,
       "full_row": false
     },
     {
       "src": "/content/images/ein-hammer-video/2.jpg",
-      "width": 50,
+      "width": 100,
       "full_row": false
     },
     {
       "src": "/content/images/ein-hammer-video/3.jpg",
-      "width": 50,
+      "width": 100,
       "full_row": false
     },
     {
       "src": "/content/images/ein-hammer-video/4.jpg",
-      "width": 50,
+      "width": 100,
       "full_row": false
     }
   ]

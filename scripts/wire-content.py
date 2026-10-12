@@ -389,21 +389,23 @@ for w in works:
             cde = im["caption_de"]
             cen = im.get("caption_en") or cde
             cap = f'\n        <figcaption data-de="{e(cde)}" data-en="{e(cen)}">{e(cde)}</figcaption>'
-        # Groesse in Prozent der Originalbreite (100 = Originalgroesse);
-        # ohne bekannte Pixelmasse ersatzweise Prozent der Spalte.
+        # Groesse in Prozent der Spaltenbreite (100 = volle Spalte bzw. Zelle).
+        # Bewusst nicht aus den Pixelmassen gerechnet: prepare-images.py
+        # Gleiche Prozentwerte ergaeben sonst je nach Aufloesung der Datei
+        # verschiedene Groessen, und jedes erneute Hochladen desselben Fotos
+        # in anderer Aufloesung wuerde die Seite umbauen.
         pct = as_int(im.get("width"), 10, 100)
+        size_css = None if pct is None else f"{pct}%"
+        # Deckel: nie ueber die eigene Pixelbreite hinaus vergroessern, sonst
+        # wird ein knapp aufgeloestes Foto unscharf gezogen. Der Deckel greift
+        # nur, wenn die Datei zu klein ist - er bestimmt nie das Layout.
         natural = SIZES.get(rel(im["src"]))
-        if pct is None:
-            size_css = None
-        elif natural:
-            size_css = f"{round(natural[0] * pct / 100)}px"
-        else:
-            size_css = f"{pct}%"
+        max_css = f"{natural[0]}px" if natural else None
         align = as_align(im.get("align")) or base_align
         mark = "" if align == "left" else f' data-align="{align}"'
         if columns > 1 and im.get("full_row"):
             mark += ' data-full-row="true"'
-        figs.append(f"""      <figure{mark}{style_attr(w=size_css)}>
+        figs.append(f"""      <figure{mark}{style_attr(w=size_css, max=max_css)}>
         <img src="{rel(im['src'])}"{dims(im['src'])} loading="lazy" alt="{alt(w)}">{cap}
       </figure>""")
 

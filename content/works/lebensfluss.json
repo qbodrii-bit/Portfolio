@@ -13,22 +13,22 @@
   "images": [
     {
       "src": "/content/images/lebensfluss/01.jpg",
-      "width": 50,
+      "width": 100,
       "full_row": false
     },
     {
       "src": "/content/images/Lebensfluss_2.jpg",
-      "width": 60,
+      "width": 100,
       "full_row": false
     },
     {
       "src": "/content/images/Lebensfluss_3.jpg",
-      "width": 50,
+      "width": 100,
       "full_row": false
     },
     {
       "src": "/content/images/Lebensfluss_4.jpg",
-      "width": 50,
+      "width": 100,
       "full_row": false
     }
   ]
