@@ -1072,3 +1072,24 @@ body[data-section="layout"] .work-cell { position: relative; }
 .neu-arbeit { width: min(440px, 92vw); }
 .neu-arbeit .seiten-feld { margin-bottom: var(--bp-space-sm); }
 .neu-arbeit .layout-save { width: 100%; padding: 9px; }
+
+/* Selten gebrauchte Handgriffe: nicht in der Leiste, sondern dahinter */
+.layout-menu { position: relative; }
+.layout-menu summary { list-style: none; cursor: pointer; width: 30px; height: 28px;
+  display: grid; place-items: center; border: 1px solid var(--bp-hairline);
+  border-radius: 3px; font-size: 15px; color: var(--bp-fg-muted); }
+.layout-menu summary::-webkit-details-marker { display: none; }
+.layout-menu summary:hover { border-color: var(--bp-fg); color: var(--bp-fg); }
+.layout-menu-box { position: absolute; right: 0; top: calc(100% + 5px); z-index: 20;
+  background: var(--bp-bg); border: 1px solid var(--bp-hairline); border-radius: 4px;
+  box-shadow: 0 4px 10px rgba(15,15,15,.14); padding: 4px; min-width: 165px; }
+.layout-menu-box button { display: block; width: 100%; text-align: left; font: inherit;
+  font-size: 13px; padding: 7px 10px; border: 0; border-radius: 3px; background: none;
+  color: var(--bp-fg); cursor: pointer; white-space: nowrap; }
+.layout-menu-box button:hover { background: #F2F2F2; }
+.layout-menu-box button[data-tat="weg"]:hover { background: #C0392B; color: var(--bp-bg); }
+
+.loesch-name { font-size: 19px; margin: var(--bp-space-sm) 0 var(--bp-space-xs); }
+.loesch-los { font: inherit; font-size: 13px; width: 100%; padding: 9px; border: 0;
+  border-radius: 3px; background: #C0392B; color: #fff; cursor: pointer; }
+.loesch-los:disabled { background: #C9C9C9; cursor: not-allowed; }

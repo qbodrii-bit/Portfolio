@@ -527,7 +527,6 @@ def nav_auswahl(aktiv=""):
             f' data-href="admin-layout.html?w={w["slug"]}"'
             f' data-year="{w["year"]}" data-order="{w["order"]}"{sel}>'
             f'{e(sub_label(w, "de"))}</option>')
-    zeilen.append('          <option value="neu">＋ 새 작품 만들기</option>')
     zeilen.append('        </optgroup>')
     zeilen.append('        <optgroup label="다른 쪽">')
     zeilen.append('          <option value="bio" data-href="admin-seiten.html"'
@@ -643,7 +642,13 @@ layout_main = f"""  <main class="layout-main">
         <button type="button" data-set-lang="de" aria-pressed="true">DE</button>
         <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
       </div>
-      <a class="layout-link" href="{CMS_URL}">사진 올리러 가기</a>
+      <details class="layout-menu" id="handgriffe">
+        <summary aria-label="더 보기">⋯</summary>
+        <div class="layout-menu-box">
+          <button type="button" data-tat="neu">＋ 새 작품 만들기</button>
+          <button type="button" data-tat="weg">이 작품 삭제</button>
+        </div>
+      </details>
       <button type="button" class="layout-save" id="speichern" disabled>저장</button>
     </div>
 

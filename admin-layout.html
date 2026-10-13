@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=ae27a1d6">
+<link rel="stylesheet" href="assets/site.css?v=f4fc29a5">
 </head>
 <body data-section="layout">
 
@@ -35,7 +35,6 @@
           <option value="w:lebensfluss" data-path="content/works/lebensfluss.json" data-page="werk-lebensfluss.html" data-href="admin-layout.html?w=lebensfluss" data-year="2024" data-order="10">Lebensfluss</option>
           <option value="w:ein-hammer-installation" data-path="content/works/ein-hammer-installation.json" data-page="werk-ein-hammer-installation.html" data-href="admin-layout.html?w=ein-hammer-installation" data-year="2023" data-order="11">Ein Hammer · Installation</option>
           <option value="w:ein-hammer-video" data-path="content/works/ein-hammer-video.json" data-page="werk-ein-hammer-video.html" data-href="admin-layout.html?w=ein-hammer-video" data-year="2023" data-order="12">Ein Hammer · Video</option>
-          <option value="neu">＋ 새 작품 만들기</option>
         </optgroup>
         <optgroup label="다른 쪽">
           <option value="bio" data-href="admin-seiten.html">약력 · 연락처</option>
@@ -47,7 +46,13 @@
         <button type="button" data-set-lang="de" aria-pressed="true">DE</button>
         <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
       </div>
-      <a class="layout-link" href="https://app.pagescms.org/">사진 올리러 가기</a>
+      <details class="layout-menu" id="handgriffe">
+        <summary aria-label="더 보기">⋯</summary>
+        <div class="layout-menu-box">
+          <button type="button" data-tat="neu">＋ 새 작품 만들기</button>
+          <button type="button" data-tat="weg">이 작품 삭제</button>
+        </div>
+      </details>
       <button type="button" class="layout-save" id="speichern" disabled>저장</button>
     </div>
 
@@ -74,6 +79,6 @@
     <noscript><p class="layout-note">이 화면은 자바스크립트가 필요합니다.
       <a href="admin.html">관리 화면으로 돌아가기</a></p></noscript>
   </main>
-  <script src="assets/admin-layout.js?v=7d79915a"></script>
+  <script src="assets/admin-layout.js?v=cef1285b"></script>
 </body>
 </html>

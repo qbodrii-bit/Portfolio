@@ -731,6 +731,88 @@
     });
   }
 
+  /* Arbeit loeschen. Der Schritt ist selten und nicht zurueckzunehmen, deshalb
+     steht er im Menue und nicht in der Leiste, und das Fenster nennt die
+     Arbeit beim Namen, bevor etwas passiert.
+
+     Die Fotos bleiben liegen - sie koennen in einer anderen Arbeit stecken. */
+  function loeschen() {
+    var name = sel.options[sel.selectedIndex].textContent.trim();
+    var bilder = W.blocks.reduce(function (n, b) {
+      return n + (b.t === 'row' ? b.cells.filter(function (c) { return c.t === 'img'; }).length : 0);
+    }, 0);
+
+    var kasten = document.createElement('div');
+    kasten.className = 'lay-waehler';
+    kasten.innerHTML =
+      '<div class="lay-waehler-innen neu-arbeit">' +
+      '<p class="lay-waehler-kopf">작품 삭제' +
+      '<button type="button" class="lay-waehler-zu">닫기</button></p>' +
+      '<p class="loesch-name">' + esc(name) + '</p>' +
+      '<p class="lay-waehler-fuss" data-rolle="fuss">이 작품과 거기 담긴 글이 사이트에서 사라집니다.' +
+      (bilder ? ' 사진 ' + bilder + '장은 지워지지 않고 남습니다.' : '') +
+      ' 되돌리려면 개발자에게 말씀해 주세요 — 기록에는 남아 있습니다.</p>' +
+      '<p><button type="button" class="loesch-los" data-rolle="los">지웁니다</button></p>' +
+      '</div>';
+    document.body.appendChild(kasten);
+
+    var fuss = kasten.querySelector('[data-rolle="fuss"]');
+    var los = kasten.querySelector('[data-rolle="los"]');
+    kasten.addEventListener('click', function (ev) {
+      if (ev.target.closest('.lay-waehler-zu') || ev.target === kasten) kasten.remove();
+    });
+
+    los.addEventListener('click', function () {
+      los.disabled = true;
+      fuss.textContent = '지우는 중…';
+      fetch('/api/delete-work', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ slug: W.slug })
+      }).then(function (r) {
+        return r.json().then(function (d) { return { status: r.status, d: d }; });
+      }).then(function (a) {
+        los.disabled = false;
+        if (a.status === 200) {
+          sauber = JSON.stringify(W.blocks);        // beforeunload nicht ausloesen
+          var andere = [].filter.call(sel.querySelectorAll('option[data-path]'), function (o) {
+            return o.value !== 'w:' + W.slug;
+          })[0];
+          location.href = andere ? andere.getAttribute('data-href') : 'admin.html';
+          return;
+        }
+        if (a.d && a.d.fehler === 'startseite') {
+          fuss.textContent = '이 작품이 홈 화면의 표지로 걸려 있습니다. ' +
+            '홈 화면에서 다른 작품으로 바꾼 뒤에 지워 주세요.';
+        } else if (a.d && a.d.fehler === 'letzte') {
+          fuss.textContent = '마지막 남은 작품이라 지울 수 없습니다.';
+        } else if (a.status === 401) {
+          fuss.textContent = '로그인이 풀렸습니다. 새로고침한 뒤 다시 로그인해 주세요.';
+        } else {
+          fuss.textContent = '지우지 못했습니다. 잠시 뒤 다시 시도해 주세요.';
+        }
+      }).catch(function () {
+        los.disabled = false;
+        fuss.textContent = '지우지 못했습니다 — 인터넷 연결을 확인해 주세요.';
+      });
+    });
+  }
+
+  var handgriffe = document.getElementById('handgriffe');
+  if (handgriffe) {
+    handgriffe.addEventListener('click', function (ev) {
+      var b = ev.target.closest('[data-tat]');
+      if (!b) return;
+      handgriffe.open = false;
+      if (b.getAttribute('data-tat') === 'neu') neueArbeit();
+      else if (W) loeschen();
+    });
+    // Klick daneben schliesst das Menue
+    document.addEventListener('click', function (ev) {
+      if (!ev.target.closest('#handgriffe')) handgriffe.open = false;
+    });
+  }
+
   // ------------------------------------------------------------------ Laden
   function laden(slug) {
     if (W && geaendert() && !confirm('저장하지 않은 변경이 있습니다. 버리고 넘어갈까요?')) {
@@ -774,7 +856,6 @@
     // Die Auswahl fuehrt auch auf das Formular fuer Lebenslauf und Startseite.
     // Beides sind eigene Adressen - die eine traegt eine Buehne, die andere ein
     // Formular - aber zum Wechseln soll dieses eine Feld reichen.
-    if (o.value === 'neu') { neueArbeit(); return; }
     if (!o.getAttribute('data-path')) {
       if (geaendert() && !confirm('저장하지 않은 변경이 있습니다. 버리고 넘어갈까요?')) {
         sel.value = 'w:' + W.slug;
