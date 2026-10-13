@@ -641,6 +641,96 @@
       .catch(function () { /* offline: Anzeige stimmt trotzdem */ });
   }
 
+  /* Neue Arbeit anlegen. Sie entsteht leer - Titel und Jahr genuegen, alles
+     weitere macht die Kuenstlerin danach hier im Editor.
+
+     Mehrere Arbeiten teilen sich einen Titel (die vier "Haeutung"), und der
+     Titel bestimmt die Adresse. Taucht sie schon auf, fragt das Fenster nach
+     einem unterscheidenden Wort statt die bestehende Arbeit zu ueberschreiben. */
+  function neueArbeit() {
+    var kasten = document.createElement('div');
+    kasten.className = 'lay-waehler';
+    kasten.innerHTML =
+      '<div class="lay-waehler-innen neu-arbeit">' +
+      '<p class="lay-waehler-kopf">새 작품 만들기' +
+      '<button type="button" class="lay-waehler-zu">닫기</button></p>' +
+      '<div class="seiten-feld"><label class="seiten-label">제목 (독일어)</label>' +
+      '<input class="seiten-ein" data-f="title" placeholder="Übergabe"></div>' +
+      '<div class="seiten-feld"><label class="seiten-label">제목 (영어)</label>' +
+      '<input class="seiten-ein" data-f="title_en" placeholder="Handover"></div>' +
+      '<div class="seiten-feld"><label class="seiten-label">연도</label>' +
+      '<input class="seiten-ein" data-f="year" type="number" value="' +
+      new Date().getFullYear() + '"></div>' +
+      '<div class="seiten-feld" data-rolle="zusatz" hidden>' +
+      '<label class="seiten-label">구분할 말</label>' +
+      '<input class="seiten-ein" data-f="suffix" placeholder="Kleiderbügel">' +
+      '<p class="seiten-hinweis">같은 제목의 작품이 이미 있습니다. ' +
+      '재료처럼 구분할 말을 덧붙여 주세요.</p></div>' +
+      '<p class="lay-waehler-fuss" data-rolle="fuss">만들면 빈 작품이 생기고 ' +
+      '바로 그 화면으로 넘어갑니다.</p>' +
+      '<p><button type="button" class="layout-save" data-rolle="los">만들기</button></p>' +
+      '</div>';
+    document.body.appendChild(kasten);
+
+    var fuss = kasten.querySelector('[data-rolle="fuss"]');
+    var los = kasten.querySelector('[data-rolle="los"]');
+    var feld = function (n) { return kasten.querySelector('[data-f="' + n + '"]'); };
+
+    function zu() { kasten.remove(); sel.value = W ? 'w:' + W.slug : sel.options[0].value; }
+    kasten.addEventListener('click', function (ev) {
+      if (ev.target.closest('.lay-waehler-zu') || ev.target === kasten) zu();
+    });
+
+    los.addEventListener('click', function () {
+      var titel = feld('title').value.trim();
+      var jahr = Number(feld('year').value);
+      if (!titel) { fuss.textContent = '제목을 적어 주세요.'; return; }
+      if (!(jahr >= 1900 && jahr <= 2999)) { fuss.textContent = '연도를 확인해 주세요.'; return; }
+
+      // Innerhalb eines Jahres sortiert "order"; die neue Arbeit kommt ans Ende.
+      var hoechste = 0;
+      [].forEach.call(sel.querySelectorAll('option[data-year]'), function (o) {
+        if (+o.getAttribute('data-year') === jahr) {
+          hoechste = Math.max(hoechste, +o.getAttribute('data-order') || 0);
+        }
+      });
+
+      los.disabled = true;
+      fuss.textContent = '만드는 중…';
+      fetch('/api/new-work', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({
+          title: titel, title_en: feld('title_en').value.trim(), year: jahr,
+          order: hoechste + 1, suffix: feld('suffix').value.trim()
+        })
+      }).then(function (r) {
+        return r.json().then(function (d) { return { status: r.status, d: d }; });
+      }).then(function (a) {
+        los.disabled = false;
+        if (a.status === 200) {
+          // Die Werkseite entsteht erst mit dem naechsten Aufbau; bis dahin
+          // laesst sich die Arbeit hier schon fuellen.
+          sauber = W ? JSON.stringify(W.blocks) : '';
+          location.href = 'admin-layout.html?w=' + a.d.slug;
+          return;
+        }
+        if (a.status === 409) {
+          kasten.querySelector('[data-rolle="zusatz"]').hidden = false;
+          fuss.textContent = '같은 주소(' + a.d.slug + ')가 이미 있습니다.';
+          feld('suffix').focus();
+        } else if (a.status === 401) {
+          fuss.textContent = '로그인이 풀렸습니다. 새로고침한 뒤 다시 로그인해 주세요.';
+        } else {
+          fuss.textContent = '만들지 못했습니다. 잠시 뒤 다시 시도해 주세요.';
+        }
+      }).catch(function () {
+        los.disabled = false;
+        fuss.textContent = '만들지 못했습니다 — 인터넷 연결을 확인해 주세요.';
+      });
+    });
+  }
+
   // ------------------------------------------------------------------ Laden
   function laden(slug) {
     if (W && geaendert() && !confirm('저장하지 않은 변경이 있습니다. 버리고 넘어갈까요?')) {
@@ -684,6 +774,7 @@
     // Die Auswahl fuehrt auch auf das Formular fuer Lebenslauf und Startseite.
     // Beides sind eigene Adressen - die eine traegt eine Buehne, die andere ein
     // Formular - aber zum Wechseln soll dieses eine Feld reichen.
+    if (o.value === 'neu') { neueArbeit(); return; }
     if (!o.getAttribute('data-path')) {
       if (geaendert() && !confirm('저장하지 않은 변경이 있습니다. 버리고 넘어갈까요?')) {
         sel.value = 'w:' + W.slug;

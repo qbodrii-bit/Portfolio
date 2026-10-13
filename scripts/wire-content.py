@@ -524,8 +524,10 @@ def nav_auswahl(aktiv=""):
             f'          <option value="w:{w["slug"]}"'
             f' data-path="content/works/{w["slug"]}.json"'
             f' data-page="{detail_href(w)}"'
-            f' data-href="admin-layout.html?w={w["slug"]}"{sel}>'
+            f' data-href="admin-layout.html?w={w["slug"]}"'
+            f' data-year="{w["year"]}" data-order="{w["order"]}"{sel}>'
             f'{e(sub_label(w, "de"))}</option>')
+    zeilen.append('          <option value="neu">＋ 새 작품 만들기</option>')
     zeilen.append('        </optgroup>')
     zeilen.append('        <optgroup label="다른 쪽">')
     zeilen.append('          <option value="bio" data-href="admin-seiten.html"'

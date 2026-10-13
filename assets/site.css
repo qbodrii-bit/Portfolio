@@ -1068,3 +1068,7 @@ body[data-section="layout"] .work-cell { position: relative; }
 .seiten-weg:hover { background: #C0392B; color: var(--bp-bg); border-color: #C0392B; }
 .seiten-neu { margin-top: 4px; }
 .seiten-neu:hover { background: var(--bp-fg); color: var(--bp-bg); border-color: var(--bp-fg); }
+
+.neu-arbeit { width: min(440px, 92vw); }
+.neu-arbeit .seiten-feld { margin-bottom: var(--bp-space-sm); }
+.neu-arbeit .layout-save { width: 100%; padding: 9px; }
