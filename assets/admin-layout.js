@@ -221,6 +221,14 @@
           '<span class="lay-trenner" data-tat="breite" data-i="' + i + '" data-t="' + t +
           '" style="left:' + (anteil(b, t) * 100) + '%"></span>');
       }
+      // Steht ein Bild allein in der Zeile, gibt es keinen Trenner - dann sitzt
+      // der Griff an seiner rechten Kante und aendert fill. Fuer die Hand ist
+      // es dieselbe Bewegung; welches Feld dahinter steht, muss niemand wissen.
+      if (b.cells.length === 1 && b.cells[0].t === 'img') {
+        el.insertAdjacentHTML('beforeend',
+          '<span class="lay-trenner" data-tat="fuellen" data-i="' + i +
+          '" style="left:' + (asInt(b.cells[0].fill, 10, 100) || 100) + '%"></span>');
+      }
       [].forEach.call(el.querySelectorAll(':scope > .work-cell'), function (zelle, j) {
         var c = b.cells[j];
         if (!c) return;
@@ -360,7 +368,7 @@
 
   // Ziehen: Trenner zwischen Zellen, und die Unterkante eines Leerraums
   stage.addEventListener('pointerdown', function (ev) {
-    var el = ev.target.closest('[data-tat="breite"], [data-tat="hoehe"]');
+    var el = ev.target.closest('[data-tat="breite"], [data-tat="hoehe"], [data-tat="fuellen"]');
     if (!el) return;
     ev.preventDefault();
     var art = el.getAttribute('data-tat');
@@ -376,6 +384,22 @@
         block.h = Math.max(0, Math.min(400, Math.round(h0 + ev2.clientY - y0)));
         node.style.setProperty('--h', block.h + 'px');
         if (label) label.textContent = '여백 ' + block.h + 'px';
+        stand();
+      });
+      return;
+    }
+
+    if (art === 'fuellen') {
+      var zelle = block.cells[0];
+      var voll = node.getBoundingClientRect();
+      move(function (ev2) {
+        var pct = Math.round((ev2.clientX - voll.left) / voll.width * 100);
+        pct = Math.max(10, Math.min(100, pct));
+        zelle.fill = pct === 100 ? undefined : pct;
+        if (zelle.fill === undefined) delete zelle.fill;
+        var fig = node.querySelector('.work-cell');
+        if (fig) fig.style.setProperty('--w', pct + '%');
+        el.style.left = pct + '%';
         stand();
       });
       return;
@@ -428,13 +452,59 @@
     var kasten = document.createElement('div');
     kasten.className = 'lay-waehler';
     kasten.innerHTML = '<div class="lay-waehler-innen"><p class="lay-waehler-kopf">' +
-      '사진 고르기 <button type="button" class="lay-waehler-zu">닫기</button></p>' +
+      '사진 고르기 <span><label class="lay-waehler-neu">사진 올리기' +
+      '<input type="file" accept="image/jpeg,image/png,image/webp" hidden></label> ' +
+      '<button type="button" class="lay-waehler-zu">닫기</button></span></p>' +
       '<div class="lay-waehler-gitter">' + bilder.map(function (src) {
         return '<button type="button" data-src="' + esc(src) + '"><img src="' + esc(src) +
                '" loading="lazy" alt=""></button>';
       }).join('') + '</div>' +
-      '<p class="lay-waehler-fuss">여기에 없는 사진은 Pages CMS에서 먼저 올려야 합니다.</p></div>';
+      '<p class="lay-waehler-fuss" data-rolle="fuss">올린 사진은 바로 쓸 수 있습니다. ' +
+      '사진 크기는 3MB까지입니다.</p></div>';
     document.body.appendChild(kasten);
+
+    var fuss = kasten.querySelector('[data-rolle="fuss"]');
+    kasten.querySelector('.lay-waehler-neu input').addEventListener('change', function (ev) {
+      var datei = ev.target.files && ev.target.files[0];
+      if (!datei) return;
+      if (datei.size > 3 * 1024 * 1024) {
+        fuss.textContent = '이 사진은 ' + Math.round(datei.size / 1048576 * 10) / 10 +
+          'MB 라 올릴 수 없습니다 (3MB까지). 더 작은 파일로 올려주세요.';
+        return;
+      }
+      fuss.textContent = '올리는 중…';
+      var leser = new FileReader();
+      leser.onload = function () {
+        // Nur der Teil hinter dem Komma ist der Inhalt
+        var daten = String(leser.result).split(',')[1] || '';
+        fetch('/api/upload', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          credentials: 'same-origin',
+          body: JSON.stringify({ ordner: W.slug, name: datei.name, typ: datei.type, daten: daten })
+        }).then(function (r) {
+          return r.json().then(function (d) { return { status: r.status, d: d }; });
+        }).then(function (a) {
+          if (a.status === 200) {
+            kasten.remove();
+            fertig(a.d.pfad);
+            return;
+          }
+          if (a.status === 409) {
+            fuss.textContent = '같은 이름의 사진이 이미 있습니다. 파일 이름을 바꿔서 올려주세요.';
+          } else if (a.status === 401) {
+            fuss.textContent = '로그인이 풀렸습니다. 새로고침한 뒤 다시 로그인해 주세요.';
+          } else if (a.d && a.d.fehler === 'kein-bild') {
+            fuss.textContent = '사진 파일이 아닙니다 (jpg, png, webp 만 됩니다).';
+          } else {
+            fuss.textContent = '올리지 못했습니다. 잠시 뒤 다시 시도해 주세요.';
+          }
+        }).catch(function () {
+          fuss.textContent = '올리지 못했습니다 — 인터넷 연결을 확인해 주세요.';
+        });
+      };
+      leser.readAsDataURL(datei);
+    });
+
     kasten.addEventListener('click', function (ev) {
       var b = ev.target.closest('[data-src]');
       if (b) { kasten.remove(); fertig('/' + b.getAttribute('data-src')); return; }

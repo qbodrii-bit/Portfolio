@@ -1026,3 +1026,15 @@ body[data-section="layout"] .work-cell { position: relative; }
 }
 
 .lay-key-login:hover { background: var(--bp-bg); color: var(--bp-fg); }
+
+.lay-waehler-neu {
+  font-size: 12px;
+  padding: 4px 10px;
+  border: 1px solid var(--bp-fg);
+  border-radius: 3px;
+  background: var(--bp-fg);
+  color: var(--bp-bg);
+  cursor: pointer;
+}
+
+.lay-waehler-neu:hover { background: var(--bp-bg); color: var(--bp-fg); }
