@@ -895,32 +895,56 @@ body[data-section="layout"] .masthead {
 
 /* Ecke eines Bildes, das sich die Zeile teilt: ziehen aendert, wie viel von
    seiner Spalte es einnimmt. Die Kante selbst gehoert dem Trenner. */
+/* Der Rahmen liegt ueber dem Bild (Seitenverhaeltnis kommt vom Editor) und
+   laesst Klicks durch; nur der Griff in seiner Ecke faengt sie. */
 .lay-ecke {
   position: absolute;
+  left: 0;
   right: 0;
-  bottom: 0;
-  width: 18px;
-  height: 18px;
-  cursor: nwse-resize;
+  top: 0;
   z-index: 9;
-  touch-action: none;
+  pointer-events: none;
   opacity: 0;
-  background: linear-gradient(135deg, transparent 50%, rgba(255, 255, 255, .94) 50%);
 }
 
 .lay-ecke::after {
   content: '';
   position: absolute;
-  right: 3px;
-  bottom: 3px;
-  width: 7px;
-  height: 7px;
-  border-right: 2px solid var(--bp-fg);
-  border-bottom: 2px solid var(--bp-fg);
+  right: 0;
+  bottom: 0;
+  width: 18px;
+  height: 18px;
+  box-sizing: border-box;
+  border: 4px solid transparent;
+  border-right-color: var(--bp-fg);
+  border-bottom-color: var(--bp-fg);
+  background: rgba(255, 255, 255, .94);
+  cursor: nwse-resize;
+  pointer-events: auto;
+  touch-action: none;
 }
 
 .work-cell:hover > .lay-ecke { opacity: 1; }
-.work-cell[data-align="right"] > .lay-ecke { right: auto; left: 0; transform: scaleX(-1); cursor: nesw-resize; }
+.work-cell[data-align="right"] > .lay-ecke { transform: scaleX(-1); }
+.work-cell[data-align="right"] > .lay-ecke::after { cursor: nesw-resize; }
+
+/* Bildunterschrift: steht dort, wo spaeter figcaption steht, in derselben
+   Schrift - nur eben zum Hineinschreiben. */
+.lay-cap {
+  display: block;
+  width: 100%;
+  font: inherit;
+  font-size: 14px;
+  line-height: inherit;
+  color: var(--bp-fg-muted);
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: var(--bp-space-xs) 0 0;
+}
+
+.lay-cap:focus { outline: 0; color: var(--bp-fg); }
+.lay-cap::placeholder { color: #C4C4C4; }
 
 /* Zellenknoepfe: nur beim Darueberfahren, oben rechts in der Zelle.
    Die Zelle braucht dafuer einen eigenen Bezugspunkt - ohne ihn haengen alle

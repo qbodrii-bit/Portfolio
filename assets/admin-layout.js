@@ -35,6 +35,7 @@
   var seite = '';         // werk-<slug>.html
   var sauber = '';        // Stand beim Laden, fuer "geaendert?"
   var sperre = false;     // kurz nach dem Speichern
+  var capOffen = '';      // "i:j" - Bildunterschrift, die gerade erst angelegt wird
   var knoten = [];        // Element je Block - nicht stage.children benutzen,
                           // dort kommen spaeter noch Bedienelemente dazu
 
@@ -191,7 +192,8 @@
   function cellBar(i, j, cell) {
     var tausch = cell.t === 'img'
       ? '<button type="button" data-tat="zuText" data-i="' + i + '" data-j="' + j + '">글로</button>' +
-        '<button type="button" data-tat="bild" data-i="' + i + '" data-j="' + j + '">사진 교체</button>'
+        '<button type="button" data-tat="bild" data-i="' + i + '" data-j="' + j + '">사진 교체</button>' +
+        '<button type="button" data-tat="cap" data-i="' + i + '" data-j="' + j + '">캡션</button>'
       : '<button type="button" data-tat="zuBild" data-i="' + i + '" data-j="' + j + '">사진으로</button>';
     return '<div class="lay-cellbar" contenteditable="false">' + tausch + '</div>';
   }
@@ -236,9 +238,33 @@
         // Teilt sich das Bild die Zeile, gehoert die Kante dem Trenner. Dann
         // sitzt der Griff fuer fill an der Ecke des Bildes.
         if (c.t === 'img' && b.cells.length > 1) {
+          // Der Rahmen deckt genau das Bild, nicht die Unterschrift darunter -
+          // sonst haengt der Griff unter dem Text statt an der Bildecke.
+          var mass = sizes[relSrc(c.src)];
           zelle.insertAdjacentHTML('beforeend',
             '<span class="lay-ecke" data-tat="ecke" data-i="' + i + '" data-j="' + j +
+            '" style="' + (mass ? 'aspect-ratio:' + mass[0] + '/' + mass[1] : 'bottom:0') +
             '" title="끌어서 사진 크기 바꾸기"></span>');
+        }
+        // Die Unterschrift wird dort geschrieben, wo sie spaeter steht. Ein
+        // leeres Feld erscheint nur auf Wunsch (Knopf "캡션") - sonst stuende
+        // unter jedem Bild eine Zeile, die es auf der Seite nicht gibt.
+        if (c.t === 'img') {
+          var alt = zelle.querySelector('figcaption');
+          if (alt) alt.remove();
+          if (c.caption_de || c.caption_en || capOffen === i + ':' + j) {
+            var cap = document.createElement('input');
+            cap.className = 'lay-cap';
+            cap.type = 'text';
+            cap.maxLength = 300;
+            cap.placeholder = lang === 'de' ? '캡션 (독일어) — 비우면 사라집니다'
+                                            : '캡션 (영어) — 비우면 독일어 캡션이 나옵니다';
+            cap.value = c['caption_' + lang] || '';
+            cap.setAttribute('data-tat', 'cap');
+            cap.setAttribute('data-i', i);
+            cap.setAttribute('data-j', j);
+            zelle.querySelector('img').insertAdjacentElement('afterend', cap);
+          }
         }
         if (c.t === 'text') {
           var feld = document.createElement('textarea');
@@ -331,6 +357,14 @@
       });
       return true;                              // Auswahl laeuft, nicht neu zeichnen
     },
+    cap: function (b, el) {
+      capOffen = el.getAttribute('data-i') + ':' + el.getAttribute('data-j');
+      zeichnen();
+      var feld = stage.querySelector('.lay-cap[data-i="' + el.getAttribute('data-i') +
+                                     '"][data-j="' + el.getAttribute('data-j') + '"]');
+      if (feld) feld.focus();
+      return true;
+    },
     bild: function (b, el) {
       var j = +el.getAttribute('data-j');
       waehlen(function (src) { b.cells[j].src = src; aufraeumen(); zeichnen(); });
@@ -361,6 +395,20 @@
       var b = W.blocks[+el.getAttribute('data-i')];
       var c = b && b.cells[+el.getAttribute('data-j')];
       if (c) { c[lang] = el.value; wachsen(el); stand(); }
+    } else if (tat === 'cap') {
+      var zeile = W.blocks[+el.getAttribute('data-i')];
+      var bild = zeile && zeile.cells[+el.getAttribute('data-j')];
+      if (bild) {
+        // Beide neu setzen, de vor en: sonst rutscht ein geleertes und wieder
+        // gefuelltes Feld nach hinten und die Arbeit gilt als geaendert.
+        var paar = { de: bild.caption_de, en: bild.caption_en };
+        paar[lang] = el.value.trim() ? el.value : '';
+        delete bild.caption_de;
+        delete bild.caption_en;
+        if (paar.de) bild.caption_de = paar.de;
+        if (paar.en) bild.caption_en = paar.en;
+        stand();
+      }
     } else if (tat === 'gap') {
       var row = W.blocks[+el.getAttribute('data-i')];
       var n = asInt(el.value, 0, 200);
@@ -371,6 +419,11 @@
         stand();
       }
     }
+  });
+
+  // Eine leer verlassene Unterschrift verschwindet beim naechsten Zeichnen
+  stage.addEventListener('focusout', function (ev) {
+    if (ev.target.classList && ev.target.classList.contains('lay-cap')) capOffen = '';
   });
 
   // Ziehen: Trenner zwischen Zellen, und die Unterkante eines Leerraums
