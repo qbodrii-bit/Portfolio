@@ -787,6 +787,7 @@ body[data-section="layout"] .masthead {
 }
 
 .layout-check[data-bad] { color: #C0392B; }
+.layout-check:empty { display: none; }       /* ohne Meldung auch kein Strich */
 
 /* Die Verwaltungsliste hat jetzt zwei Links je Zeile. */
 .admin-row-links { display: flex; gap: var(--bp-space-sm); justify-content: flex-end; }

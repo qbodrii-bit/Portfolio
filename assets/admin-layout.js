@@ -723,7 +723,7 @@
         var huelse = doc.createElement('div');
         huelse.innerHTML = plainHtml();
         if (gleich(echt.innerHTML, huelse.innerHTML)) {
-          melden('이 화면은 실제 작품 페이지와 같은 내용입니다.');
+          melden('');                    // stimmt - das muss niemand lesen
         } else {
           melden('주의: 이 화면이 실제 작품 페이지와 다릅니다. 개발자에게 알려주세요.', 1);
         }
