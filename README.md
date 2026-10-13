@@ -11,19 +11,28 @@ werk-<slug>.html      작품 상세 (작품 수만큼 자동 생성)
 biography.html        학력 + 전시 이력
 contact.html          이메일
 admin.html            작가용 관리 화면 (메뉴에 없음, noindex, 주소로만 접근)
+admin-layout.html     작품 편집기 (줄·칸 블록을 직접 만지는 화면)
+admin-seiten.html     약력·연락처·홈 화면 편집 폼
+assets/admin-*.js     위 두 편집기의 스크립트
+api/                  저장·업로드·로그인용 서버리스 함수 (아래 참조)
 assets/site.css       사이트 전체 스타일 (한 파일)
 assets/site.js        DE/EN 전환
 content/              모든 내용의 원본 (아래 참조)
 scripts/              content → HTML 생성 스크립트
-.pages.yml            Pages CMS 편집 화면 정의 (한국어 라벨, 값은 독일어/영어)
+.pages.yml            예전 Pages CMS 설정. 더 이상 쓰지 않는다
 .github/workflows/    푸시되면 이미지 정리 + 페이지 재생성
 design.md             디자인 시스템 기준 (색·서체·여백 규칙)
 ```
 
 ## 편집 흐름
 
-**작가** — [pagescms.org](https://pagescms.org)에 GitHub 계정으로 로그인해서 폼으로 편집.
-저장하면 커밋 → GitHub Actions가 페이지를 다시 만들어 커밋 → 배포. 1~2분 걸린다.
+**작가** — `admin.html` → 편집기(`admin-layout.html`, `admin-seiten.html`)에서 GitHub 계정으로
+로그인해 편집. 저장하면 `api/` 함수가 `content/` 에 커밋 → GitHub Actions가 페이지를 다시
+만들어 커밋 → Vercel 배포. 1~2분 걸린다. 예전에 쓰던 Pages CMS는 걷어냈다.
+
+작품 HTML은 생성기(`scripts/wire-content.py`)와 편집기(`assets/admin-layout.js`)가 **각각
+구현**한다. 편집기는 열릴 때마다 실제 페이지와 대조해 어긋나면 경고한다 — 한쪽을 고치면
+다른 쪽도 반드시 고친다.
 
 **개발자** — `content/` 파일을 직접 고치고 스크립트를 돌린다.
 
@@ -65,22 +74,26 @@ python -m http.server 8000
 - **전시 이력 오타 의심** — `2026 Momentaufhanme / Atelieraltesthonet`. `Momentaufnahme`, `Atelier Altes Thonet`으로 보인다.
 - **영상 3점**(Lebensfluss, Übergabe, Ein Hammer)은 스틸 이미지만 있다. 영상 파일이나 Vimeo 링크가 없다.
 - **작가 스테이트먼트 없음** — `artist.json`의 `statement_de`는 CV 사실만으로 쓴 것이라, 작가 본인 문장이 있으면 교체해야 한다.
-- **배포 미연결** — Vercel(또는 Netlify)에 이 리포를 연결해야 실제 주소가 생긴다. 빌드 설정 없이 루트를 그대로 서빙하면 된다.
 
 ## 로그인이 필요한 부분 (api/)
 
-`api/` 안의 네 파일은 Vercel이 자동으로 서버리스 함수로 만든다 (프레임워크 없는
+`api/` 안의 파일은 Vercel이 자동으로 서버리스 함수로 만든다 (프레임워크 없는
 프로젝트에서도 `api/*.js`는 함수가 된다. 설정·빌드 불필요).
 
 ```
-api/login.js     GitHub 인증으로 보냄
-api/callback.js  코드를 토큰으로 교환해 HttpOnly 쿠키에 암호화 보관
-api/save.js      쿠키의 토큰으로 작품 JSON 을 커밋. 쓸 수 있는 범위를 여기서 제한
-api/logout.js    쿠키 삭제
+api/login.js        GitHub 인증으로 보냄
+api/callback.js     코드를 토큰으로 교환해 HttpOnly 쿠키에 암호화 보관
+api/logout.js       쿠키 삭제
+api/save.js         작품 JSON 을 커밋 (content/works/<slug>.json)
+api/save-page.js    약력·홈 JSON 을 커밋 (content/artist.json, content/site.json)
+api/upload.js       사진을 content/images/ 아래에 올림 (3MB까지, jpg/png/webp, 파일은 손대지 않음)
+api/new-work.js     새 작품 파일 생성. 같은 주소가 이미 있으면 거부
+api/delete-work.js  작품 파일 삭제. 사진은 남김. 마지막 작품과 홈 표지 작품은 거부
+api/_lib.js         공통 (쿠키 암호화, 저장소 이름)
 ```
 
-토큰은 브라우저 자바스크립트에서 읽을 수 없다. `save.js`는 요청 내용과 무관하게
-`content/works/<slug>.json` 만 쓰고, 블록 구조를 검사해 모르는 필드는 버린다.
+토큰은 브라우저 자바스크립트에서 읽을 수 없다. 각 함수는 요청 내용과 무관하게 위에 적힌
+경로에만 쓰고, 구조를 검사해 모르는 필드는 버린다.
 
 필요한 환경변수 (Vercel 대시보드):
 

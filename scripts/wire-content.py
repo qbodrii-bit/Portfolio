@@ -31,9 +31,6 @@ FONT = "https://fonts.googleapis.com/css2?family=Outfit:wght@400;900&display=swa
 # robots.txt, denn die ist oeffentlich und wuerde die Adresse erst verraten.
 REPO = "qbodrii-bit/Portfolio"
 WORKFLOW = "build.yml"
-# Die Sammlung laesst sich spaeter noch direkter ansteuern; die Adresse dafuer
-# nach dem ersten Login aus der Adresszeile uebernehmen.
-CMS_URL = "https://app.pagescms.org/"
 
 
 def asset(name):
