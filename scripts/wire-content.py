@@ -554,7 +554,7 @@ def nav_liste(aktiv_art, aktiv_wert=""):
 
 
 # ------------------------------------------------------------- admin.html
-# Interne Uebersicht fuer die Kuenstlerin: ein Weg ins Pages CMS, der Stand des
+# Interne Uebersicht fuer die Kuenstlerin: ein Weg in den Editor, der Stand des
 # letzten Aufbaus und eine Liste aller Seiten. Bewusst ohne Navigation, ohne
 # Sprachumschalter und mit noindex - sie gehoert nicht zum Portfolio.
 ADMIN_HEADER = """  <nav class="masthead" aria-label="Kopfzeile">
@@ -604,9 +604,9 @@ admin_main = f"""  <main>
     </header>
 
     <div class="admin-block">
-      <a class="admin-button" href="{CMS_URL}">사이트 편집하기</a>
-      <p class="admin-note">GitHub 계정으로 로그인합니다. 작품, 이미지, 약력, 홈 화면을
-        모두 폼으로 고칠 수 있습니다. 코드는 볼 일이 없습니다.</p>
+      <a class="admin-button" href="admin-layout.html">사이트 편집하기</a>
+      <p class="admin-note">편집기가 열립니다. 위쪽 탭에서 <em>작품</em> 과 <em>페이지</em>
+        (약력·연락처·홈 화면)를 오갑니다. 저장하려면 GitHub 계정으로 한 번 로그인합니다.</p>
     </div>
 
     <section class="admin-block">
