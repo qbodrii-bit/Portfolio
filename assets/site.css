@@ -725,7 +725,7 @@ body[data-section="layout"] .masthead {
 }
 
 .layout-main {
-  max-width: 1180px;
+  max-width: 1360px;
   margin: 0 auto;
   padding: var(--bp-space-md) var(--bp-space-md) var(--bp-space-xl);
 }
@@ -741,15 +741,6 @@ body[data-section="layout"] .masthead {
   background: var(--bp-bg);
   border-bottom: 1px solid var(--bp-hairline);
   padding: 10px 0;
-}
-
-.layout-select {
-  font: inherit;
-  font-size: 14px;
-  padding: 5px 8px;
-  border: 1px solid var(--bp-hairline);
-  border-radius: 3px;
-  background: var(--bp-bg);
 }
 
 .layout-state { font-size: 12px; color: var(--bp-fg-muted); }
@@ -1040,10 +1031,6 @@ body[data-section="layout"] .work-cell { position: relative; }
 .lay-waehler-neu:hover { background: var(--bp-bg); color: var(--bp-fg); }
 
 /* ---------- Verwaltung: 약력 und Startseite (admin-seiten.html) ---------- */
-.seiten-main { max-width: 760px; }
-.seiten-tabs { display: flex; border: 1px solid var(--bp-hairline); border-radius: 3px; overflow: hidden; }
-.seiten-tabs button { font: inherit; font-size: 13px; padding: 5px 14px; border: 0; background: var(--bp-bg); color: var(--bp-fg-muted); cursor: pointer; }
-.seiten-tabs button[aria-pressed="true"] { background: var(--bp-fg); color: var(--bp-bg); }
 
 .seiten-titel { font-size: 13px; font-weight: var(--bp-font-weight-normal); letter-spacing: .06em; color: var(--bp-fg-muted); margin: var(--bp-space-lg) 0 var(--bp-space-sm); padding-bottom: 6px; border-bottom: 1px solid var(--bp-hairline); }
 
@@ -1093,3 +1080,63 @@ body[data-section="layout"] .work-cell { position: relative; }
 .loesch-los { font: inherit; font-size: 13px; width: 100%; padding: 9px; border: 0;
   border-radius: 3px; background: #C0392B; color: #fff; cursor: pointer; }
 .loesch-los:disabled { background: #C9C9C9; cursor: not-allowed; }
+
+/* ---------- Editor: Reiter oben, Liste links ----------
+   Ein Auswahlfeld haette vierzehn Eintraege hinter einem Klick versteckt.
+   So steht offen da, was es gibt, und wo man gerade ist. */
+.ed-reiter-leiste { display: flex; gap: 2px; }
+
+.ed-reiter {
+  font-size: 14px;
+  padding: 6px 14px;
+  border-radius: 3px;
+  color: var(--bp-fg-muted);
+}
+
+.ed-reiter:hover { background: #F2F2F2; color: var(--bp-fg); }
+.ed-reiter[aria-current="page"] { background: var(--bp-fg); color: var(--bp-bg); }
+
+.ed-raum {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  gap: var(--bp-space-md);
+  align-items: start;
+  margin-top: var(--bp-space-md);
+}
+
+.ed-raum .layout-stage { margin-top: 0; }
+.ed-raum .seiten-titel:first-child { margin-top: 0; }
+
+.ed-liste {
+  position: sticky;
+  top: 58px;                      /* unter der Leiste */
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.ed-liste-eintrag, .ed-liste-neu {
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.4;
+  text-align: left;
+  padding: 7px 9px;
+  border: 0;
+  border-radius: 3px;
+  background: none;
+  color: var(--bp-fg-muted);
+  cursor: pointer;
+}
+
+.ed-liste-eintrag:hover, .ed-liste-neu:hover { background: #F2F2F2; color: var(--bp-fg); }
+.ed-liste-eintrag[data-aktiv] { background: #F2F2F2; color: var(--bp-fg); font-weight: 500; }
+.ed-liste-neu { margin-top: var(--bp-space-xs); color: var(--bp-fg); }
+
+.seiten-flaeche { max-width: 620px; }
+
+@media (max-width: 780px) {
+  /* Auf dem Telefon liegt die Liste oben und laeuft waagerecht */
+  .ed-raum { grid-template-columns: minmax(0, 1fr); gap: var(--bp-space-md); }
+  .ed-liste { position: static; flex-direction: row; flex-wrap: wrap; gap: 4px; }
+  .ed-liste-eintrag, .ed-liste-neu { border: 1px solid var(--bp-hairline); }
+}

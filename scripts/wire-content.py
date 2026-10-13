@@ -511,31 +511,47 @@ for w in works:
                                "work", "", main, current_slug=w["slug"]))
 
 
-# Beide Editorseiten tragen dieselbe Auswahl oben links. Die Adressen bleiben
-# getrennt - das eine ist eine Buehne, das andere ein Formular - aber zum
-# Wechseln muss niemand mehr ueber die Verwaltungsseite gehen.
-def nav_auswahl(aktiv=""):
-    zeilen = []
-    zeilen.append('      <select id="werk" class="layout-select" aria-label="고칠 곳">')
-    zeilen.append('        <optgroup label="작품">')
-    for w in works:
-        sel = " selected" if aktiv == "w:" + w["slug"] else ""
-        zeilen.append(
-            f'          <option value="w:{w["slug"]}"'
-            f' data-path="content/works/{w["slug"]}.json"'
-            f' data-page="{detail_href(w)}"'
-            f' data-href="admin-layout.html?w={w["slug"]}"'
-            f' data-year="{w["year"]}" data-order="{w["order"]}"{sel}>'
-            f'{e(sub_label(w, "de"))}</option>')
-    zeilen.append('        </optgroup>')
-    zeilen.append('        <optgroup label="페이지">')
-    zeilen.append('          <option value="bio" data-href="admin-seiten.html"'
-                  + (" selected" if aktiv == "bio" else "") + '>약력 · 연락처</option>')
-    zeilen.append('          <option value="home" data-href="admin-seiten.html?t=home"'
-                  + (" selected" if aktiv == "home" else "") + '>홈 화면</option>')
-    zeilen.append('        </optgroup>')
-    zeilen.append('      </select>')
+
+# Beide Editorseiten teilen sich denselben Rahmen: oben zwei Reiter, links die
+# Liste dessen, was darin steckt, rechts die Arbeitsflaeche. Ein Auswahlfeld
+# waere schneller gebaut gewesen, haette aber vierzehn Eintraege hinter einem
+# Klick versteckt - so steht alles offen da.
+def nav_reiter(aktiv):
+    def r(name, label, href):
+        an = ' aria-current="page"' if name == aktiv else ''
+        return f'        <a class="ed-reiter" href="{href}"{an}>{label}</a>'
+    return ('      <nav class="ed-reiter-leiste" aria-label="구역">\n'
+            + r("werk", "작품", "admin-layout.html") + '\n'
+            + r("seite", "페이지", "admin-seiten.html") + '\n'
+            + '      </nav>')
+
+
+def nav_liste(aktiv_art, aktiv_wert=""):
+    """Links: bei den Arbeiten die zwoelf Titel, bei den Seiten die zwei Seiten.
+
+    Die Arbeiten sind Knoepfe - der Editor laedt sie, ohne die Seite neu zu
+    holen. Die beiden Seiten ebenso, sie stecken im selben Formular."""
+    zeilen = ['      <nav class="ed-liste" aria-label="목록">']
+    if aktiv_art == "werk":
+        for w in works:
+            an = ' data-aktiv="1"' if aktiv_wert == w["slug"] else ''
+            zeilen.append(
+                f'        <button type="button" class="ed-liste-eintrag"'
+                f' data-slug="{w["slug"]}"'
+                f' data-path="content/works/{w["slug"]}.json"'
+                f' data-page="{detail_href(w)}"'
+                f' data-year="{w["year"]}" data-order="{w["order"]}"{an}>'
+                f'{e(sub_label(w, "de"))}</button>')
+        zeilen.append('        <button type="button" class="ed-liste-neu"'
+                      ' data-tat="neu">＋ 새 작품</button>')
+    else:
+        for name, label in (("bio", "약력 · 연락처"), ("home", "홈 화면")):
+            an = ' data-aktiv="1"' if aktiv_wert == name else ''
+            zeilen.append(f'        <button type="button" class="ed-liste-eintrag"'
+                          f' data-tab="{name}"{an}>{label}</button>')
+    zeilen.append('      </nav>')
     return "\n".join(zeilen)
+
 
 # ------------------------------------------------------------- admin.html
 # Interne Uebersicht fuer die Kuenstlerin: ein Weg ins Pages CMS, der Stand des
@@ -636,7 +652,7 @@ layout_options = "\n".join(
 
 layout_main = f"""  <main class="layout-main">
     <div class="layout-bar">
-{nav_auswahl()}
+{nav_reiter("werk")}
       <span class="layout-state" id="zustand">불러오는 중…</span>
       <div class="layout-lang" role="group" aria-label="Sprache">
         <button type="button" data-set-lang="de" aria-pressed="true">DE</button>
@@ -645,15 +661,17 @@ layout_main = f"""  <main class="layout-main">
       <details class="layout-menu" id="handgriffe">
         <summary aria-label="더 보기">⋯</summary>
         <div class="layout-menu-box">
-          <button type="button" data-tat="neu">＋ 새 작품 만들기</button>
           <button type="button" data-tat="weg">이 작품 삭제</button>
         </div>
       </details>
       <button type="button" class="layout-save" id="speichern" disabled>저장</button>
     </div>
 
-    <div class="layout-stage">
-      <div class="work-blocks" id="buehne"></div>
+    <div class="ed-raum">
+{nav_liste("werk")}
+      <div class="layout-stage">
+        <div class="work-blocks" id="buehne"></div>
+      </div>
     </div>
 
     <p class="layout-check" id="pruefung"></p>
@@ -721,7 +739,7 @@ werk_optionen = "\n".join(
 
 seiten_main = f"""  <main class="layout-main seiten-main">
     <div class="layout-bar">
-{nav_auswahl("bio")}
+{nav_reiter("seite")}
       <span class="layout-state" id="zustand">불러오는 중…</span>
       <div class="layout-lang" role="group" aria-label="Sprache">
         <button type="button" data-set-lang="de" aria-pressed="true">DE</button>
@@ -730,6 +748,9 @@ seiten_main = f"""  <main class="layout-main seiten-main">
       <button type="button" class="layout-save" id="speichern" disabled>저장</button>
     </div>
 
+    <div class="ed-raum">
+{nav_liste("seite", "bio")}
+      <div class="seiten-flaeche">
     <section class="seiten-block" data-tab="bio">
       <h2 class="seiten-titel">약력</h2>
 {BIO_FELDER}
@@ -751,6 +772,8 @@ seiten_main = f"""  <main class="layout-main seiten-main">
 {werk_optionen}
       </select>
     </section>
+      </div>
+    </div>
 
     <p class="layout-check" id="pruefung"></p>
 

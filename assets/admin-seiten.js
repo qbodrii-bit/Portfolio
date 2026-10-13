@@ -13,6 +13,7 @@
   var saveBtn = document.getElementById('speichern');
   var tokenBox = document.getElementById('schluessel');
   var werkliste = document.getElementById('werkliste');
+  var liste = document.querySelector('.ed-liste');
   if (!state || !saveBtn) return;
 
   var lang = 'de';
@@ -163,6 +164,12 @@
     document.querySelectorAll('.seiten-block').forEach(function (b) {
       b.hidden = b.getAttribute('data-tab') !== tab;
     });
+    if (liste) {
+      liste.querySelectorAll('[data-tab]').forEach(function (x) {
+        if (x.getAttribute('data-tab') === tab) x.setAttribute('data-aktiv', '1');
+        else x.removeAttribute('data-aktiv');
+      });
+    }
     var block = document.querySelector('.seiten-block[data-tab="' + tab + '"]');
     block.querySelectorAll('.seiten-feld').forEach(zeichneFeld);
     block.querySelectorAll('.seiten-liste').forEach(zeichneListe);
@@ -228,23 +235,16 @@
     if (geaendert()) { ev.preventDefault(); ev.returnValue = ''; }
   });
 
-  // Dieselbe Auswahl wie im Werkeditor. Fuehrt sie auf eine Arbeit, wechselt
-  // die Seite; die beiden Eintraege dieser Seite schalten nur den Abschnitt um.
-  var auswahl = document.getElementById('werk');
-  if (auswahl) {
-    auswahl.addEventListener('change', function () {
-      var o = auswahl.options[auswahl.selectedIndex];
-      if (o.getAttribute('data-path')) {
-        if (geaendert() && !confirm('저장하지 않은 변경이 있습니다. 버리고 넘어갈까요?')) {
-          auswahl.value = tab;
-          return;
-        }
-        sauber.artist = JSON.stringify(D.artist);     // beforeunload nicht ausloesen
-        sauber.site = JSON.stringify(D.site);
-        location.href = o.getAttribute('data-href');
-        return;
+  // Die Liste links schaltet nur den Abschnitt um - beide Seiten stecken im
+  // selben Formular und werden zusammen gespeichert, darum keine Rueckfrage.
+  if (liste) {
+    liste.addEventListener('click', function (ev) {
+      var el = ev.target.closest('[data-tab]');
+      if (!el || !D.artist || el.getAttribute('data-tab') === tab) return;
+      tab = el.getAttribute('data-tab');
+      if (history.replaceState) {
+        history.replaceState(null, '', tab === 'home' ? '?t=home' : location.pathname);
       }
-      tab = o.value;
       zeichnen();
     });
   }
@@ -285,10 +285,7 @@
     sauber.artist = JSON.stringify(D.artist);
     sauber.site = JSON.stringify(D.site);
     bilder = Object.keys(a[2] || {}).sort();
-    if (new URLSearchParams(location.search).get('t') === 'home') {
-      tab = 'home';
-      if (auswahl) auswahl.value = 'home';
-    }
+    if (new URLSearchParams(location.search).get('t') === 'home') tab = 'home';
     zeichnen();
   }).catch(function () {
     state.textContent = '불러오지 못했습니다';

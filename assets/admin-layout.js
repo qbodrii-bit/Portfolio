@@ -16,13 +16,13 @@
 (function () {
   'use strict';
 
-  var sel = document.getElementById('werk');
+  var liste = document.querySelector('.ed-liste');
   var stage = document.getElementById('buehne');
   var state = document.getElementById('zustand');
   var check = document.getElementById('pruefung');
   var saveBtn = document.getElementById('speichern');
   var tokenBox = document.getElementById('schluessel');
-  if (!sel || !stage) return;
+  if (!liste || !stage) return;
 
   var GAP_DEFAULT = 16;
 
@@ -676,7 +676,7 @@
     var los = kasten.querySelector('[data-rolle="los"]');
     var feld = function (n) { return kasten.querySelector('[data-f="' + n + '"]'); };
 
-    function zu() { kasten.remove(); sel.value = W ? 'w:' + W.slug : sel.options[0].value; }
+    function zu() { kasten.remove(); }
     kasten.addEventListener('click', function (ev) {
       if (ev.target.closest('.lay-waehler-zu') || ev.target === kasten) zu();
     });
@@ -689,7 +689,7 @@
 
       // Innerhalb eines Jahres sortiert "order"; die neue Arbeit kommt ans Ende.
       var hoechste = 0;
-      [].forEach.call(sel.querySelectorAll('option[data-year]'), function (o) {
+      [].forEach.call(liste.querySelectorAll('[data-year]'), function (o) {
         if (+o.getAttribute('data-year') === jahr) {
           hoechste = Math.max(hoechste, +o.getAttribute('data-order') || 0);
         }
@@ -737,7 +737,7 @@
 
      Die Fotos bleiben liegen - sie koennen in einer anderen Arbeit stecken. */
   function loeschen() {
-    var name = sel.options[sel.selectedIndex].textContent.trim();
+    var name = (liste.querySelector('[data-aktiv]') || {}).textContent || W.slug;
     var bilder = W.blocks.reduce(function (n, b) {
       return n + (b.t === 'row' ? b.cells.filter(function (c) { return c.t === 'img'; }).length : 0);
     }, 0);
@@ -775,10 +775,11 @@
         los.disabled = false;
         if (a.status === 200) {
           sauber = JSON.stringify(W.blocks);        // beforeunload nicht ausloesen
-          var andere = [].filter.call(sel.querySelectorAll('option[data-path]'), function (o) {
-            return o.value !== 'w:' + W.slug;
+          var andere = [].filter.call(liste.querySelectorAll('[data-path]'), function (o) {
+            return o.getAttribute('data-slug') !== W.slug;
           })[0];
-          location.href = andere ? andere.getAttribute('data-href') : 'admin.html';
+          location.href = andere
+            ? 'admin-layout.html?w=' + andere.getAttribute('data-slug') : 'admin.html';
           return;
         }
         if (a.d && a.d.fehler === 'startseite') {
@@ -804,8 +805,7 @@
       var b = ev.target.closest('[data-tat]');
       if (!b) return;
       handgriffe.open = false;
-      if (b.getAttribute('data-tat') === 'neu') neueArbeit();
-      else if (W) loeschen();
+      if (W) loeschen();
     });
     // Klick daneben schliesst das Menue
     document.addEventListener('click', function (ev) {
@@ -816,12 +816,14 @@
   // ------------------------------------------------------------------ Laden
   function laden(slug) {
     if (W && geaendert() && !confirm('저장하지 않은 변경이 있습니다. 버리고 넘어갈까요?')) {
-      sel.value = 'w:' + W.slug;
       return;
     }
-    var option = sel.querySelector('option[value="w:' + CSS.escape(slug) + '"]') ||
-                 sel.querySelector('option[data-path]');
-    sel.value = option.value;
+    var option = liste.querySelector('[data-slug="' + CSS.escape(slug) + '"]') ||
+                 liste.querySelector('[data-path]');
+    liste.querySelectorAll('[data-slug]').forEach(function (x) {
+      if (x === option) x.setAttribute('data-aktiv', '1');
+      else x.removeAttribute('data-aktiv');
+    });
     pfad = option.getAttribute('data-path');
     seite = option.getAttribute('data-page');
     state.textContent = '불러오는 중…';
@@ -840,7 +842,7 @@
         zeichnen();
         pruefen(meine);
         if (history.replaceState) {
-          history.replaceState(null, '', '?w=' + option.value.replace(/^w:/, ''));
+          history.replaceState(null, '', '?w=' + option.getAttribute('data-slug'));
         }
       })
       .catch(function () {
@@ -851,21 +853,13 @@
       });
   }
 
-  sel.addEventListener('change', function () {
-    var o = sel.options[sel.selectedIndex];
-    // Die Auswahl fuehrt auch auf das Formular fuer Lebenslauf und Startseite.
-    // Beides sind eigene Adressen - die eine traegt eine Buehne, die andere ein
-    // Formular - aber zum Wechseln soll dieses eine Feld reichen.
-    if (!o.getAttribute('data-path')) {
-      if (geaendert() && !confirm('저장하지 않은 변경이 있습니다. 버리고 넘어갈까요?')) {
-        sel.value = 'w:' + W.slug;
-        return;
-      }
-      sauber = JSON.stringify(W.blocks);         // beforeunload nicht ausloesen
-      location.href = o.getAttribute('data-href');
-      return;
-    }
-    laden(o.value.replace(/^w:/, ''));
+  liste.addEventListener('click', function (ev) {
+    var el = ev.target.closest('[data-slug], [data-tat="neu"]');
+    if (!el) return;
+    if (el.getAttribute('data-tat') === 'neu') { neueArbeit(); return; }
+    var slug = el.getAttribute('data-slug');
+    if (W && slug === W.slug) return;
+    laden(slug);
   });
 
   document.querySelectorAll('[data-set-lang]').forEach(function (b) {

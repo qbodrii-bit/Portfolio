@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site.css?v=f4fc29a5">
+<link rel="stylesheet" href="assets/site.css?v=e25528bb">
 </head>
 <body data-section="layout">
 
@@ -21,26 +21,10 @@
 
   <main class="layout-main">
     <div class="layout-bar">
-      <select id="werk" class="layout-select" aria-label="고칠 곳">
-        <optgroup label="작품">
-          <option value="w:uebergabe" data-path="content/works/uebergabe.json" data-page="werk-uebergabe.html" data-href="admin-layout.html?w=uebergabe" data-year="2026" data-order="1">Übergabe</option>
-          <option value="w:beruehrung" data-path="content/works/beruehrung.json" data-page="werk-beruehrung.html" data-href="admin-layout.html?w=beruehrung" data-year="2026" data-order="2">Berührung</option>
-          <option value="w:huelle" data-path="content/works/huelle.json" data-page="werk-huelle.html" data-href="admin-layout.html?w=huelle" data-year="2026" data-order="3">Hülle</option>
-          <option value="w:street-food" data-path="content/works/street-food.json" data-page="werk-street-food.html" data-href="admin-layout.html?w=street-food" data-year="2026" data-order="4">Street Food (Serie)</option>
-          <option value="w:haeutung-kleiderbuegel" data-path="content/works/haeutung-kleiderbuegel.json" data-page="werk-haeutung-kleiderbuegel.html" data-href="admin-layout.html?w=haeutung-kleiderbuegel" data-year="2026" data-order="7">Häutung · Kleiderbügel</option>
-          <option value="w:haeutung-reispapier" data-path="content/works/haeutung-reispapier.json" data-page="werk-haeutung-reispapier.html" data-href="admin-layout.html?w=haeutung-reispapier" data-year="2025" data-order="5">Häutung · Reispapier</option>
-          <option value="w:haeutung-leuchtkasten" data-path="content/works/haeutung-leuchtkasten.json" data-page="werk-haeutung-leuchtkasten.html" data-href="admin-layout.html?w=haeutung-leuchtkasten" data-year="2025" data-order="6">Häutung · Leuchtkasten</option>
-          <option value="w:haeutung-kosmetikmaske" data-path="content/works/haeutung-kosmetikmaske.json" data-page="werk-haeutung-kosmetikmaske.html" data-href="admin-layout.html?w=haeutung-kosmetikmaske" data-year="2025" data-order="8">Häutung · Kosmetikmaske</option>
-          <option value="w:ein-monat" data-path="content/works/ein-monat.json" data-page="werk-ein-monat.html" data-href="admin-layout.html?w=ein-monat" data-year="2025" data-order="9">Ein Monat</option>
-          <option value="w:lebensfluss" data-path="content/works/lebensfluss.json" data-page="werk-lebensfluss.html" data-href="admin-layout.html?w=lebensfluss" data-year="2024" data-order="10">Lebensfluss</option>
-          <option value="w:ein-hammer-installation" data-path="content/works/ein-hammer-installation.json" data-page="werk-ein-hammer-installation.html" data-href="admin-layout.html?w=ein-hammer-installation" data-year="2023" data-order="11">Ein Hammer · Installation</option>
-          <option value="w:ein-hammer-video" data-path="content/works/ein-hammer-video.json" data-page="werk-ein-hammer-video.html" data-href="admin-layout.html?w=ein-hammer-video" data-year="2023" data-order="12">Ein Hammer · Video</option>
-        </optgroup>
-        <optgroup label="페이지">
-          <option value="bio" data-href="admin-seiten.html">약력 · 연락처</option>
-          <option value="home" data-href="admin-seiten.html?t=home">홈 화면</option>
-        </optgroup>
-      </select>
+      <nav class="ed-reiter-leiste" aria-label="구역">
+        <a class="ed-reiter" href="admin-layout.html" aria-current="page">작품</a>
+        <a class="ed-reiter" href="admin-seiten.html">페이지</a>
+      </nav>
       <span class="layout-state" id="zustand">불러오는 중…</span>
       <div class="layout-lang" role="group" aria-label="Sprache">
         <button type="button" data-set-lang="de" aria-pressed="true">DE</button>
@@ -49,15 +33,31 @@
       <details class="layout-menu" id="handgriffe">
         <summary aria-label="더 보기">⋯</summary>
         <div class="layout-menu-box">
-          <button type="button" data-tat="neu">＋ 새 작품 만들기</button>
           <button type="button" data-tat="weg">이 작품 삭제</button>
         </div>
       </details>
       <button type="button" class="layout-save" id="speichern" disabled>저장</button>
     </div>
 
-    <div class="layout-stage">
-      <div class="work-blocks" id="buehne"></div>
+    <div class="ed-raum">
+      <nav class="ed-liste" aria-label="목록">
+        <button type="button" class="ed-liste-eintrag" data-slug="uebergabe" data-path="content/works/uebergabe.json" data-page="werk-uebergabe.html" data-year="2026" data-order="1">Übergabe</button>
+        <button type="button" class="ed-liste-eintrag" data-slug="beruehrung" data-path="content/works/beruehrung.json" data-page="werk-beruehrung.html" data-year="2026" data-order="2">Berührung</button>
+        <button type="button" class="ed-liste-eintrag" data-slug="huelle" data-path="content/works/huelle.json" data-page="werk-huelle.html" data-year="2026" data-order="3">Hülle</button>
+        <button type="button" class="ed-liste-eintrag" data-slug="street-food" data-path="content/works/street-food.json" data-page="werk-street-food.html" data-year="2026" data-order="4">Street Food (Serie)</button>
+        <button type="button" class="ed-liste-eintrag" data-slug="haeutung-kleiderbuegel" data-path="content/works/haeutung-kleiderbuegel.json" data-page="werk-haeutung-kleiderbuegel.html" data-year="2026" data-order="7">Häutung · Kleiderbügel</button>
+        <button type="button" class="ed-liste-eintrag" data-slug="haeutung-reispapier" data-path="content/works/haeutung-reispapier.json" data-page="werk-haeutung-reispapier.html" data-year="2025" data-order="5">Häutung · Reispapier</button>
+        <button type="button" class="ed-liste-eintrag" data-slug="haeutung-leuchtkasten" data-path="content/works/haeutung-leuchtkasten.json" data-page="werk-haeutung-leuchtkasten.html" data-year="2025" data-order="6">Häutung · Leuchtkasten</button>
+        <button type="button" class="ed-liste-eintrag" data-slug="haeutung-kosmetikmaske" data-path="content/works/haeutung-kosmetikmaske.json" data-page="werk-haeutung-kosmetikmaske.html" data-year="2025" data-order="8">Häutung · Kosmetikmaske</button>
+        <button type="button" class="ed-liste-eintrag" data-slug="ein-monat" data-path="content/works/ein-monat.json" data-page="werk-ein-monat.html" data-year="2025" data-order="9">Ein Monat</button>
+        <button type="button" class="ed-liste-eintrag" data-slug="lebensfluss" data-path="content/works/lebensfluss.json" data-page="werk-lebensfluss.html" data-year="2024" data-order="10">Lebensfluss</button>
+        <button type="button" class="ed-liste-eintrag" data-slug="ein-hammer-installation" data-path="content/works/ein-hammer-installation.json" data-page="werk-ein-hammer-installation.html" data-year="2023" data-order="11">Ein Hammer · Installation</button>
+        <button type="button" class="ed-liste-eintrag" data-slug="ein-hammer-video" data-path="content/works/ein-hammer-video.json" data-page="werk-ein-hammer-video.html" data-year="2023" data-order="12">Ein Hammer · Video</button>
+        <button type="button" class="ed-liste-neu" data-tat="neu">＋ 새 작품</button>
+      </nav>
+      <div class="layout-stage">
+        <div class="work-blocks" id="buehne"></div>
+      </div>
     </div>
 
     <p class="layout-check" id="pruefung"></p>
@@ -79,6 +79,6 @@
     <noscript><p class="layout-note">이 화면은 자바스크립트가 필요합니다.
       <a href="admin.html">관리 화면으로 돌아가기</a></p></noscript>
   </main>
-  <script src="assets/admin-layout.js?v=cef1285b"></script>
+  <script src="assets/admin-layout.js?v=c269941d"></script>
 </body>
 </html>
