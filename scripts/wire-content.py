@@ -528,7 +528,7 @@ def nav_auswahl(aktiv=""):
             f' data-year="{w["year"]}" data-order="{w["order"]}"{sel}>'
             f'{e(sub_label(w, "de"))}</option>')
     zeilen.append('        </optgroup>')
-    zeilen.append('        <optgroup label="다른 쪽">')
+    zeilen.append('        <optgroup label="페이지">')
     zeilen.append('          <option value="bio" data-href="admin-seiten.html"'
                   + (" selected" if aktiv == "bio" else "") + '>약력 · 연락처</option>')
     zeilen.append('          <option value="home" data-href="admin-seiten.html?t=home"'
