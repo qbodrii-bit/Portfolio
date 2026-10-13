@@ -57,10 +57,14 @@ function saubereBloecke(roh) {
         }
         zellen.push(z);
       }
-      const zeile = { t: 'row', cells: zellen };
+      // Reihenfolge wie bei der Umstellung erzeugt (t, gap, va, cells) - sonst
+      // wandert gap hinter cells und jede Zeile taucht im Unterschied auf,
+      // auch die unveraenderten.
+      const zeile = { t: 'row' };
       const g = zahl(b.gap, 0, 400);
       if (g !== null) zeile.gap = g;
       if (b.va === 'center') zeile.va = 'center';
+      zeile.cells = zellen;
       out.push(zeile);
     } else {
       return null;
