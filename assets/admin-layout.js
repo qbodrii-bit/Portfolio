@@ -644,10 +644,11 @@
   // ------------------------------------------------------------------ Laden
   function laden(slug) {
     if (W && geaendert() && !confirm('저장하지 않은 변경이 있습니다. 버리고 넘어갈까요?')) {
-      sel.value = W.slug;
+      sel.value = 'w:' + W.slug;
       return;
     }
-    var option = sel.querySelector('option[value="' + CSS.escape(slug) + '"]') || sel.options[0];
+    var option = sel.querySelector('option[value="w:' + CSS.escape(slug) + '"]') ||
+                 sel.querySelector('option[data-path]');
     sel.value = option.value;
     pfad = option.getAttribute('data-path');
     seite = option.getAttribute('data-page');
@@ -666,7 +667,9 @@
         sauber = JSON.stringify(W.blocks);
         zeichnen();
         pruefen(meine);
-        if (history.replaceState) history.replaceState(null, '', '?w=' + option.value);
+        if (history.replaceState) {
+          history.replaceState(null, '', '?w=' + option.value.replace(/^w:/, ''));
+        }
       })
       .catch(function () {
         if (meine !== ladung) return;
@@ -676,7 +679,22 @@
       });
   }
 
-  sel.addEventListener('change', function () { laden(sel.value); });
+  sel.addEventListener('change', function () {
+    var o = sel.options[sel.selectedIndex];
+    // Die Auswahl fuehrt auch auf das Formular fuer Lebenslauf und Startseite.
+    // Beides sind eigene Adressen - die eine traegt eine Buehne, die andere ein
+    // Formular - aber zum Wechseln soll dieses eine Feld reichen.
+    if (!o.getAttribute('data-path')) {
+      if (geaendert() && !confirm('저장하지 않은 변경이 있습니다. 버리고 넘어갈까요?')) {
+        sel.value = 'w:' + W.slug;
+        return;
+      }
+      sauber = JSON.stringify(W.blocks);         // beforeunload nicht ausloesen
+      location.href = o.getAttribute('data-href');
+      return;
+    }
+    laden(o.value.replace(/^w:/, ''));
+  });
 
   document.querySelectorAll('[data-set-lang]').forEach(function (b) {
     b.addEventListener('click', function () {

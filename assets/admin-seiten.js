@@ -228,15 +228,26 @@
     if (geaendert()) { ev.preventDefault(); ev.returnValue = ''; }
   });
 
-  document.querySelectorAll('.seiten-tabs button').forEach(function (b) {
-    b.addEventListener('click', function () {
-      document.querySelectorAll('.seiten-tabs button').forEach(function (x) {
-        x.setAttribute('aria-pressed', String(x === b));
-      });
-      tab = b.getAttribute('data-tab');
+  // Dieselbe Auswahl wie im Werkeditor. Fuehrt sie auf eine Arbeit, wechselt
+  // die Seite; die beiden Eintraege dieser Seite schalten nur den Abschnitt um.
+  var auswahl = document.getElementById('werk');
+  if (auswahl) {
+    auswahl.addEventListener('change', function () {
+      var o = auswahl.options[auswahl.selectedIndex];
+      if (o.getAttribute('data-path')) {
+        if (geaendert() && !confirm('저장하지 않은 변경이 있습니다. 버리고 넘어갈까요?')) {
+          auswahl.value = tab;
+          return;
+        }
+        sauber.artist = JSON.stringify(D.artist);     // beforeunload nicht ausloesen
+        sauber.site = JSON.stringify(D.site);
+        location.href = o.getAttribute('data-href');
+        return;
+      }
+      tab = o.value;
       zeichnen();
     });
-  });
+  }
 
   document.querySelectorAll('[data-set-lang]').forEach(function (b) {
     b.addEventListener('click', function () {
@@ -276,9 +287,7 @@
     bilder = Object.keys(a[2] || {}).sort();
     if (new URLSearchParams(location.search).get('t') === 'home') {
       tab = 'home';
-      document.querySelectorAll('.seiten-tabs button').forEach(function (x) {
-        x.setAttribute('aria-pressed', String(x.getAttribute('data-tab') === 'home'));
-      });
+      if (auswahl) auswahl.value = 'home';
     }
     zeichnen();
   }).catch(function () {

@@ -21,10 +21,26 @@
 
   <main class="layout-main seiten-main">
     <div class="layout-bar">
-      <div class="seiten-tabs" role="group" aria-label="쪽">
-        <button type="button" data-tab="bio" aria-pressed="true">약력 · 연락처</button>
-        <button type="button" data-tab="home" aria-pressed="false">홈 화면</button>
-      </div>
+      <select id="werk" class="layout-select" aria-label="고칠 곳">
+        <optgroup label="작품">
+          <option value="w:uebergabe" data-path="content/works/uebergabe.json" data-page="werk-uebergabe.html" data-href="admin-layout.html?w=uebergabe">Übergabe</option>
+          <option value="w:beruehrung" data-path="content/works/beruehrung.json" data-page="werk-beruehrung.html" data-href="admin-layout.html?w=beruehrung">Berührung</option>
+          <option value="w:huelle" data-path="content/works/huelle.json" data-page="werk-huelle.html" data-href="admin-layout.html?w=huelle">Hülle</option>
+          <option value="w:street-food" data-path="content/works/street-food.json" data-page="werk-street-food.html" data-href="admin-layout.html?w=street-food">Street Food (Serie)</option>
+          <option value="w:haeutung-kleiderbuegel" data-path="content/works/haeutung-kleiderbuegel.json" data-page="werk-haeutung-kleiderbuegel.html" data-href="admin-layout.html?w=haeutung-kleiderbuegel">Häutung · Kleiderbügel</option>
+          <option value="w:haeutung-reispapier" data-path="content/works/haeutung-reispapier.json" data-page="werk-haeutung-reispapier.html" data-href="admin-layout.html?w=haeutung-reispapier">Häutung · Reispapier</option>
+          <option value="w:haeutung-leuchtkasten" data-path="content/works/haeutung-leuchtkasten.json" data-page="werk-haeutung-leuchtkasten.html" data-href="admin-layout.html?w=haeutung-leuchtkasten">Häutung · Leuchtkasten</option>
+          <option value="w:haeutung-kosmetikmaske" data-path="content/works/haeutung-kosmetikmaske.json" data-page="werk-haeutung-kosmetikmaske.html" data-href="admin-layout.html?w=haeutung-kosmetikmaske">Häutung · Kosmetikmaske</option>
+          <option value="w:ein-monat" data-path="content/works/ein-monat.json" data-page="werk-ein-monat.html" data-href="admin-layout.html?w=ein-monat">Ein Monat</option>
+          <option value="w:lebensfluss" data-path="content/works/lebensfluss.json" data-page="werk-lebensfluss.html" data-href="admin-layout.html?w=lebensfluss">Lebensfluss</option>
+          <option value="w:ein-hammer-installation" data-path="content/works/ein-hammer-installation.json" data-page="werk-ein-hammer-installation.html" data-href="admin-layout.html?w=ein-hammer-installation">Ein Hammer · Installation</option>
+          <option value="w:ein-hammer-video" data-path="content/works/ein-hammer-video.json" data-page="werk-ein-hammer-video.html" data-href="admin-layout.html?w=ein-hammer-video">Ein Hammer · Video</option>
+        </optgroup>
+        <optgroup label="다른 쪽">
+          <option value="bio" data-href="admin-seiten.html" selected>약력 · 연락처</option>
+          <option value="home" data-href="admin-seiten.html?t=home">홈 화면</option>
+        </optgroup>
+      </select>
       <span class="layout-state" id="zustand">불러오는 중…</span>
       <div class="layout-lang" role="group" aria-label="Sprache">
         <button type="button" data-set-lang="de" aria-pressed="true">DE</button>
@@ -91,6 +107,6 @@
     <noscript><p class="layout-note">이 화면은 자바스크립트가 필요합니다.
       <a href="admin.html">관리 화면으로 돌아가기</a></p></noscript>
   </main>
-  <script src="assets/admin-seiten.js?v=7dd403a2"></script>
+  <script src="assets/admin-seiten.js?v=6dec34a7"></script>
 </body>
 </html>

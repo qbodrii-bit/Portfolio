@@ -510,6 +510,32 @@ for w in works:
     write(detail_href(w), page(f"{e(w['title'])} — Boram Park", desc,
                                "work", "", main, current_slug=w["slug"]))
 
+
+# Beide Editorseiten tragen dieselbe Auswahl oben links. Die Adressen bleiben
+# getrennt - das eine ist eine Buehne, das andere ein Formular - aber zum
+# Wechseln muss niemand mehr ueber die Verwaltungsseite gehen.
+def nav_auswahl(aktiv=""):
+    zeilen = []
+    zeilen.append('      <select id="werk" class="layout-select" aria-label="고칠 곳">')
+    zeilen.append('        <optgroup label="작품">')
+    for w in works:
+        sel = " selected" if aktiv == "w:" + w["slug"] else ""
+        zeilen.append(
+            f'          <option value="w:{w["slug"]}"'
+            f' data-path="content/works/{w["slug"]}.json"'
+            f' data-page="{detail_href(w)}"'
+            f' data-href="admin-layout.html?w={w["slug"]}"{sel}>'
+            f'{e(sub_label(w, "de"))}</option>')
+    zeilen.append('        </optgroup>')
+    zeilen.append('        <optgroup label="다른 쪽">')
+    zeilen.append('          <option value="bio" data-href="admin-seiten.html"'
+                  + (" selected" if aktiv == "bio" else "") + '>약력 · 연락처</option>')
+    zeilen.append('          <option value="home" data-href="admin-seiten.html?t=home"'
+                  + (" selected" if aktiv == "home" else "") + '>홈 화면</option>')
+    zeilen.append('        </optgroup>')
+    zeilen.append('      </select>')
+    return "\n".join(zeilen)
+
 # ------------------------------------------------------------- admin.html
 # Interne Uebersicht fuer die Kuenstlerin: ein Weg ins Pages CMS, der Stand des
 # letzten Aufbaus und eine Liste aller Seiten. Bewusst ohne Navigation, ohne
@@ -609,9 +635,7 @@ layout_options = "\n".join(
 
 layout_main = f"""  <main class="layout-main">
     <div class="layout-bar">
-      <select id="werk" class="layout-select" aria-label="작품">
-{layout_options}
-      </select>
+{nav_auswahl()}
       <span class="layout-state" id="zustand">불러오는 중…</span>
       <div class="layout-lang" role="group" aria-label="Sprache">
         <button type="button" data-set-lang="de" aria-pressed="true">DE</button>
@@ -690,10 +714,7 @@ werk_optionen = "\n".join(
 
 seiten_main = f"""  <main class="layout-main seiten-main">
     <div class="layout-bar">
-      <div class="seiten-tabs" role="group" aria-label="쪽">
-        <button type="button" data-tab="bio" aria-pressed="true">약력 · 연락처</button>
-        <button type="button" data-tab="home" aria-pressed="false">홈 화면</button>
-      </div>
+{nav_auswahl("bio")}
       <span class="layout-state" id="zustand">불러오는 중…</span>
       <div class="layout-lang" role="group" aria-label="Sprache">
         <button type="button" data-set-lang="de" aria-pressed="true">DE</button>

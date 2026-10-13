@@ -21,19 +21,25 @@
 
   <main class="layout-main">
     <div class="layout-bar">
-      <select id="werk" class="layout-select" aria-label="작품">
-          <option value="uebergabe" data-path="content/works/uebergabe.json" data-page="werk-uebergabe.html">Übergabe</option>
-          <option value="beruehrung" data-path="content/works/beruehrung.json" data-page="werk-beruehrung.html">Berührung</option>
-          <option value="huelle" data-path="content/works/huelle.json" data-page="werk-huelle.html">Hülle</option>
-          <option value="street-food" data-path="content/works/street-food.json" data-page="werk-street-food.html">Street Food (Serie)</option>
-          <option value="haeutung-kleiderbuegel" data-path="content/works/haeutung-kleiderbuegel.json" data-page="werk-haeutung-kleiderbuegel.html">Häutung · Kleiderbügel</option>
-          <option value="haeutung-reispapier" data-path="content/works/haeutung-reispapier.json" data-page="werk-haeutung-reispapier.html">Häutung · Reispapier</option>
-          <option value="haeutung-leuchtkasten" data-path="content/works/haeutung-leuchtkasten.json" data-page="werk-haeutung-leuchtkasten.html">Häutung · Leuchtkasten</option>
-          <option value="haeutung-kosmetikmaske" data-path="content/works/haeutung-kosmetikmaske.json" data-page="werk-haeutung-kosmetikmaske.html">Häutung · Kosmetikmaske</option>
-          <option value="ein-monat" data-path="content/works/ein-monat.json" data-page="werk-ein-monat.html">Ein Monat</option>
-          <option value="lebensfluss" data-path="content/works/lebensfluss.json" data-page="werk-lebensfluss.html">Lebensfluss</option>
-          <option value="ein-hammer-installation" data-path="content/works/ein-hammer-installation.json" data-page="werk-ein-hammer-installation.html">Ein Hammer · Installation</option>
-          <option value="ein-hammer-video" data-path="content/works/ein-hammer-video.json" data-page="werk-ein-hammer-video.html">Ein Hammer · Video</option>
+      <select id="werk" class="layout-select" aria-label="고칠 곳">
+        <optgroup label="작품">
+          <option value="w:uebergabe" data-path="content/works/uebergabe.json" data-page="werk-uebergabe.html" data-href="admin-layout.html?w=uebergabe">Übergabe</option>
+          <option value="w:beruehrung" data-path="content/works/beruehrung.json" data-page="werk-beruehrung.html" data-href="admin-layout.html?w=beruehrung">Berührung</option>
+          <option value="w:huelle" data-path="content/works/huelle.json" data-page="werk-huelle.html" data-href="admin-layout.html?w=huelle">Hülle</option>
+          <option value="w:street-food" data-path="content/works/street-food.json" data-page="werk-street-food.html" data-href="admin-layout.html?w=street-food">Street Food (Serie)</option>
+          <option value="w:haeutung-kleiderbuegel" data-path="content/works/haeutung-kleiderbuegel.json" data-page="werk-haeutung-kleiderbuegel.html" data-href="admin-layout.html?w=haeutung-kleiderbuegel">Häutung · Kleiderbügel</option>
+          <option value="w:haeutung-reispapier" data-path="content/works/haeutung-reispapier.json" data-page="werk-haeutung-reispapier.html" data-href="admin-layout.html?w=haeutung-reispapier">Häutung · Reispapier</option>
+          <option value="w:haeutung-leuchtkasten" data-path="content/works/haeutung-leuchtkasten.json" data-page="werk-haeutung-leuchtkasten.html" data-href="admin-layout.html?w=haeutung-leuchtkasten">Häutung · Leuchtkasten</option>
+          <option value="w:haeutung-kosmetikmaske" data-path="content/works/haeutung-kosmetikmaske.json" data-page="werk-haeutung-kosmetikmaske.html" data-href="admin-layout.html?w=haeutung-kosmetikmaske">Häutung · Kosmetikmaske</option>
+          <option value="w:ein-monat" data-path="content/works/ein-monat.json" data-page="werk-ein-monat.html" data-href="admin-layout.html?w=ein-monat">Ein Monat</option>
+          <option value="w:lebensfluss" data-path="content/works/lebensfluss.json" data-page="werk-lebensfluss.html" data-href="admin-layout.html?w=lebensfluss">Lebensfluss</option>
+          <option value="w:ein-hammer-installation" data-path="content/works/ein-hammer-installation.json" data-page="werk-ein-hammer-installation.html" data-href="admin-layout.html?w=ein-hammer-installation">Ein Hammer · Installation</option>
+          <option value="w:ein-hammer-video" data-path="content/works/ein-hammer-video.json" data-page="werk-ein-hammer-video.html" data-href="admin-layout.html?w=ein-hammer-video">Ein Hammer · Video</option>
+        </optgroup>
+        <optgroup label="다른 쪽">
+          <option value="bio" data-href="admin-seiten.html">약력 · 연락처</option>
+          <option value="home" data-href="admin-seiten.html?t=home">홈 화면</option>
+        </optgroup>
       </select>
       <span class="layout-state" id="zustand">불러오는 중…</span>
       <div class="layout-lang" role="group" aria-label="Sprache">
@@ -67,6 +73,6 @@
     <noscript><p class="layout-note">이 화면은 자바스크립트가 필요합니다.
       <a href="admin.html">관리 화면으로 돌아가기</a></p></noscript>
   </main>
-  <script src="assets/admin-layout.js?v=c12d8a7c"></script>
+  <script src="assets/admin-layout.js?v=c1363999"></script>
 </body>
 </html>
