@@ -902,7 +902,13 @@ body[data-section="layout"] .masthead {
 .lay-block:hover .lay-trenner::after { background: var(--bp-hairline); }
 .lay-trenner:hover::after { background: var(--bp-fg); }
 
-/* Zellenknoepfe: nur beim Darueberfahren, oben rechts in der Zelle */
+/* Zellenknoepfe: nur beim Darueberfahren, oben rechts in der Zelle.
+   Die Zelle braucht dafuer einen eigenen Bezugspunkt - ohne ihn haengen alle
+   Knoepfe einer Zeile uebereinander am rechten Rand der ganzen Zeile.
+   Nur im Editor gesetzt, damit die ausgelieferte Seite unberuehrt bleibt;
+   ohne Verschiebung aendert position: relative am Aussehen nichts. */
+body[data-section="layout"] .work-cell { position: relative; }
+
 .lay-cellbar { position: absolute; right: 5px; top: 5px; display: none; gap: 3px; z-index: 9; }
 .work-cell:hover > .lay-cellbar { display: flex; }
 
