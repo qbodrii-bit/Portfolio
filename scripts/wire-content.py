@@ -545,9 +545,11 @@ other_rows = "\n".join([
     admin_row("약력",
               f"학력 {len(artist['education'])}건, "
               f"전시 {len(artist['exhibitions'])}건",
-              "biography.html"),
-    admin_row("연락처", artist.get("email", ""), "contact.html"),
-    admin_row("홈", "표지 이미지와 이름 아래 문구", "index.html"),
+              "biography.html", edit="admin-seiten.html"),
+    admin_row("연락처", artist.get("email", ""), "contact.html",
+              edit="admin-seiten.html"),
+    admin_row("홈", "표지 이미지와 이름 아래 문구", "index.html",
+              edit="admin-seiten.html?t=home"),
 ])
 
 admin_main = f"""  <main>
@@ -647,6 +649,101 @@ write("admin-layout.html", page("배치 — Boram Park", "작가용 내부 페�
                                 "layout", "", layout_main, noindex=True,
                                 header=ADMIN_HEADER, script=False, lang="ko",
                                 js="admin-layout.js"))
+
+
+# ---------------------------------------------------------- admin-seiten.html
+#약력 und Startseite sind keine Bloecke, sondern eine Handvoll Felder. Darum
+# hier ein schlichtes Formular statt der Buehne. Die Beschriftungen stehen in
+# diesem Erzeuger, damit alles Koreanische an einer Stelle bleibt - das Skript
+# assets/admin-seiten.js liest sie aus den data-Attributen.
+def feld(key, label, art="text", hinweis=""):
+    h = f' data-hinweis="{e(hinweis)}"' if hinweis else ""
+    return (f'        <div class="seiten-feld" data-key="{key}" data-art="{art}"'
+            f' data-label="{e(label)}"{h}></div>')
+
+
+BIO_FELDER = "\n".join([
+    feld("statement_de", "소개 글 (독일어)", "lang"),
+    feld("name", "이름"),
+    feld("born.year", "출생 연도", "zahl"),
+    feld("born.place_de", "출생 지역 (독일어)"),
+    feld("born.place_en", "출생 지역 (영어)"),
+])
+
+KONTAKT_FELDER = "\n".join([
+    feld("email", "이메일", "text", "연락처 페이지에 그대로 나갑니다"),
+    feld("contact_note_de", "안내 문구 (독일어)", "lang_kurz"),
+    feld("place_de", "하단 문구 (독일어)", "lang_kurz"),
+])
+
+HOME_FELDER = "\n".join([
+    feld("cover_image", "표지 사진", "bild"),
+    feld("cover_caption_title", "표지 캡션 (독일어)", "lang_kurz"),
+    feld("cover_caption_year", "표지 캡션 연도"),
+    feld("cover_link_slug", "표지를 누르면 열릴 작품", "werk"),
+    feld("tagline_de", "이름 아래 문구 (독일어)", "lang_kurz"),
+])
+
+werk_optionen = "\n".join(
+    f'          <option value="{w["slug"]}">{e(sub_label(w, "de"))}</option>'
+    for w in works)
+
+seiten_main = f"""  <main class="layout-main seiten-main">
+    <div class="layout-bar">
+      <div class="seiten-tabs" role="group" aria-label="쪽">
+        <button type="button" data-tab="bio" aria-pressed="true">약력 · 연락처</button>
+        <button type="button" data-tab="home" aria-pressed="false">홈 화면</button>
+      </div>
+      <span class="layout-state" id="zustand">불러오는 중…</span>
+      <div class="layout-lang" role="group" aria-label="Sprache">
+        <button type="button" data-set-lang="de" aria-pressed="true">DE</button>
+        <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <button type="button" class="layout-save" id="speichern" disabled>저장</button>
+    </div>
+
+    <section class="seiten-block" data-tab="bio">
+      <h2 class="seiten-titel">약력</h2>
+{BIO_FELDER}
+      <h2 class="seiten-titel">학력</h2>
+      <div class="seiten-liste" id="education"
+           data-spalten="period:기간|institution_de:학교|degree_de:과정·학위"></div>
+      <h2 class="seiten-titel">전시 이력</h2>
+      <div class="seiten-liste" id="exhibitions"
+           data-spalten="year:연도|title:전시명|venue:장소"></div>
+      <h2 class="seiten-titel">연락처</h2>
+{KONTAKT_FELDER}
+    </section>
+
+    <section class="seiten-block" data-tab="home" hidden>
+      <h2 class="seiten-titel">홈 화면</h2>
+{HOME_FELDER}
+      <select id="werkliste" hidden>
+          <option value="">(첫 작품)</option>
+{werk_optionen}
+      </select>
+    </section>
+
+    <p class="layout-check" id="pruefung"></p>
+
+    <details class="lay-key" id="schluessel">
+      <summary>로그인 <span class="lay-key-stand">로그인하면 저장할 수 있습니다</span></summary>
+      <div class="lay-key-body">
+        <p class="lay-key-zeile">
+          <a class="lay-key-login" href="/api/login">GitHub으로 로그인</a>
+          <button type="button" class="lay-key-weg">로그아웃</button>
+        </p>
+      </div>
+    </details>
+
+    <noscript><p class="layout-note">이 화면은 자바스크립트가 필요합니다.
+      <a href="admin.html">관리 화면으로 돌아가기</a></p></noscript>
+  </main>"""
+
+write("admin-seiten.html", page("약력·홈 — Boram Park", "작가용 내부 페이지.",
+                                "layout", "", seiten_main, noindex=True,
+                                header=ADMIN_HEADER, script=False, lang="ko",
+                                js="admin-seiten.js"))
 
 # die fruehere Uebersichtsseite gibt es nicht mehr
 old_index = os.path.join(SITE, "work.html")

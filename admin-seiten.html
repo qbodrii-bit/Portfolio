@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ko" data-lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>약력·홈 — Boram Park</title>
+<meta name="description" content="작가용 내부 페이지.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css?v=9f6c7070">
+</head>
+<body data-section="layout">
+
+  <nav class="masthead" aria-label="Kopfzeile">
+    <div class="masthead-bar">
+      <a class="nav-logo" href="index.html">Boram Park</a>
+    </div>
+  </nav>
+
+  <main class="layout-main seiten-main">
+    <div class="layout-bar">
+      <div class="seiten-tabs" role="group" aria-label="쪽">
+        <button type="button" data-tab="bio" aria-pressed="true">약력 · 연락처</button>
+        <button type="button" data-tab="home" aria-pressed="false">홈 화면</button>
+      </div>
+      <span class="layout-state" id="zustand">불러오는 중…</span>
+      <div class="layout-lang" role="group" aria-label="Sprache">
+        <button type="button" data-set-lang="de" aria-pressed="true">DE</button>
+        <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <button type="button" class="layout-save" id="speichern" disabled>저장</button>
+    </div>
+
+    <section class="seiten-block" data-tab="bio">
+      <h2 class="seiten-titel">약력</h2>
+        <div class="seiten-feld" data-key="statement_de" data-art="lang" data-label="소개 글 (독일어)"></div>
+        <div class="seiten-feld" data-key="name" data-art="text" data-label="이름"></div>
+        <div class="seiten-feld" data-key="born.year" data-art="zahl" data-label="출생 연도"></div>
+        <div class="seiten-feld" data-key="born.place_de" data-art="text" data-label="출생 지역 (독일어)"></div>
+        <div class="seiten-feld" data-key="born.place_en" data-art="text" data-label="출생 지역 (영어)"></div>
+      <h2 class="seiten-titel">학력</h2>
+      <div class="seiten-liste" id="education"
+           data-spalten="period:기간|institution_de:학교|degree_de:과정·학위"></div>
+      <h2 class="seiten-titel">전시 이력</h2>
+      <div class="seiten-liste" id="exhibitions"
+           data-spalten="year:연도|title:전시명|venue:장소"></div>
+      <h2 class="seiten-titel">연락처</h2>
+        <div class="seiten-feld" data-key="email" data-art="text" data-label="이메일" data-hinweis="연락처 페이지에 그대로 나갑니다"></div>
+        <div class="seiten-feld" data-key="contact_note_de" data-art="lang_kurz" data-label="안내 문구 (독일어)"></div>
+        <div class="seiten-feld" data-key="place_de" data-art="lang_kurz" data-label="하단 문구 (독일어)"></div>
+    </section>
+
+    <section class="seiten-block" data-tab="home" hidden>
+      <h2 class="seiten-titel">홈 화면</h2>
+        <div class="seiten-feld" data-key="cover_image" data-art="bild" data-label="표지 사진"></div>
+        <div class="seiten-feld" data-key="cover_caption_title" data-art="lang_kurz" data-label="표지 캡션 (독일어)"></div>
+        <div class="seiten-feld" data-key="cover_caption_year" data-art="text" data-label="표지 캡션 연도"></div>
+        <div class="seiten-feld" data-key="cover_link_slug" data-art="werk" data-label="표지를 누르면 열릴 작품"></div>
+        <div class="seiten-feld" data-key="tagline_de" data-art="lang_kurz" data-label="이름 아래 문구 (독일어)"></div>
+      <select id="werkliste" hidden>
+          <option value="">(첫 작품)</option>
+          <option value="uebergabe">Übergabe</option>
+          <option value="beruehrung">Berührung</option>
+          <option value="huelle">Hülle</option>
+          <option value="street-food">Street Food (Serie)</option>
+          <option value="haeutung-kleiderbuegel">Häutung · Kleiderbügel</option>
+          <option value="haeutung-reispapier">Häutung · Reispapier</option>
+          <option value="haeutung-leuchtkasten">Häutung · Leuchtkasten</option>
+          <option value="haeutung-kosmetikmaske">Häutung · Kosmetikmaske</option>
+          <option value="ein-monat">Ein Monat</option>
+          <option value="lebensfluss">Lebensfluss</option>
+          <option value="ein-hammer-installation">Ein Hammer · Installation</option>
+          <option value="ein-hammer-video">Ein Hammer · Video</option>
+      </select>
+    </section>
+
+    <p class="layout-check" id="pruefung"></p>
+
+    <details class="lay-key" id="schluessel">
+      <summary>로그인 <span class="lay-key-stand">로그인하면 저장할 수 있습니다</span></summary>
+      <div class="lay-key-body">
+        <p class="lay-key-zeile">
+          <a class="lay-key-login" href="/api/login">GitHub으로 로그인</a>
+          <button type="button" class="lay-key-weg">로그아웃</button>
+        </p>
+      </div>
+    </details>
+
+    <noscript><p class="layout-note">이 화면은 자바스크립트가 필요합니다.
+      <a href="admin.html">관리 화면으로 돌아가기</a></p></noscript>
+  </main>
+  <script src="assets/admin-seiten.js?v=7dd403a2"></script>
+</body>
+</html>

@@ -1038,3 +1038,33 @@ body[data-section="layout"] .work-cell { position: relative; }
 }
 
 .lay-waehler-neu:hover { background: var(--bp-bg); color: var(--bp-fg); }
+
+/* ---------- Verwaltung: 약력 und Startseite (admin-seiten.html) ---------- */
+.seiten-main { max-width: 760px; }
+.seiten-tabs { display: flex; border: 1px solid var(--bp-hairline); border-radius: 3px; overflow: hidden; }
+.seiten-tabs button { font: inherit; font-size: 13px; padding: 5px 14px; border: 0; background: var(--bp-bg); color: var(--bp-fg-muted); cursor: pointer; }
+.seiten-tabs button[aria-pressed="true"] { background: var(--bp-fg); color: var(--bp-bg); }
+
+.seiten-titel { font-size: 13px; font-weight: var(--bp-font-weight-normal); letter-spacing: .06em; color: var(--bp-fg-muted); margin: var(--bp-space-lg) 0 var(--bp-space-sm); padding-bottom: 6px; border-bottom: 1px solid var(--bp-hairline); }
+
+.seiten-feld { margin: 0 0 var(--bp-space-sm); }
+.seiten-label { display: block; font-size: 12px; color: var(--bp-fg-muted); margin-bottom: 4px; }
+.seiten-ein { width: 100%; font: inherit; font-size: 15px; line-height: 1.6; padding: 7px 9px; border: 1px solid var(--bp-hairline); border-radius: 3px; background: var(--bp-bg); color: var(--bp-fg); resize: vertical; }
+.seiten-ein:focus { outline: 0; border-color: var(--bp-fg); }
+.seiten-hinweis { font-size: 11px; color: var(--bp-fg-muted); margin: 4px 0 0; }
+
+.seiten-bild { display: flex; align-items: flex-start; gap: var(--bp-space-sm); }
+.seiten-bild img { width: 190px; aspect-ratio: 4 / 3; object-fit: cover; background: var(--bp-hairline); display: block; }
+.seiten-waehlen { font: inherit; font-size: 12px; padding: 5px 12px; border: 1px solid var(--bp-hairline); border-radius: 3px; background: none; cursor: pointer; }
+.seiten-waehlen:hover { background: var(--bp-fg); color: var(--bp-bg); border-color: var(--bp-fg); }
+
+/* Liste: eine Zeile je Eintrag, auf dem Telefon untereinander */
+.seiten-zeile { display: flex; gap: 8px; align-items: flex-end; margin-bottom: 8px; flex-wrap: wrap; }
+.seiten-zeile label { flex: 1; min-width: 120px; display: block; }
+.seiten-zeile span { display: block; font-size: 11px; color: var(--bp-fg-muted); margin-bottom: 3px; }
+.seiten-zeile input { width: 100%; font: inherit; font-size: 14px; padding: 5px 8px; border: 1px solid var(--bp-hairline); border-radius: 3px; }
+.seiten-zeile input:focus { outline: 0; border-color: var(--bp-fg); }
+.seiten-weg, .seiten-neu { font: inherit; font-size: 12px; padding: 5px 11px; border: 1px solid var(--bp-hairline); border-radius: 3px; background: none; cursor: pointer; color: var(--bp-fg-muted); }
+.seiten-weg:hover { background: #C0392B; color: var(--bp-bg); border-color: #C0392B; }
+.seiten-neu { margin-top: 4px; }
+.seiten-neu:hover { background: var(--bp-fg); color: var(--bp-bg); border-color: var(--bp-fg); }
