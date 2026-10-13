@@ -893,6 +893,35 @@ body[data-section="layout"] .masthead {
 .lay-block:hover .lay-trenner::after { background: var(--bp-hairline); }
 .lay-trenner:hover::after { background: var(--bp-fg); }
 
+/* Ecke eines Bildes, das sich die Zeile teilt: ziehen aendert, wie viel von
+   seiner Spalte es einnimmt. Die Kante selbst gehoert dem Trenner. */
+.lay-ecke {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 18px;
+  height: 18px;
+  cursor: nwse-resize;
+  z-index: 9;
+  touch-action: none;
+  opacity: 0;
+  background: linear-gradient(135deg, transparent 50%, rgba(255, 255, 255, .94) 50%);
+}
+
+.lay-ecke::after {
+  content: '';
+  position: absolute;
+  right: 3px;
+  bottom: 3px;
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid var(--bp-fg);
+  border-bottom: 2px solid var(--bp-fg);
+}
+
+.work-cell:hover > .lay-ecke { opacity: 1; }
+.work-cell[data-align="right"] > .lay-ecke { right: auto; left: 0; transform: scaleX(-1); cursor: nesw-resize; }
+
 /* Zellenknoepfe: nur beim Darueberfahren, oben rechts in der Zelle.
    Die Zelle braucht dafuer einen eigenen Bezugspunkt - ohne ihn haengen alle
    Knoepfe einer Zeile uebereinander am rechten Rand der ganzen Zeile.

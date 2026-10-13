@@ -233,6 +233,13 @@
         var c = b.cells[j];
         if (!c) return;
         zelle.insertAdjacentHTML('beforeend', cellBar(i, j, c));
+        // Teilt sich das Bild die Zeile, gehoert die Kante dem Trenner. Dann
+        // sitzt der Griff fuer fill an der Ecke des Bildes.
+        if (c.t === 'img' && b.cells.length > 1) {
+          zelle.insertAdjacentHTML('beforeend',
+            '<span class="lay-ecke" data-tat="ecke" data-i="' + i + '" data-j="' + j +
+            '" title="끌어서 사진 크기 바꾸기"></span>');
+        }
         if (c.t === 'text') {
           var feld = document.createElement('textarea');
           feld.className = 'lay-feld';
@@ -368,7 +375,8 @@
 
   // Ziehen: Trenner zwischen Zellen, und die Unterkante eines Leerraums
   stage.addEventListener('pointerdown', function (ev) {
-    var el = ev.target.closest('[data-tat="breite"], [data-tat="hoehe"], [data-tat="fuellen"]');
+    var el = ev.target.closest(
+      '[data-tat="breite"], [data-tat="hoehe"], [data-tat="fuellen"], [data-tat="ecke"]');
     if (!el) return;
     ev.preventDefault();
     var art = el.getAttribute('data-tat');
@@ -400,6 +408,35 @@
         var fig = node.querySelector('.work-cell');
         if (fig) fig.style.setProperty('--w', pct + '%');
         el.style.left = pct + '%';
+        stand();
+      });
+      return;
+    }
+
+    if (art === 'ecke') {
+      var j = +el.getAttribute('data-j');
+      var bild = block.cells[j];
+      var figur = node.querySelectorAll(':scope > .work-cell')[j];
+      if (!bild || !figur) return;
+      // fill zaehlt gegen die Spalte, nicht gegen das Bild: deren Breite steht
+      // aufgeloest im Raster, ihre Lage ergibt sich aus der Ausrichtung.
+      var spur = parseFloat(getComputedStyle(node).gridTemplateColumns.split(' ')[j]);
+      var kasten = figur.getBoundingClientRect();
+      var lage = asAlign(bild.align);
+      var fest = lage === 'right' ? kasten.right
+               : lage === 'center' ? kasten.left + kasten.width / 2 : kasten.left;
+      if (!spur) return;
+      var strecke = function (x) {
+        return lage === 'right' ? fest - x : lage === 'center' ? (x - fest) * 2 : x - fest;
+      };
+      // Der Griff sitzt ein Stueck innerhalb der Ecke - ohne diesen Ausgleich
+      // spraenge das Bild beim ersten Zucken um genau dieses Stueck.
+      var versatz = kasten.width - strecke(ev.clientX);
+      move(function (ev2) {
+        var weg = strecke(ev2.clientX) + versatz;
+        var pct = Math.max(10, Math.min(100, Math.round(weg / spur * 100)));
+        if (pct === 100) delete bild.fill; else bild.fill = pct;
+        figur.style.setProperty('--w', pct + '%');
         stand();
       });
       return;
