@@ -12,26 +12,19 @@
     {
       "t": "row",
       "gap": 16,
-      "cells": [
-        {
-          "t": "text",
-          "de": "Getrocknete Reispapierhüllen werden wie Kleidungsstücke aufgehängt. Sie erinnern an abwesende Körper, ohne sie darzustellen. Zwischen Material und Körper entsteht ein fragiler Zwischenzustand.",
-          "en": "Dried rice-paper shells are hung up like pieces of clothing. They recall absent bodies without depicting them. A fragile in-between state emerges between material and body."
-        }
-      ]
-    },
-    {
-      "t": "gap",
-      "h": 96
-    },
-    {
-      "t": "row",
-      "gap": 16,
+      "va": "center",
       "cells": [
         {
           "t": "img",
           "src": "/content/images/haeutung-kleiderbuegel/01.jpg",
-          "fill": 41
+          "w": 2,
+          "fill": 75
+        },
+        {
+          "t": "text",
+          "de": "Getrocknete Reispapierhüllen werden wie Kleidungsstücke aufgehängt. \n\nSie erinnern an abwesende Körper, ohne sie darzustellen. \n\nZwischen Material und Körper entsteht ein fragiler Zwischenzustand.",
+          "en": "",
+          "w": 1
         }
       ]
     },
@@ -50,6 +43,21 @@
         {
           "t": "img",
           "src": "/content/images/haeutung-kleiderbuegel/03.jpg"
+        }
+      ]
+    },
+    {
+      "t": "gap",
+      "h": 56
+    },
+    {
+      "t": "row",
+      "gap": 16,
+      "cells": [
+        {
+          "t": "img",
+          "src": "/content/images/haeutung-kleiderbuegel/faber-2026-1_hires-7.jpg",
+          "fill": 49
         }
       ]
     }
