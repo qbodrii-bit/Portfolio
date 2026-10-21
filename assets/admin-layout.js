@@ -926,7 +926,7 @@
       .then(function (work) {
         if (meine !== ladung) return;
         W = work;
-        W.slug = option.value;
+        W.slug = option.getAttribute('data-slug');
         W.blocks = cleanBlocks(work.blocks);
         sauber = JSON.stringify(W.blocks);
         zeichnen();
