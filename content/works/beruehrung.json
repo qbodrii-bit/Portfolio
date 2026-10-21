@@ -12,26 +12,19 @@
     {
       "t": "row",
       "gap": 16,
-      "cells": [
-        {
-          "t": "text",
-          "de": "Eine von Reispapier umhüllte Hand erinnert an eine dünne, schalenartige Oberfläche. Auf der Glastür begegnet sie allen, die den Raum betreten oder durchqueren.",
-          "en": "A hand wrapped in rice paper recalls a thin, shell-like surface. On the glass door it meets everyone who enters or crosses the room."
-        }
-      ]
-    },
-    {
-      "t": "gap",
-      "h": 96
-    },
-    {
-      "t": "row",
-      "gap": 16,
+      "va": "center",
       "cells": [
         {
           "t": "img",
           "src": "/content/images/beruehrung/01.jpg",
-          "fill": 44
+          "w": 2,
+          "fill": 74
+        },
+        {
+          "t": "text",
+          "de": "Eine von Reispapier umhüllte Hand erinnert an eine dünne, schalenartige Oberfläche.\n\n Auf der Glastür begegnet sie allen, die den Raum betreten oder durchqueren.",
+          "en": "",
+          "w": 1
         }
       ]
     }
