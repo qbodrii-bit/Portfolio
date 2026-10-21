@@ -28,6 +28,7 @@
 
   var lang = 'de';
   var sizes = {};
+  var web = {};           // Original -> verkleinerte Fassung fuer die Seite
   var bilder = [];        // alle hochgeladenen Bilder, fuer die Auswahl
   var ladung = 0;         // verwirft verspaetete Antworten
   var W = null;           // aktuelle Arbeit
@@ -57,6 +58,23 @@
   }
 
   function relSrc(src) { return String(src || '').replace(/^\/+/, ''); }
+
+  // = web_src(): grosse Originale zeigt die Seite in der Fassung aus
+  // content/images/_web/ (scripts/prepare-images.py), alle anderen unveraendert.
+  function webSrc(src) { var r = relSrc(src); return web[r] || r; }
+
+  function json(pfad) {
+    return fetch(pfad, { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : {}; })
+      .catch(function () { return {}; });
+  }
+
+  // Bildmasse und Fassungen schreibt die Action - nach einem Upload kommen
+  // sie erst mit dem naechsten Bauen, deshalb auch beim Warten neu holen.
+  function masseLaden() {
+    return Promise.all([json('content/images/_sizes.json'), json('content/images/_web.json')])
+      .then(function (alles) { sizes = alles[0] || {}; web = alles[1] || {}; });
+  }
 
   function styleAttr(props) {                     // = style_attr()
     var bits = [];
@@ -120,7 +138,7 @@
               '">' + esc(cde) + '</figcaption>';
       }
       return '      <figure class="work-cell"' + mark + styleAttr(style) + '>\n' +
-             '        <img src="' + esc(relSrc(cell.src)) + '"' + dims(cell.src) +
+             '        <img src="' + esc(webSrc(cell.src)) + '"' + dims(cell.src) +
              ' loading="lazy" alt="' + esc(altText(w)) + '">' + cap + '\n' +
              '      </figure>';
     }
@@ -537,6 +555,55 @@
     zeichnen();
   });
 
+  // ------------------------------------------------------------- Hochladen
+  /* Vercel nimmt hoechstens 4,5 MB pro Anfrage an, Kamerafotos sind groesser.
+     Also in Stuecken: jedes Stueck wird bei GitHub als Blob abgelegt, zum
+     Schluss setzt /api/upload sie zusammen und committet die Datei unveraendert.
+     2,5 MB pro Stueck sind mit Base64-Aufschlag sicher unter der Grenze. */
+  var UPLOAD_MAX = 40 * 1024 * 1024;
+  var STUECK = 2.5 * 1024 * 1024;
+
+  function post(body) {
+    return fetch('/api/upload', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      credentials: 'same-origin',
+      body: JSON.stringify(body)
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; })
+        .then(function (d) { return { status: r.status, d: d }; });
+    });
+  }
+
+  function base64(teil) {
+    return new Promise(function (ok, fehler) {
+      var leser = new FileReader();
+      // Nur der Teil hinter dem Komma ist der Inhalt
+      leser.onload = function () { ok(String(leser.result).split(',')[1] || ''); };
+      leser.onerror = fehler;
+      leser.readAsDataURL(teil);
+    });
+  }
+
+  function hochladen(datei, fortschritt) {
+    var shas = [];
+    var anzahl = Math.max(1, Math.ceil(datei.size / STUECK));
+    function naechstes(i) {
+      fortschritt(i / (anzahl + 1));
+      if (i === anzahl) {
+        return post({ schritt: 'fertig', ordner: W.slug, name: datei.name,
+                      typ: datei.type, teile: shas });
+      }
+      return base64(datei.slice(i * STUECK, (i + 1) * STUECK)).then(function (daten) {
+        return post({ schritt: 'teil', daten: daten });
+      }).then(function (a) {
+        if (a.status !== 200) return a;
+        shas.push(a.d.sha);
+        return naechstes(i + 1);
+      });
+    }
+    return naechstes(0);
+  }
+
   // ------------------------------------------------------------ Bildauswahl
   function waehlen(fertig) {
     var kasten = document.createElement('div');
@@ -546,53 +613,43 @@
       '<input type="file" accept="image/jpeg,image/png,image/webp" hidden></label> ' +
       '<button type="button" class="lay-waehler-zu">닫기</button></span></p>' +
       '<div class="lay-waehler-gitter">' + bilder.map(function (src) {
-        return '<button type="button" data-src="' + esc(src) + '"><img src="' + esc(src) +
+        return '<button type="button" data-src="' + esc(src) + '"><img src="' + esc(webSrc(src)) +
                '" loading="lazy" alt=""></button>';
       }).join('') + '</div>' +
       '<p class="lay-waehler-fuss" data-rolle="fuss">올린 사진은 바로 쓸 수 있습니다. ' +
-      '사진 크기는 3MB까지입니다.</p></div>';
+      '원본 그대로 올라가며, 한 장에 40MB까지입니다.</p></div>';
     document.body.appendChild(kasten);
 
     var fuss = kasten.querySelector('[data-rolle="fuss"]');
     kasten.querySelector('.lay-waehler-neu input').addEventListener('change', function (ev) {
       var datei = ev.target.files && ev.target.files[0];
       if (!datei) return;
-      if (datei.size > 3 * 1024 * 1024) {
+      if (datei.size > UPLOAD_MAX) {
         fuss.textContent = '이 사진은 ' + Math.round(datei.size / 1048576 * 10) / 10 +
-          'MB 라 올릴 수 없습니다 (3MB까지). 더 작은 파일로 올려주세요.';
+          'MB 라 올릴 수 없습니다 (40MB까지).';
         return;
       }
-      fuss.textContent = '올리는 중…';
-      var leser = new FileReader();
-      leser.onload = function () {
-        // Nur der Teil hinter dem Komma ist der Inhalt
-        var daten = String(leser.result).split(',')[1] || '';
-        fetch('/api/upload', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          credentials: 'same-origin',
-          body: JSON.stringify({ ordner: W.slug, name: datei.name, typ: datei.type, daten: daten })
-        }).then(function (r) {
-          return r.json().then(function (d) { return { status: r.status, d: d }; });
-        }).then(function (a) {
-          if (a.status === 200) {
-            kasten.remove();
-            fertig(a.d.pfad);
-            return;
-          }
-          if (a.status === 409) {
-            fuss.textContent = '같은 이름의 사진이 이미 있습니다. 파일 이름을 바꿔서 올려주세요.';
-          } else if (a.status === 401) {
-            fuss.textContent = '로그인이 풀렸습니다. 새로고침한 뒤 다시 로그인해 주세요.';
-          } else if (a.d && a.d.fehler === 'kein-bild') {
-            fuss.textContent = '사진 파일이 아닙니다 (jpg, png, webp 만 됩니다).';
-          } else {
-            fuss.textContent = '올리지 못했습니다. 잠시 뒤 다시 시도해 주세요.';
-          }
-        }).catch(function () {
-          fuss.textContent = '올리지 못했습니다 — 인터넷 연결을 확인해 주세요.';
-        });
-      };
-      leser.readAsDataURL(datei);
+      hochladen(datei, function (fertigAnteil) {
+        fuss.textContent = '올리는 중… ' + Math.round(fertigAnteil * 100) + '%';
+      }).then(function (a) {
+        if (a.status === 200) {
+          kasten.remove();
+          fertig(a.d.pfad);
+          return;
+        }
+        if (a.d && a.d.fehler === 'vorhanden') {
+          fuss.textContent = '같은 이름의 사진이 이미 있습니다. 파일 이름을 바꿔서 올려주세요.';
+        } else if (a.status === 401) {
+          fuss.textContent = '로그인이 풀렸습니다. 새로고침한 뒤 다시 로그인해 주세요.';
+        } else if (a.d && a.d.fehler === 'kein-bild') {
+          fuss.textContent = '사진 파일이 아닙니다 (jpg, png, webp 만 됩니다).';
+        } else {
+          fuss.textContent = '올리지 못했습니다. 잠시 뒤 다시 시도해 주세요. (' + a.status +
+            (a.d && a.d.fehler ? ' ' + a.d.fehler : '') + ')';
+        }
+      }).catch(function () {
+        fuss.textContent = '올리지 못했습니다 — 인터넷 연결을 확인해 주세요.';
+      });
     });
 
     kasten.addEventListener('click', function (ev) {
@@ -682,7 +739,9 @@
   function warten(versuch) {
     if (versuch > 36) { melden('아직 반영되지 않았습니다. 사이트 상태를 확인해 주세요.'); return; }
     setTimeout(function () {
-      fetch(seite + '?v=' + Date.now(), { cache: 'no-store' })
+      masseLaden().then(function () {
+        return fetch(seite + '?v=' + Date.now(), { cache: 'no-store' });
+      })
         .then(function (r) { return r.ok ? r.text() : ''; })
         .then(function (html) {
           var doc = new DOMParser().parseFromString(html, 'text/html');
@@ -962,11 +1021,7 @@
     });
   });
 
-  fetch('content/images/_sizes.json', { cache: 'no-store' })
-    .then(function (r) { return r.ok ? r.json() : {}; })
-    .catch(function () { return {}; })
-    .then(function (data) {
-      sizes = data || {};
+  masseLaden().then(function () {
       bilder = Object.keys(sizes).sort();
       laden(new URLSearchParams(location.search).get('w') || '');
     });

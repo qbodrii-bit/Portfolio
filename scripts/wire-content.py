@@ -59,6 +59,7 @@ def rel(src):
 
 
 SIZES = load(os.path.join("images", "_sizes.json"), {}) or {}
+WEB = load(os.path.join("images", "_web.json"), {}) or {}
 artist = load("artist.json")
 site = load("site.json", {}) or {}
 
@@ -322,6 +323,13 @@ def write(name, text):
         f.write(text)
 
 
+def web_src(src):
+    """Grosse Originale zeigt die Seite in ihrer Fassung aus content/images/_web/
+    (scripts/prepare-images.py). Masse bleiben die des Originals - gleiches
+    Seitenverhaeltnis, und der Deckel gegen Hochskalieren meint das Werk."""
+    return WEB.get(rel(src), rel(src))
+
+
 def dims(src):
     wh = SIZES.get(rel(src))
     return f' width="{wh[0]}" height="{wh[1]}"' if wh else ""
@@ -358,7 +366,7 @@ if tag_de:
 index_main = f"""  <main>
     <h1 class="visually-hidden">Boram Park — Portfolio</h1>{tagline_block}
     <a class="hero-work" href="werk-{cover_slug}.html">
-      <img class="hero-thumb" src="{rel(cover)}"{dims(cover)} alt="{e(cover_title)}, {cover_year} — Boram Park">
+      <img class="hero-thumb" src="{web_src(cover)}"{dims(cover)} alt="{e(cover_title)}, {cover_year} — Boram Park">
       <div class="hero-caption">
         <span class="hero-year">{cover_year}</span>
         <span class="hero-title" data-de="{e(cover_title)}" data-en="{e(cover_title_en)}">{e(cover_title)}</span>
@@ -459,7 +467,7 @@ def cell_html(cell, w):
             cen = cell.get("caption_en") or cde
             cap = (NL + f'        <figcaption data-de="{e(cde)}" data-en="{e(cen)}">'
                    f'{e(cde)}</figcaption>')
-        img = e(rel(cell["src"]))
+        img = e(web_src(cell["src"]))
         return (f'      <figure class="work-cell"{mark}{style_attr(**style)}>' + NL
                 + f'        <img src="{img}"{dims(cell["src"])} '
                   f'loading="lazy" alt="{alt(w)}">{cap}' + NL

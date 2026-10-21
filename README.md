@@ -37,7 +37,7 @@ design.md             디자인 시스템 기준 (색·서체·여백 규칙)
 **개발자** — `content/` 파일을 직접 고치고 스크립트를 돌린다.
 
 ```bash
-python scripts/prepare-images.py   # _sizes.json 기록만 (pillow 필요, 이미지 파일은 읽기만 함)
+python scripts/prepare-images.py   # _sizes.json + 큰 사진의 보기용 사본 (pillow 필요, 원본은 읽기만 함)
 python scripts/wire-content.py     # content/ → 모든 페이지 재생성 (표준 라이브러리만)
 ```
 
@@ -50,7 +50,8 @@ python scripts/wire-content.py     # content/ → 모든 페이지 재생성 (�
 content/works/<slug>.json   작품 1점 = 파일 1개. 파일 이름이 곧 URL(werk-<slug>.html)
 content/artist.json         약력, 학력, 전시, 이메일, 소개 문단
 content/site.json           홈 표지 이미지와 태그라인
-content/images/<slug>/      작품 이미지 (_sizes.json은 빌드가 만드는 크기 캐시)
+content/images/<slug>/      작품 이미지 원본 (_sizes.json은 빌드가 만드는 크기 캐시)
+content/images/_web/        3MB·3000px 넘는 원본의 보기용 사본 (빌드가 만듦, _web.json이 대응표)
 content/source/             원본 PDF·고해상도 사진 (사이트에 쓰이지 않는 아카이브)
 ```
 
@@ -86,7 +87,8 @@ api/callback.js     코드를 토큰으로 교환해 HttpOnly 쿠키에 암호�
 api/logout.js       쿠키 삭제
 api/save.js         작품 JSON 을 커밋 (content/works/<slug>.json)
 api/save-page.js    약력·홈 JSON 을 커밋 (content/artist.json, content/site.json)
-api/upload.js       사진을 content/images/ 아래에 올림 (3MB까지, jpg/png/webp, 파일은 손대지 않음)
+api/upload.js       사진을 content/images/ 아래에 올림 (40MB까지, jpg/png/webp, 파일은 손대지 않음).
+                    Vercel 요청 한도(4.5MB) 때문에 2.5MB씩 나눠 GitHub blob으로 보낸 뒤 합쳐서 커밋
 api/new-work.js     새 작품 파일 생성. 같은 주소가 이미 있으면 거부
 api/delete-work.js  작품 파일 삭제. 사진은 남김. 마지막 작품과 홈 표지 작품은 거부
 api/_lib.js         공통 (쿠키 암호화, 저장소 이름)
