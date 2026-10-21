@@ -48,7 +48,8 @@
       "cells": [
         {
           "t": "img",
-          "src": "/content/images/uebergabe/03.jpg"
+          "src": "/content/images/uebergabe/03.jpg",
+          "fill": 90
         },
         {
           "t": "img",
