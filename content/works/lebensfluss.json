@@ -8,10 +8,6 @@
   "medium_en": "Video, 06:27 loop",
   "blocks": [
     {
-      "t": "gap",
-      "h": 64
-    },
-    {
       "t": "row",
       "gap": 16,
       "cells": [
@@ -21,7 +17,7 @@
         },
         {
           "t": "img",
-          "src": "/content/images/Lebensfluss_2.jpg"
+          "src": "/content/images/lebensfluss/foto.png"
         }
       ]
     },
