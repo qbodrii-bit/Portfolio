@@ -12,50 +12,46 @@
     {
       "t": "row",
       "gap": 32,
+      "va": "center",
       "cells": [
         {
+          "t": "img",
+          "src": "/content/images/ein-hammer-installation/foto.png",
+          "w": 1
+        },
+        {
           "t": "text",
-          "de": "Besucher:innen schlagen auf einen Gegenstand, der ihnen gehört. Die Entscheidung, den eigenen Besitz zu beschädigen, liegt allein bei ihnen. Die Bedeutung der Handlung entsteht erst durch die Entscheidung der Besucher:innen.",
-          "en": "Visitors strike an object that belongs to them. The decision to damage their own property rests with them alone. The meaning of the act only comes about through the visitors' decision."
+          "de": "Besucher:innen schlagen auf einen Gegenstand, der ihnen gehört.\n\n Die Entscheidung, den eigenen Besitz zu beschädigen, liegt allein bei ihnen. \n\nDie Bedeutung der Handlung entsteht erst durch die Entscheidung der Besucher:innen.",
+          "en": "",
+          "w": 1
         }
       ]
     },
     {
       "t": "gap",
-      "h": 96
-    },
-    {
-      "t": "row",
-      "gap": 32,
-      "cells": [
-        {
-          "t": "img",
-          "src": "/content/images/ein-hammer-installation/01.jpg",
-          "fill": 44
-        }
-      ]
+      "h": 36
     },
     {
       "t": "row",
       "gap": 16,
       "cells": [
         {
-          "t": "text",
-          "de": "",
-          "en": "",
-          "w": 1
+          "t": "img",
+          "src": "/content/images/ein-hammer-installation/22.jpg",
+          "w": 1,
+          "caption_de": "                                                                                         der erste Tag"
         },
         {
-          "t": "text",
-          "de": "",
-          "en": "",
-          "w": 1
+          "t": "img",
+          "src": "/content/images/ein-hammer-installation/33.jpg",
+          "w": 1,
+          "caption_de": "                                                                                      der zweite Tag"
         },
         {
-          "t": "text",
-          "de": "",
-          "en": "",
-          "w": 1
+          "t": "img",
+          "src": "/content/images/ein-hammer-installation/44.jpg",
+          "w": 1,
+          "caption_de": "                                                                                         der dritte Tag"
         }
       ]
     }
