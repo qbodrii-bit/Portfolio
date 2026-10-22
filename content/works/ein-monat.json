@@ -22,7 +22,7 @@
     },
     {
       "t": "gap",
-      "h": 56
+      "h": 36
     },
     {
       "t": "row",
@@ -31,14 +31,14 @@
       "cells": [
         {
           "t": "img",
-          "src": "/content/images/ein-monat/ein-monat_2.png",
-          "w": 1
+          "src": "/content/images/ein-monat/2.png",
+          "w": 53
         },
         {
           "t": "text",
           "de": "Jeden Tag verbrannte ich eine Kosmetikmaske und dokumentierte die kleinen Unterschiede. \n\nObwohl der Ablauf gleich blieb, reagierte jede Maske anders. \n\nDie Installation folgt der Struktur eines Kalenders und macht diese Veränderungen sichtbar.",
           "en": "",
-          "w": 1
+          "w": 47
         }
       ]
     }
