@@ -11,7 +11,7 @@
   "blocks": [
     {
       "t": "row",
-      "gap": 22,
+      "gap": 28,
       "va": "center",
       "cells": [
         {
@@ -24,7 +24,6 @@
           "t": "img",
           "src": "/content/images/beruehrung/1.png",
           "w": 26,
-          "fill": 65,
           "caption_de": "Rückseite"
         },
         {
