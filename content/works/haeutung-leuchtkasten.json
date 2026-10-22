@@ -11,26 +11,26 @@
   "blocks": [
     {
       "t": "row",
-      "gap": 0,
+      "gap": 7,
       "va": "center",
       "cells": [
         {
           "t": "img",
           "src": "/content/images/Tübingen.png",
-          "w": 2,
+          "w": 66,
           "fill": 73
         },
         {
           "t": "text",
           "de": "Nasses Reispapier wurde über Körperformen gelegt und trocknete zu dünnen, brüchigen Hüllen. \n\nIm Leuchtkasten werden Materialität und feine Strukturen sichtbar. \n\nDie Arbeit thematisiert Präsenz durch Spuren statt durch Sichtbarkeit.",
           "en": "",
-          "w": 1
+          "w": 34
         }
       ]
     },
     {
       "t": "gap",
-      "h": 32
+      "h": 36
     },
     {
       "t": "row",
@@ -42,7 +42,8 @@
         },
         {
           "t": "img",
-          "src": "/content/images/haeutung-leuchtkasten/02.jpg"
+          "src": "/content/images/haeutung-leuchtkasten/02.jpg",
+          "fill": 94
         }
       ]
     }
