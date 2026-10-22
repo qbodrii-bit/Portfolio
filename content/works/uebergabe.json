@@ -22,7 +22,7 @@
     },
     {
       "t": "gap",
-      "h": 96
+      "h": 36
     },
     {
       "t": "row",
@@ -44,15 +44,17 @@
     },
     {
       "t": "row",
-      "gap": 10,
+      "gap": 16,
       "cells": [
         {
           "t": "img",
-          "src": "/content/images/uebergabe/03.jpg"
+          "src": "/content/images/uebergabe/03.jpg",
+          "w": 1
         },
         {
           "t": "img",
-          "src": "/content/images/uebergabe/05.jpg"
+          "src": "/content/images/uebergabe/okop.jpg",
+          "w": 1
         }
       ]
     }
