@@ -13,21 +13,23 @@
       "cells": [
         {
           "t": "img",
-          "src": "/content/images/lebensfluss/01.jpg"
+          "src": "/content/images/lebensfluss/1.jpg",
+          "w": 1
         },
         {
           "t": "img",
-          "src": "/content/images/lebensfluss/foto.png"
+          "src": "/content/images/Lebensfluss_2-1.jpg",
+          "w": 1
         }
       ]
     },
     {
       "t": "gap",
-      "h": 16
+      "h": 11
     },
     {
       "t": "row",
-      "gap": 16,
+      "gap": 15,
       "cells": [
         {
           "t": "img",
@@ -38,6 +40,10 @@
           "src": "/content/images/Lebensfluss_4.jpg"
         }
       ]
+    },
+    {
+      "t": "gap",
+      "h": 56
     }
   ]
 }
