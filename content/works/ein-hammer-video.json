@@ -10,10 +10,6 @@
   "medium_en": "Video, 07:26 loop",
   "blocks": [
     {
-      "t": "gap",
-      "h": 36
-    },
-    {
       "t": "row",
       "gap": 32,
       "va": "center",
