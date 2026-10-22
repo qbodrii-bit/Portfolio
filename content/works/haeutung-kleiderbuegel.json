@@ -11,19 +11,19 @@
   "blocks": [
     {
       "t": "row",
-      "gap": 16,
+      "gap": 30,
       "va": "center",
       "cells": [
         {
           "t": "img",
           "src": "/content/images/haeutung-kleiderbuegel/01.jpg",
-          "w": 2
+          "w": 51
         },
         {
           "t": "text",
           "de": "Getrocknete Reispapierhüllen werden wie Kleidungsstücke aufgehängt. \n\n\nSie erinnern an abwesende Körper, ohne sie darzustellen. \n\n\nZwischen Material und Körper entsteht ein fragiler Zwischenzustand.",
           "en": "",
-          "w": 1
+          "w": 49
         }
       ]
     },
@@ -37,11 +37,12 @@
       "cells": [
         {
           "t": "img",
-          "src": "/content/images/haeutung-kleiderbuegel/02.jpg"
+          "src": "/content/images/haeutung-kleiderbuegel/faber-2026-1_hires-7.jpg"
         },
         {
           "t": "img",
-          "src": "/content/images/haeutung-kleiderbuegel/03.jpg"
+          "src": "/content/images/haeutung-kleiderbuegel/03.jpg",
+          "fill": 95
         }
       ]
     },
@@ -55,8 +56,14 @@
       "cells": [
         {
           "t": "img",
-          "src": "/content/images/haeutung-kleiderbuegel/faber-2026-1_hires-7.jpg",
-          "fill": 49
+          "src": "/content/images/haeutung-kleiderbuegel/02.jpg",
+          "w": 1
+        },
+        {
+          "t": "img",
+          "src": "/content/images/haeutung-kleiderbuegel/faber-2026-1_hires-97.jpg",
+          "w": 1,
+          "fill": 95
         }
       ]
     }
