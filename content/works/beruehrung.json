@@ -46,23 +46,6 @@
     {
       "t": "gap",
       "h": 56
-    },
-    {
-      "t": "row",
-      "gap": 16,
-      "cells": [
-        {
-          "t": "img",
-          "src": "/content/images/beruehrung/ein-monat.png",
-          "w": 1
-        },
-        {
-          "t": "text",
-          "de": "",
-          "en": "",
-          "w": 1
-        }
-      ]
     }
   ]
 }
