@@ -10,32 +10,29 @@
   "medium_en": "Photography",
   "blocks": [
     {
-      "t": "row",
-      "gap": 16,
-      "cells": [
-        {
-          "t": "text",
-          "de": "Reispapier legt sich direkt auf den Körper und verändert seine Form während des Trocknens. Es entsteht eine fragile Hülle zwischen Schutz und Verletzlichkeit. Mich interessiert die Beziehung zwischen Körperoberfläche und Material.",
-          "en": "Rice paper is laid directly onto the body and changes its form while drying. A fragile shell emerges between protection and vulnerability. I am interested in the relationship between the surface of the body and the material."
-        }
-      ]
-    },
-    {
       "t": "gap",
-      "h": 96
+      "h": 36
     },
     {
       "t": "row",
-      "gap": 16,
+      "gap": 20,
+      "va": "center",
       "cells": [
         {
           "t": "img",
           "src": "/content/images/huelle/01.jpg",
-          "align": "right"
+          "w": 1
         },
         {
           "t": "img",
-          "src": "/content/images/huelle/02.jpg"
+          "src": "/content/images/huelle/77.jpg",
+          "w": 1
+        },
+        {
+          "t": "text",
+          "de": "Reispapier legt sich direkt auf den Körper und verändert seine Form während des Trocknens. \n\nEs entsteht eine fragile Hülle zwischen Schutz und Verletzlichkeit. \n\nMich interessiert die Beziehung zwischen Körperoberfläche und Material.",
+          "en": "",
+          "w": 1
         }
       ]
     }
