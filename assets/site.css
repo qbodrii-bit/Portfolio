@@ -355,6 +355,7 @@ main {
   line-height: 1.6;
   margin: 0;
   text-wrap: pretty;
+  white-space: pre-line;      /* Zeilenumbrueche aus dem Editor-Feld zeigen */
 }
 
 .back-link {
@@ -991,7 +992,7 @@ body[data-section="layout"] .work-cell { position: relative; }
 .lay-feld:focus { outline: 0; }
 .lay-feld::placeholder { color: #C4C4C4; }
 
-/* Leerraum: sonst unsichtbar, beim Darueberfahren schraffiert mit Griff unten */
+/* Leerraum: sonst unsichtbar, beim Darueberfahren schraffiert mit Hoehenfeld */
 .lay-block[data-kind="gap"]:hover { outline-style: solid; background: repeating-linear-gradient(135deg, rgba(15, 15, 15, .05) 0 7px, transparent 7px 14px); }
 
 .lay-gaplabel, .lay-gapdel {
@@ -1006,20 +1007,22 @@ body[data-section="layout"] .work-cell { position: relative; }
 
 .lay-gaplabel { left: 50%; transform: translate(-50%, -50%); color: var(--bp-fg-muted); background: var(--bp-bg); padding: 2px 8px; border: 1px solid var(--bp-hairline); border-radius: 3px; }
 .lay-gapdel { right: 4px; color: var(--bp-fg-muted); background: var(--bp-bg); border: 1px solid var(--bp-hairline); border-radius: 3px; padding: 2px 7px; cursor: pointer; font-family: inherit; }
-.lay-block[data-kind="gap"]:hover .lay-gaplabel { opacity: 1; }
-.lay-block[data-kind="gap"]:hover .lay-gapdel { opacity: 1; pointer-events: auto; }
+.lay-gaplabel { display: flex; align-items: center; gap: 4px; z-index: 8; }
+.lay-gaplabel input { width: 46px; font: inherit; font-size: 11px; text-align: right; padding: 1px 4px; border: 1px solid var(--bp-hairline); border-radius: 3px; }
+.lay-gaplabel input:focus { outline: 0; border-color: var(--bp-fg); }
+/* Beim Tippen bleibt das Feld stehen, auch wenn die Maus weiterwandert */
+.lay-block[data-kind="gap"]:hover .lay-gaplabel,
+.lay-block[data-kind="gap"]:focus-within .lay-gaplabel { opacity: 1; pointer-events: auto; }
+.lay-block[data-kind="gap"]:hover .lay-gapdel,
+.lay-block[data-kind="gap"]:focus-within .lay-gapdel { opacity: 1; pointer-events: auto; }
 .lay-gapdel:hover { background: var(--bp-fg); color: var(--bp-bg); border-color: var(--bp-fg); }
 
-.lay-griff { position: absolute; left: 0; right: 0; bottom: -5px; height: 11px; cursor: ns-resize; z-index: 8; touch-action: none; }
-.lay-griff::after { content: ''; position: absolute; left: 50%; transform: translateX(-50%); top: 4px; width: 44px; height: 3px; border-radius: 2px; background: transparent; }
-.lay-block[data-kind="gap"]:hover .lay-griff::after { background: var(--bp-fg); }
-
-/* Neue Zeile einfuegen: duenne Linie zwischen den Bloecken */
+/* Neuen Block einfuegen. Sitzt an der linken Kante, nicht in der Mitte:
+   dort steht die Leiste der Zeile darunter und haette das "+" verdeckt. */
 .lay-plus {
   position: absolute;
-  left: 50%;
+  left: -10px;
   top: -11px;
-  transform: translateX(-50%);
   width: 20px;
   height: 20px;
   padding: 0;
@@ -1031,11 +1034,18 @@ body[data-section="layout"] .work-cell { position: relative; }
   color: var(--bp-fg);
   cursor: pointer;
   opacity: 0;
-  z-index: 11;
+  z-index: 13;
 }
 
 .lay-plus-ende { position: relative; top: 0; left: 0; transform: none; display: block; margin: var(--bp-space-md) auto 0; opacity: .4; }
 .lay-block:hover > .lay-plus, .lay-plus:hover { opacity: 1; }
+
+/* Wahl nach dem "+": Inhalt oder Leerraum */
+.lay-neuwahl { position: absolute; left: -10px; top: 13px; z-index: 14; display: flex; gap: 4px; padding: 4px; background: var(--bp-bg); border: 1px solid var(--bp-fg); border-radius: 4px; box-shadow: 0 4px 14px rgba(15, 15, 15, .12); }
+.lay-neuwahl-ende { position: relative; top: 0; left: 0; transform: none; width: max-content; margin: 6px auto 0; }
+.lay-neuwahl button { font: inherit; font-size: 12px; padding: 5px 11px; border: 1px solid var(--bp-hairline); border-radius: 3px; background: none; color: var(--bp-fg); cursor: pointer; white-space: nowrap; }
+.lay-neuwahl button:hover:not(:disabled) { background: var(--bp-fg); color: var(--bp-bg); border-color: var(--bp-fg); }
+.lay-neuwahl button:disabled { color: var(--bp-fg-muted); opacity: .5; cursor: not-allowed; }
 
 /* Bildauswahl */
 .lay-waehler { position: fixed; inset: 0; background: rgba(15, 15, 15, .4); display: grid; place-items: center; z-index: 50; }
@@ -1193,4 +1203,31 @@ body[data-section="layout"] .work-cell { position: relative; }
   .ed-raum { grid-template-columns: minmax(0, 1fr); gap: var(--bp-space-md); }
   .ed-liste { position: static; flex-direction: row; flex-wrap: wrap; gap: 4px; }
   .ed-liste-eintrag, .ed-liste-neu { border: 1px solid var(--bp-hairline); }
+}
+
+/* ---------- Verwaltung: Fotos (admin-fotos.html) ----------
+   Ganzes Bild statt Ausschnitt (contain): hier geht es gerade darum, das
+   Seitenverhaeltnis zu sehen. */
+.foto-nur { font-size: 13px; color: var(--bp-fg-muted); display: flex; align-items: center; gap: 6px; cursor: pointer; }
+.foto-zahl { color: var(--bp-fg-muted); font-weight: var(--bp-font-weight-normal); font-size: 12px; }
+.foto-ordner { margin-bottom: var(--bp-space-lg); }
+.foto-ordner:first-child .seiten-titel { margin-top: 0; }
+.foto-gitter { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; }
+.foto-karte { margin: 0; min-width: 0; }
+.foto-bild { display: block; aspect-ratio: 4 / 3; background: #F2F2F2; border-radius: 3px; overflow: hidden; }
+.foto-bild img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.foto-karte figcaption { padding-top: 6px; font-size: 12px; line-height: 1.45; }
+.foto-karte figcaption p { margin: 0; }
+.foto-name { overflow-wrap: anywhere; }
+.foto-mass, .foto-wo { color: var(--bp-fg-muted); }
+.foto-wo a { color: inherit; text-decoration: underline; }
+.foto-wo a:hover { color: var(--bp-fg); }
+.foto-wo[data-frei] { color: #A35A00; }
+.foto-weg { font: inherit; font-size: 12px; margin-top: 5px; padding: 3px 10px; border: 1px solid var(--bp-hairline); border-radius: 3px; background: none; color: var(--bp-fg-muted); cursor: pointer; }
+.foto-weg:hover:not(:disabled) { background: #C0392B; color: var(--bp-bg); border-color: #C0392B; }
+.foto-weg:disabled { cursor: not-allowed; opacity: .5; }
+.foto-loesch-bild { display: block; width: 100%; max-height: 240px; object-fit: contain; background: #F2F2F2; border-radius: 3px; }
+
+@media (max-width: 780px) {
+  .foto-gitter { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 }

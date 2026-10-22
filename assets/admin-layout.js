@@ -111,15 +111,7 @@
         if (cells.length) blocks.push({ t: 'row', gap: b.gap, va: b.va, cells: cells });
       }
     });
-    var merged = [];
-    blocks.forEach(function (b) {
-      var last = merged[merged.length - 1];
-      if (b.t === 'gap' && last && last.t === 'gap') last.h = Math.max(last.h, b.h);
-      else merged.push(b);
-    });
-    while (merged.length && merged[0].t === 'gap') merged.shift();
-    while (merged.length && merged[merged.length - 1].t === 'gap') merged.pop();
-    return merged;
+    return blocks;
   }
 
   function altText(w) { return w.title + ', ' + (w.year_label || w.year || '') + ' — Boram Park'; }
@@ -227,16 +219,19 @@
       var el = knoten[i];
       if (!el) return;
       el.insertAdjacentHTML('beforeend',
-        '<button type="button" class="lay-plus" data-i="' + i + '" title="여기에 줄 추가">+</button>');
+        '<button type="button" class="lay-plus" data-i="' + i + '" title="여기에 블록 추가">+</button>');
       el.classList.add('lay-block');
       el.setAttribute('data-kind', b.t);
       el.setAttribute('data-i', i);
 
       if (b.t === 'gap') {
+        // Hoehe als Zahl, nicht gezogen: so laesst sich ein Wert genau
+        // treffen und an anderer Stelle wiederholen.
         el.insertAdjacentHTML('beforeend',
-          '<span class="lay-gaplabel" contenteditable="false">여백 ' + b.h + 'px</span>' +
-          '<button type="button" class="lay-gapdel" data-tat="weg" data-i="' + i + '">삭제</button>' +
-          '<span class="lay-griff" data-tat="hoehe" data-i="' + i + '"></span>');
+          '<label class="lay-gaplabel" contenteditable="false">여백' +
+          '<input type="number" min="1" max="400" value="' + b.h + '" data-tat="hoehe"' +
+          ' data-i="' + i + '">px</label>' +
+          '<button type="button" class="lay-gapdel" data-tat="weg" data-i="' + i + '">삭제</button>');
         return;
       }
 
@@ -446,7 +441,33 @@
         if (ziel) ziel.style.setProperty('--gap', n + 'px');
         stand();
       }
+    } else if (tat === 'hoehe') {
+      // Waehrend des Tippens nur gueltige Werte uebernehmen; 0 oder ein leeres
+      // Feld wuerde den Leerraum beim Aufraeumen verschwinden lassen - dafuer
+      // gibt es den Knopf "삭제".
+      var luft = W.blocks[+el.getAttribute('data-i')];
+      var h = asInt(el.value, 0, 400);
+      if (luft && h && String(el.value).trim() !== '') {
+        luft.h = h;
+        var leer = knoten[+el.getAttribute('data-i')];
+        if (leer) leer.style.setProperty('--h', h + 'px');
+        stand();
+      }
     }
+  });
+
+  // Beim Verlassen zeigt das Feld wieder, was wirklich gilt - nur das Feld,
+  // nicht die ganze Buehne, sonst ginge der Klick ins naechste Feld verloren
+  stage.addEventListener('change', function (ev) {
+    var el = ev.target;
+    if (!el.getAttribute || el.getAttribute('data-tat') !== 'hoehe') return;
+    var luft = W.blocks[+el.getAttribute('data-i')];
+    if (luft && String(el.value) !== String(luft.h)) el.value = luft.h;
+  });
+
+  stage.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Enter' && ev.target.getAttribute &&
+        ev.target.getAttribute('data-tat') === 'hoehe') ev.target.blur();
   });
 
   // Eine leer verlassene Unterschrift verschwindet beim naechsten Zeichnen
@@ -454,10 +475,10 @@
     if (ev.target.classList && ev.target.classList.contains('lay-cap')) capOffen = '';
   });
 
-  // Ziehen: Trenner zwischen Zellen, und die Unterkante eines Leerraums
+  // Ziehen: Trenner zwischen Zellen (die Hoehe eines Leerraums wird getippt)
   stage.addEventListener('pointerdown', function (ev) {
     var el = ev.target.closest(
-      '[data-tat="breite"], [data-tat="hoehe"], [data-tat="fuellen"], [data-tat="ecke"]');
+      '[data-tat="breite"], [data-tat="fuellen"], [data-tat="ecke"]');
     if (!el) return;
     ev.preventDefault();
     var art = el.getAttribute('data-tat');
@@ -465,18 +486,6 @@
     var block = W.blocks[i];
     var node = knoten[i];
     if (!block || !node) return;
-
-    if (art === 'hoehe') {
-      var y0 = ev.clientY, h0 = block.h;
-      var label = node.querySelector('.lay-gaplabel');
-      move(function (ev2) {
-        block.h = Math.max(0, Math.min(400, Math.round(h0 + ev2.clientY - y0)));
-        node.style.setProperty('--h', block.h + 'px');
-        if (label) label.textContent = '여백 ' + block.h + 'px';
-        stand();
-      });
-      return;
-    }
 
     if (art === 'fuellen') {
       var zelle = block.cells[0];
@@ -554,15 +563,42 @@
     document.addEventListener('pointerup', ab);
   }
 
-  // Neue Zeile zwischen zwei Bloecken
+  /* Neuer Block zwischen zwei Bloecken: das "+" fragt, welcher. Beide gehen
+     ueberall - auch ein Leerraum am Anfang, am Ende oder neben einem anderen. */
+  function plusZu() {
+    var offen = stage.querySelector('.lay-neuwahl');
+    if (offen) offen.remove();
+  }
+
   stage.addEventListener('click', function (ev) {
+    var wahl = ev.target.closest('[data-neu]');
+    if (wahl) {
+      if (wahl.disabled) return;
+      var at = +wahl.getAttribute('data-i');
+      W.blocks.splice(at, 0, wahl.getAttribute('data-neu') === 'gap'
+        ? { t: 'gap', h: 56 }
+        : { t: 'row', gap: GAP_DEFAULT, cells: [{ t: 'text', de: '', en: '' }] });
+      aufraeumen();
+      zeichnen();
+      return;
+    }
+
     var el = ev.target.closest('.lay-plus');
     if (!el) return;
+    var schonDa = el.nextElementSibling && el.nextElementSibling.classList.contains('lay-neuwahl');
+    plusZu();
+    if (schonDa) return;
     var i = +el.getAttribute('data-i');
-    W.blocks.splice(i, 0, { t: 'gap', h: 56 },
-                          { t: 'row', gap: GAP_DEFAULT, cells: [{ t: 'text', de: '', en: '' }] });
-    aufraeumen();
-    zeichnen();
+    el.insertAdjacentHTML('afterend',
+      '<span class="lay-neuwahl' + (el.classList.contains('lay-plus-ende') ? ' lay-neuwahl-ende' : '') +
+      '" contenteditable="false">' +
+      '<button type="button" data-neu="row" data-i="' + i + '">내용 블록</button>' +
+      '<button type="button" data-neu="gap" data-i="' + i + '">여백 블록</button></span>');
+  });
+
+  // Klick daneben schliesst die Wahl
+  document.addEventListener('click', function (ev) {
+    if (!ev.target.closest('.lay-plus, .lay-neuwahl')) plusZu();
   });
 
   // ------------------------------------------------------------- Hochladen

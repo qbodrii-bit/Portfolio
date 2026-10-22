@@ -89,10 +89,10 @@ def style_attr(**props):
 def clean_blocks(raw):
     """Nur Bloecke behalten, die sich zeichnen lassen.
 
-    Bildzellen ohne src fallen weg, Zeilen ohne Zellen auch. Zwei Leerraeume
-    nebeneinander werden einer (der groessere), und am Anfang oder Ende steht
-    keiner - sonst haengt die Seite vorne oder hinten durch. Dieselbe Regel
-    gilt im Editor, siehe assets/admin-layout.js.
+    Bildzellen ohne src fallen weg, Zeilen ohne Zellen auch, Leerraeume ohne
+    Hoehe ebenso. Wo ein Leerraum steht, entscheidet die Kuenstlerin: auch am
+    Anfang, am Ende oder zwei hintereinander bleiben so, wie sie gesetzt sind.
+    Dieselbe Regel gilt im Editor, siehe assets/admin-layout.js.
     """
     blocks = []
     for b in raw if isinstance(raw, list) else []:
@@ -108,17 +108,7 @@ def clean_blocks(raw):
             if cells:
                 blocks.append({"t": "row", "gap": b.get("gap"), "va": b.get("va"),
                                "cells": cells})
-    merged = []
-    for b in blocks:
-        if b["t"] == "gap" and merged and merged[-1]["t"] == "gap":
-            merged[-1]["h"] = max(merged[-1]["h"], b["h"])
-        else:
-            merged.append(b)
-    while merged and merged[0]["t"] == "gap":
-        merged.pop(0)
-    while merged and merged[-1]["t"] == "gap":
-        merged.pop()
-    return merged
+    return blocks
 
 
 def block_images(w):
@@ -528,6 +518,7 @@ def nav_reiter(aktiv):
     return ('      <nav class="ed-reiter-leiste" aria-label="구역">\n'
             + r("werk", "작품", "admin-layout.html") + '\n'
             + r("seite", "페이지", "admin-seiten.html") + '\n'
+            + r("foto", "사진", "admin-fotos.html") + '\n'
             + '      </nav>')
 
 
@@ -610,8 +601,9 @@ admin_main = f"""  <main>
 
     <div class="admin-block">
       <a class="admin-button" href="admin-layout.html">사이트 편집하기</a>
-      <p class="admin-note">편집기가 열립니다. 위쪽 탭에서 <em>작품</em> 과 <em>페이지</em>
-        (약력·연락처·홈 화면)를 오갑니다. 저장하려면 GitHub 계정으로 한 번 로그인합니다.</p>
+      <p class="admin-note">편집기가 열립니다. 위쪽 탭에서 <em>작품</em>, <em>페이지</em>
+        (약력·연락처·홈 화면), <em>사진</em>(폴더별 사진 목록, 안 쓰는 사진 지우기)을 오갑니다.
+        저장하려면 GitHub 계정으로 한 번 로그인합니다.</p>
     </div>
 
     <section class="admin-block">
@@ -800,6 +792,53 @@ write("admin-seiten.html", page("약력·홈 — Boram Park", "작가용 내부 
                                 "layout", "", seiten_main, noindex=True,
                                 header=ADMIN_HEADER, script=False, lang="ko",
                                 js="admin-seiten.js"))
+
+# ----------------------------------------------------------- admin-fotos.html
+# Alle Fotos nach Ordnern, mit Massen und wo sie stecken; unbenutzte lassen
+# sich loeschen (api/delete-image.js). Die Liste der Ordner baut das Skript
+# assets/admin-fotos.js aus _sizes.json - hier steht nur, welche Arbeiten es
+# gibt, damit es nachsehen kann, wer welches Foto benutzt.
+foto_werke = "\n".join(
+    f'        <li data-slug="{w["slug"]}" data-path="content/works/{w["slug"]}.json"'
+    f' data-edit="admin-layout.html?w={w["slug"]}">{e(sub_label(w, "de"))}</li>'
+    for w in works)
+
+fotos_main = f"""  <main class="layout-main">
+    <div class="layout-bar">
+{nav_reiter("foto")}
+      <span class="layout-state" id="zustand">불러오는 중…</span>
+      <label class="foto-nur"><input type="checkbox" id="nur-frei"> 안 쓰는 사진만</label>
+    </div>
+
+    <div class="ed-raum">
+      <nav class="ed-liste" aria-label="폴더"></nav>
+      <div class="foto-flaeche" id="fotos"></div>
+    </div>
+
+    <ul id="werke" hidden>
+{foto_werke}
+    </ul>
+
+    <p class="layout-check" id="pruefung"></p>
+
+    <details class="lay-key" id="schluessel">
+      <summary>로그인 <span class="lay-key-stand">로그인하면 사진을 지울 수 있습니다</span></summary>
+      <div class="lay-key-body">
+        <p class="lay-key-zeile">
+          <a class="lay-key-login" href="/api/login">GitHub으로 로그인</a>
+          <button type="button" class="lay-key-weg">로그아웃</button>
+        </p>
+      </div>
+    </details>
+
+    <noscript><p class="layout-note">이 화면은 자바스크립트가 필요합니다.
+      <a href="admin.html">관리 화면으로 돌아가기</a></p></noscript>
+  </main>"""
+
+write("admin-fotos.html", page("사진 — Boram Park", "작가용 내부 페이지.",
+                               "layout", "", fotos_main, noindex=True,
+                               header=ADMIN_HEADER, script=False, lang="ko",
+                               js="admin-fotos.js"))
 
 # die fruehere Uebersichtsseite gibt es nicht mehr
 old_index = os.path.join(SITE, "work.html")

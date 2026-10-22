@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ko" data-lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>사진 — Boram Park</title>
+<meta name="description" content="작가용 내부 페이지.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css?v=09faa963">
+</head>
+<body data-section="layout">
+
+  <nav class="masthead" aria-label="Kopfzeile">
+    <div class="masthead-bar">
+      <a class="nav-logo" href="index.html">Boram Park</a>
+    </div>
+  </nav>
+
+  <main class="layout-main">
+    <div class="layout-bar">
+      <nav class="ed-reiter-leiste" aria-label="구역">
+        <a class="ed-reiter" href="admin-layout.html">작품</a>
+        <a class="ed-reiter" href="admin-seiten.html">페이지</a>
+        <a class="ed-reiter" href="admin-fotos.html" aria-current="page">사진</a>
+      </nav>
+      <span class="layout-state" id="zustand">불러오는 중…</span>
+      <label class="foto-nur"><input type="checkbox" id="nur-frei"> 안 쓰는 사진만</label>
+    </div>
+
+    <div class="ed-raum">
+      <nav class="ed-liste" aria-label="폴더"></nav>
+      <div class="foto-flaeche" id="fotos"></div>
+    </div>
+
+    <ul id="werke" hidden>
+        <li data-slug="uebergabe" data-path="content/works/uebergabe.json" data-edit="admin-layout.html?w=uebergabe">Übergabe</li>
+        <li data-slug="beruehrung" data-path="content/works/beruehrung.json" data-edit="admin-layout.html?w=beruehrung">Berührung</li>
+        <li data-slug="huelle" data-path="content/works/huelle.json" data-edit="admin-layout.html?w=huelle">Hülle</li>
+        <li data-slug="street-food" data-path="content/works/street-food.json" data-edit="admin-layout.html?w=street-food">Street Food (Serie)</li>
+        <li data-slug="haeutung-kleiderbuegel" data-path="content/works/haeutung-kleiderbuegel.json" data-edit="admin-layout.html?w=haeutung-kleiderbuegel">Häutung · Kleiderbügel</li>
+        <li data-slug="haeutung-reispapier" data-path="content/works/haeutung-reispapier.json" data-edit="admin-layout.html?w=haeutung-reispapier">Häutung · Reispapier</li>
+        <li data-slug="haeutung-leuchtkasten" data-path="content/works/haeutung-leuchtkasten.json" data-edit="admin-layout.html?w=haeutung-leuchtkasten">Häutung · Leuchtkasten</li>
+        <li data-slug="haeutung-kosmetikmaske" data-path="content/works/haeutung-kosmetikmaske.json" data-edit="admin-layout.html?w=haeutung-kosmetikmaske">Häutung · Kosmetikmaske</li>
+        <li data-slug="ein-monat" data-path="content/works/ein-monat.json" data-edit="admin-layout.html?w=ein-monat">Ein Monat</li>
+        <li data-slug="lebensfluss" data-path="content/works/lebensfluss.json" data-edit="admin-layout.html?w=lebensfluss">Lebensfluss</li>
+        <li data-slug="ein-hammer-installation" data-path="content/works/ein-hammer-installation.json" data-edit="admin-layout.html?w=ein-hammer-installation">Ein Hammer · Installation</li>
+        <li data-slug="ein-hammer-video" data-path="content/works/ein-hammer-video.json" data-edit="admin-layout.html?w=ein-hammer-video">Ein Hammer · Video</li>
+    </ul>
+
+    <p class="layout-check" id="pruefung"></p>
+
+    <details class="lay-key" id="schluessel">
+      <summary>로그인 <span class="lay-key-stand">로그인하면 사진을 지울 수 있습니다</span></summary>
+      <div class="lay-key-body">
+        <p class="lay-key-zeile">
+          <a class="lay-key-login" href="/api/login">GitHub으로 로그인</a>
+          <button type="button" class="lay-key-weg">로그아웃</button>
+        </p>
+      </div>
+    </details>
+
+    <noscript><p class="layout-note">이 화면은 자바스크립트가 필요합니다.
+      <a href="admin.html">관리 화면으로 돌아가기</a></p></noscript>
+  </main>
+  <script src="assets/admin-fotos.js?v=08feb196"></script>
+</body>
+</html>
