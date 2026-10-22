@@ -14,24 +14,9 @@
       "gap": 16,
       "cells": [
         {
-          "t": "text",
-          "de": "Jeden Tag verbrannte ich eine Kosmetikmaske und dokumentierte die kleinen Unterschiede. Obwohl der Ablauf gleich blieb, reagierte jede Maske anders. Die Installation folgt der Struktur eines Kalenders und macht diese Veränderungen sichtbar.",
-          "en": "Every day I burned a cosmetic mask and documented the small differences. Although the procedure stayed the same, each mask reacted differently. The installation follows the structure of a calendar and makes these changes visible."
-        }
-      ]
-    },
-    {
-      "t": "gap",
-      "h": 96
-    },
-    {
-      "t": "row",
-      "gap": 16,
-      "cells": [
-        {
           "t": "img",
-          "src": "/content/images/ein-monat/01.jpg",
-          "fill": 96
+          "src": "/content/images/ein-monat/31.png",
+          "fill": 79
         }
       ]
     },
@@ -42,10 +27,18 @@
     {
       "t": "row",
       "gap": 16,
+      "va": "center",
       "cells": [
         {
           "t": "img",
-          "src": "/content/images/ein-monat/ein-monat_2.png"
+          "src": "/content/images/ein-monat/ein-monat_2.png",
+          "w": 1
+        },
+        {
+          "t": "text",
+          "de": "Jeden Tag verbrannte ich eine Kosmetikmaske und dokumentierte die kleinen Unterschiede. \n\nObwohl der Ablauf gleich blieb, reagierte jede Maske anders. \n\nDie Installation folgt der Struktur eines Kalenders und macht diese Veränderungen sichtbar.",
+          "en": "",
+          "w": 1
         }
       ]
     }
