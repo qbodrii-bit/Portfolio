@@ -3,15 +3,7 @@
   3456,
   1943
  ],
- "content/images/Lebensfluss_2-2.jpg": [
-  3456,
-  1943
- ],
  "content/images/Lebensfluss_2-3.jpg": [
-  3456,
-  1943
- ],
- "content/images/Lebensfluss_2.jpg": [
   3456,
   1943
  ],
@@ -42,10 +34,6 @@
  "content/images/cover/01.jpg": [
   1915,
   1351
- ],
- "content/images/ein-hammer-installation/01.jpg": [
-  1583,
-  1231
  ],
  "content/images/ein-hammer-installation/22.jpg": [
   1943,
@@ -83,10 +71,6 @@
   3456,
   1936
  ],
- "content/images/ein-hammer-video/6.jpg": [
-  3456,
-  1936
- ],
  "content/images/ein-hammer-video/8.jpg": [
   3456,
   1936
@@ -96,10 +80,6 @@
   887
  ],
  "content/images/ein-monat/31.png": [
-  1536,
-  1024
- ],
- "content/images/ein-monat/ein-monat_2.png": [
   1536,
   1024
  ],
@@ -167,27 +147,11 @@
   1000,
   1506
  ],
- "content/images/lebensfluss/01.jpg": [
-  1528,
-  926
- ],
  "content/images/lebensfluss/1.jpg": [
   3456,
   1943
  ],
  "content/images/lebensfluss/2.jpg": [
-  3456,
-  1943
- ],
- "content/images/lebensfluss/Lebensfluss_2.jpg": [
-  3456,
-  1943
- ],
- "content/images/lebensfluss/Lebensfluss_3.jpg": [
-  3456,
-  1943
- ],
- "content/images/lebensfluss/Lebensfluss_4.jpg": [
   3456,
   1943
  ],
@@ -226,9 +190,5 @@
  "content/images/uebergabe/05.jpg": [
   1532,
   907
- ],
- "content/images/어두운 방 속 은은한 빛의 조각.png": [
-  1024,
-  1536
  ]
 }
