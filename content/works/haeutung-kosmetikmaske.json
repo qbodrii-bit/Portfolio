@@ -10,53 +10,61 @@
   "medium_en": "Photography",
   "blocks": [
     {
-      "t": "row",
-      "gap": 32,
-      "cells": [
-        {
-          "t": "text",
-          "de": "Durch Hitze verformt sich die Kosmetikmaske und bildet Falten und Risse. Die Fotografien zeigen unterschiedliche Zustände dieser Veränderung. Die Serie richtet den Blick auf die Oberfläche des Materials.",
-          "en": "Heat deforms the cosmetic mask, forming folds and cracks. The photographs show different states of this transformation. The series directs the gaze onto the surface of the material."
-        }
-      ]
-    },
-    {
       "t": "gap",
-      "h": 96
+      "h": 36
     },
     {
       "t": "row",
-      "gap": 32,
+      "gap": 10,
       "cells": [
         {
           "t": "img",
           "src": "/content/images/haeutung-kosmetikmaske/01.jpg",
-          "fill": 55
+          "w": 39,
+          "fill": 95
         },
         {
           "t": "img",
           "src": "/content/images/haeutung-kosmetikmaske/02.jpg",
-          "fill": 55
+          "w": 61,
+          "fill": 61
         }
       ]
     },
     {
       "t": "gap",
-      "h": 32
+      "h": 26
     },
     {
       "t": "row",
-      "gap": 32,
+      "gap": 10,
       "cells": [
         {
           "t": "img",
           "src": "/content/images/haeutung-kosmetikmaske/03.jpg",
-          "fill": 55
+          "w": 39,
+          "fill": 95
         },
         {
           "t": "img",
           "src": "/content/images/haeutung-kosmetikmaske/04.jpg",
-          "fill": 55
+          "w": 61,
+          "fill": 61
+        }
+      ]
+    },
+    {
+      "t": "gap",
+      "h": 36
+    },
+    {
+      "t": "row",
+      "gap": 16,
+      "cells": [
+        {
+          "t": "text",
+          "de": "Durch Hitze verformt sich die Kosmetikmaske und bildet Falten und Risse. \n\nDie Fotografien zeigen unterschiedliche Zustände dieser Veränderung. \n\nDie Serie richtet den Blick auf die Oberfläche des Materials.",
+          "en": ""
         }
       ]
     }
