@@ -17,8 +17,7 @@
         {
           "t": "img",
           "src": "/content/images/haeutung-kleiderbuegel/01.jpg",
-          "w": 2,
-          "fill": 75
+          "w": 2
         },
         {
           "t": "text",
@@ -30,7 +29,7 @@
     },
     {
       "t": "gap",
-      "h": 16
+      "h": 36
     },
     {
       "t": "row",
@@ -48,7 +47,7 @@
     },
     {
       "t": "gap",
-      "h": 56
+      "h": 30
     },
     {
       "t": "row",
