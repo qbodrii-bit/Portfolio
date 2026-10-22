@@ -34,6 +34,20 @@
           "fill": 96
         }
       ]
+    },
+    {
+      "t": "gap",
+      "h": 56
+    },
+    {
+      "t": "row",
+      "gap": 16,
+      "cells": [
+        {
+          "t": "img",
+          "src": "/content/images/ein-monat/ein-monat_2.png"
+        }
+      ]
     }
   ]
 }
