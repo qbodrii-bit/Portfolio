@@ -9,14 +9,14 @@
   "blocks": [
     {
       "t": "row",
-      "gap": 64,
+      "gap": 0,
       "va": "center",
       "cells": [
         {
           "t": "img",
           "src": "/content/images/street-food/01.jpg",
-          "w": 67,
-          "fill": 76,
+          "w": 60,
+          "fill": 93,
           "caption_de": "Schwarzwurst · Fotografie · 2025",
           "caption_en": "Schwarzwurst · Photography · 2025"
         },
@@ -24,13 +24,13 @@
           "t": "text",
           "de": "In der Serie „Street Food“ bringe ich Lebensmittel in ungewohnte Zusammenhänge im öffentlichen Raum.\n\nVertrautes wird fremd und eröffnet neue Möglichkeiten der Wahrnehmung.\n\nDie Fotografien zeigen den Ausgangspunkt meiner künstlerischen Arbeit: alltägliche Dinge aus meiner eigenen Perspektive zu betrachten und ihr Potenzial für Veränderungen zu entdecken.",
           "en": "",
-          "w": 33
+          "w": 40
         }
       ]
     },
     {
       "t": "gap",
-      "h": 64
+      "h": 36
     },
     {
       "t": "row",
@@ -47,7 +47,7 @@
     },
     {
       "t": "gap",
-      "h": 64
+      "h": 36
     },
     {
       "t": "row",
@@ -64,7 +64,7 @@
     },
     {
       "t": "gap",
-      "h": 64
+      "h": 36
     },
     {
       "t": "row",
