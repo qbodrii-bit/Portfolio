@@ -38,6 +38,21 @@
           "src": "/content/images/Lebensfluss_4.jpg"
         }
       ]
+    },
+    {
+      "t": "gap",
+      "h": 36
+    },
+    {
+      "t": "row",
+      "gap": 16,
+      "cells": [
+        {
+          "t": "text",
+          "de": "Die zunächst halbtransparente Kosmetikmaske verformt sich in einer heißen Pfanne und verbrennt nach und nach.\n\nDabei entstehen Falten und Spuren, die an das Altern menschlicher Haut erinnern.\n\nIm Wandel der Oberfläche wird das Vergehen von Lebenszeit sichtbar.",
+          "en": ""
+        }
+      ]
     }
   ]
 }
