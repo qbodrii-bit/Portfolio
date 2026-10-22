@@ -30,6 +30,7 @@
   var sizes = {};
   var web = {};           // Original -> verkleinerte Fassung fuer die Seite
   var bilder = [];        // alle hochgeladenen Bilder, fuer die Auswahl
+  var vorschau = {};      // gerade hochgeladen: Pfad -> Objekt-URL der Datei vom Rechner
   var ladung = 0;         // verwirft verspaetete Antworten
   var W = null;           // aktuelle Arbeit
   var pfad = '';          // content/works/<slug>.json
@@ -62,6 +63,11 @@
   // = web_src(): grosse Originale zeigt die Seite in der Fassung aus
   // content/images/_web/ (scripts/prepare-images.py), alle anderen unveraendert.
   function webSrc(src) { var r = relSrc(src); return web[r] || r; }
+
+  // Nur fuer die Anzeige im Editor, nie fuer plainHtml(): ein frisch
+  // hochgeladenes Foto liefert die Seite erst nach dem naechsten Deploy aus
+  // (1-2 Minuten) - bis dahin stuende dort nur das Fragezeichen.
+  function zeigeSrc(src) { return vorschau[relSrc(src)] || webSrc(src); }
 
   function json(pfad) {
     return fetch(pfad, { cache: 'no-store' })
@@ -327,6 +333,10 @@
     var scroll = window.scrollY;
     stage.innerHTML = plainHtml();
     knoten = [].slice.call(stage.children);
+    stage.querySelectorAll('img').forEach(function (img) {
+      var v = vorschau[img.getAttribute('src')];
+      if (v) img.src = v;
+    });
     applyLang();
     schmuecken();
     stage.insertAdjacentHTML('beforeend',
@@ -613,7 +623,7 @@
       '<input type="file" accept="image/jpeg,image/png,image/webp" hidden></label> ' +
       '<button type="button" class="lay-waehler-zu">닫기</button></span></p>' +
       '<div class="lay-waehler-gitter">' + bilder.map(function (src) {
-        return '<button type="button" data-src="' + esc(src) + '"><img src="' + esc(webSrc(src)) +
+        return '<button type="button" data-src="' + esc(src) + '"><img src="' + esc(zeigeSrc(src)) +
                '" loading="lazy" alt=""></button>';
       }).join('') + '</div>' +
       '<p class="lay-waehler-fuss" data-rolle="fuss">올린 사진은 바로 쓸 수 있습니다. ' +
@@ -633,6 +643,9 @@
         fuss.textContent = '올리는 중… ' + Math.round(fertigAnteil * 100) + '%';
       }).then(function (a) {
         if (a.status === 200) {
+          var rel = relSrc(a.d.pfad);
+          vorschau[rel] = URL.createObjectURL(datei);
+          if (bilder.indexOf(rel) < 0) bilder.push(rel);
           kasten.remove();
           fertig(a.d.pfad);
           return;
