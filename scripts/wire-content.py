@@ -808,6 +808,7 @@ fotos_main = f"""  <main class="layout-main">
 {nav_reiter("foto")}
       <span class="layout-state" id="zustand">불러오는 중…</span>
       <label class="foto-nur"><input type="checkbox" id="nur-frei"> 안 쓰는 사진만</label>
+      <button type="button" class="layout-save foto-hoch" id="hochladen" disabled>사진 올리기</button>
     </div>
 
     <div class="ed-raum">

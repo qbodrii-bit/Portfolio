@@ -16,6 +16,7 @@
   var flaeche = document.getElementById('fotos');
   var liste = document.querySelector('.ed-liste');
   var nurFrei = document.getElementById('nur-frei');
+  var hochBtn = document.getElementById('hochladen');
   var tokenBox = document.getElementById('schluessel');
   if (!flaeche || !liste) return;
 
@@ -24,6 +25,7 @@
   var web = {};
   var wo = {};            // Pfad -> [{ titel, edit }] - wer das Foto benutzt
   var weg = {};           // in dieser Sitzung geloescht, _sizes.json weiss es noch nicht
+  var vorschau = {};      // in dieser Sitzung hochgeladen: Pfad -> Objekt-URL vom Rechner
   var titel = {};         // Ordnername einer Arbeit -> ihr Titel
   var ordner = '';        // '' = alle
 
@@ -35,7 +37,9 @@
   }
 
   function relSrc(src) { return String(src || '').replace(/^\/+/, ''); }
-  function webSrc(src) { var r = relSrc(src); return web[r] || r; }
+  // Ein eben hochgeladenes Foto liefert die Seite erst nach dem naechsten
+  // Deploy aus - bis dahin die Datei vom Rechner zeigen (wie im Editor).
+  function webSrc(src) { var r = relSrc(src); return vorschau[r] || web[r] || r; }
 
   function angemeldet() { return /(^|;\s*)bp_wer=/.test(document.cookie); }
 
@@ -130,7 +134,7 @@
         '<button type="button" class="foto-weg" data-weg="' + esc(p) + '"' +
         (angemeldet() ? '' : ' disabled title="로그인하면 지울 수 있습니다"') + '>지우기</button>';
     return '<figure class="foto-karte">' +
-      '<a class="foto-bild" href="' + esc(p) + '" target="_blank" rel="noopener" title="원본 열기">' +
+      '<a class="foto-bild" href="' + esc(vorschau[p] || p) + '" target="_blank" rel="noopener" title="원본 열기">' +
       '<img src="' + esc(webSrc(p)) + '" loading="lazy" alt=""></a>' +
       '<figcaption><p class="foto-name">' + esc(nameVon(p)) + '</p>' +
       '<p class="foto-mass">' + (wh ? wh[0] + ' × ' + wh[1] + ' · ' + verhaeltnis(wh[0], wh[1]) : '') +
@@ -226,7 +230,263 @@
     });
   }
 
+  // ---------------------------------------------------------------- Hochladen
+  /* = hochladen() in assets/admin-layout.js: Vercel nimmt hoechstens 4,5 MB
+     pro Anfrage an, also in Stuecken zu 2,5 MB, die /api/upload bei GitHub
+     als Blobs ablegt und zum Schluss unveraendert zu einer Datei committet. */
+  var UPLOAD_MAX = 40 * 1024 * 1024;
+  var STUECK = 2.5 * 1024 * 1024;
+  var TYPEN = ['image/jpeg', 'image/png', 'image/webp'];
+  var ORDNER = /^[a-z0-9-]{1,64}$/;          // wie in api/upload.js
+
+  function post(body) {
+    return fetch('/api/upload', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      credentials: 'same-origin',
+      body: JSON.stringify(body)
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; })
+        .then(function (d) { return { status: r.status, d: d }; });
+    });
+  }
+
+  function base64(teil) {
+    return new Promise(function (ok, fehler) {
+      var leser = new FileReader();
+      leser.onload = function () { ok(String(leser.result).split(',')[1] || ''); };
+      leser.onerror = fehler;
+      leser.readAsDataURL(teil);
+    });
+  }
+
+  function hochladen(datei, ziel, fortschritt) {
+    var shas = [];
+    var anzahl = Math.max(1, Math.ceil(datei.size / STUECK));
+    function naechstes(i) {
+      fortschritt(i / (anzahl + 1));
+      if (i === anzahl) {
+        return post({ schritt: 'fertig', ordner: ziel, name: datei.name,
+                      typ: datei.type, teile: shas });
+      }
+      return base64(datei.slice(i * STUECK, (i + 1) * STUECK)).then(function (daten) {
+        return post({ schritt: 'teil', daten: daten });
+      }).then(function (a) {
+        if (a.status !== 200) return a;
+        shas.push(a.d.sha);
+        return naechstes(i + 1);
+      });
+    }
+    return naechstes(0);
+  }
+
+  // Pixelmasse direkt aus der Datei - _sizes.json kennt das Foto noch nicht
+  function masse(url) {
+    return new Promise(function (ok) {
+      var img = new Image();
+      img.onload = function () { ok([img.naturalWidth, img.naturalHeight]); };
+      img.onerror = function () { ok(null); };
+      img.src = url;
+    });
+  }
+
+  function fehlerText(a) {
+    if (a.d && a.d.fehler === 'vorhanden') return '같은 이름의 사진이 이미 있습니다. 파일 이름을 바꿔서 올려주세요.';
+    if (a.status === 401) return '로그인이 풀렸습니다. 새로고침한 뒤 다시 로그인해 주세요.';
+    if (a.d && a.d.fehler === 'kein-bild') return '사진 파일이 아닙니다 (jpg, png, webp 만 됩니다).';
+    return '올리지 못했습니다 (' + a.status + (a.d && a.d.fehler ? ' ' + a.d.fehler : '') + ')';
+  }
+
+  /* Ordner waehlen, Dateien waehlen oder hineinziehen (mehrere auf einmal),
+     dann eins nach dem anderen hoch - je Datei eine Zeile mit ihrem Stand.
+     Ordner gibt es nur mit ruhigem Namen (api/upload.js); "폴더 밖" und
+     Ordner mit Umlauten stehen deshalb nicht zur Wahl.
+
+     anfang: Dateien, die schon auf die Seite gezogen wurden. Steht noch kein
+     Ordner fest, warten sie, bis einer gewaehlt ist. */
+  var fenster = null;     // offenes Hochladefenster: { nimm: function (dateien) }
+
+  function hochFenster(anfang) {
+    if (fenster) { if (anfang) fenster.nimm(anfang); return; }
+    var namen = {};
+    werke.forEach(function (li) { namen[li.getAttribute('data-slug')] = true; });
+    namen.cover = true;
+    Object.keys(sizes).forEach(function (p) {
+      var o = ordnerVon(p);
+      if (ORDNER.test(o)) namen[o] = true;
+    });
+    var jetzt = ordner && ordner !== '/' && ORDNER.test(ordner) ? ordner : '';
+    var optionen = Object.keys(namen).sort().map(function (o) {
+      return '<option value="' + esc(o) + '"' + (o === jetzt ? ' selected' : '') + '>' +
+             esc(ordnerName(o)) + '</option>';
+    }).join('');
+
+    var kasten = document.createElement('div');
+    kasten.className = 'lay-waehler';
+    kasten.innerHTML =
+      '<div class="lay-waehler-innen neu-arbeit">' +
+      '<p class="lay-waehler-kopf">사진 올리기' +
+      '<button type="button" class="lay-waehler-zu">닫기</button></p>' +
+      '<div class="seiten-feld"><label class="seiten-label">어느 폴더에</label>' +
+      '<select class="seiten-ein" data-rolle="ordner">' +
+      (jetzt ? '' : '<option value="" selected disabled>폴더를 고르세요</option>') + optionen +
+      '</select></div>' +
+      '<div class="foto-drop" data-rolle="drop"><p>사진을 여기로 끌어다 놓거나</p>' +
+      '<label class="layout-save foto-hoch-wahl">사진 고르기 (여러 장 가능)' +
+      '<input type="file" accept="image/jpeg,image/png,image/webp" multiple hidden></label></div>' +
+      '<ul class="foto-hoch-liste" data-rolle="liste"></ul>' +
+      '<p class="lay-waehler-fuss" data-rolle="fuss">원본 그대로 올라가며, 한 장에 40MB까지입니다. ' +
+      'jpg, png, webp 만 됩니다 (아이폰 HEIC 사진은 jpg로 바꿔서 올려주세요).</p>' +
+      '</div>';
+    document.body.appendChild(kasten);
+
+    var wahl = kasten.querySelector('[data-rolle="ordner"]');
+    var eingabe = kasten.querySelector('.foto-hoch-wahl input');
+    var drop = kasten.querySelector('[data-rolle="drop"]');
+    var zeilen = kasten.querySelector('[data-rolle="liste"]');
+    var offen = 0;                             // Dateien, die noch nicht durch sind
+    var kette = Promise.resolve();
+    var wartend = [];                          // gezogen, bevor ein Ordner feststand
+
+    function zeile(datei, text) {
+      var li = document.createElement('li');
+      li.innerHTML = '<span class="foto-hoch-name"></span><span class="foto-hoch-stand"></span>';
+      li.firstChild.textContent = datei.name;
+      li.lastChild.textContent = text;
+      zeilen.appendChild(li);
+      return li.lastChild;
+    }
+
+    function eins(datei, ziel, anzeige) {
+      if (TYPEN.indexOf(datei.type) < 0) {
+        anzeige.textContent = 'jpg, png, webp 만 됩니다';
+        anzeige.setAttribute('data-bad', '1');
+        return;
+      }
+      if (datei.size > UPLOAD_MAX) {
+        anzeige.textContent = Math.round(datei.size / 1048576 * 10) / 10 + 'MB — 40MB까지만 됩니다';
+        anzeige.setAttribute('data-bad', '1');
+        return;
+      }
+      return hochladen(datei, ziel, function (anteil) {
+        anzeige.textContent = '올리는 중… ' + Math.round(anteil * 100) + '%';
+      }).then(function (a) {
+        if (a.status !== 200) {
+          anzeige.textContent = fehlerText(a);
+          anzeige.setAttribute('data-bad', '1');
+          return;
+        }
+        var p = relSrc(a.d.pfad);
+        vorschau[p] = URL.createObjectURL(datei);
+        delete weg[p];
+        return masse(vorschau[p]).then(function (wh) {
+          sizes[p] = wh || sizes[p] || [0, 0];
+          anzeige.textContent = '올렸습니다 ✓';
+          anzeige.setAttribute('data-ok', '1');
+        });
+      }).catch(function () {
+        anzeige.textContent = '올리지 못했습니다 — 인터넷 연결을 확인해 주세요';
+        anzeige.setAttribute('data-bad', '1');
+      });
+    }
+
+    // Dateien hinten an die Reihe haengen - auch waehrend schon etwas laeuft
+    function los(dateien) {
+      var ziel = wahl.value;
+      wahl.disabled = true;
+      dateien.forEach(function (datei) {
+        var anzeige = datei.anzeige || zeile(datei, '');
+        anzeige.textContent = '기다리는 중';
+        offen++;
+        kette = kette.then(function () { return eins(datei, ziel, anzeige); }).then(function () {
+          if (--offen) return;
+          wahl.disabled = false;
+          ordner = ziel;                         // gleich dorthin, wo die Fotos liegen
+          zeichnen();
+          melden('올린 사진은 바로 작품 편집기에서 쓸 수 있습니다. 사이트에는 1~2분 뒤에 나타납니다.');
+        });
+      });
+    }
+
+    function nimm(dateien) {
+      dateien = [].slice.call(dateien || []);
+      if (!dateien.length) return;
+      if (wahl.value) { los(dateien); return; }
+      dateien.forEach(function (datei) {
+        datei.anzeige = zeile(datei, '폴더를 고르면 올라갑니다');
+        wartend.push(datei);
+      });
+    }
+
+    wahl.addEventListener('change', function () {
+      if (wahl.value && wartend.length) { var w = wartend; wartend = []; los(w); }
+    });
+
+    eingabe.addEventListener('change', function () {
+      var dateien = eingabe.files;
+      nimm(dateien);
+      eingabe.value = '';
+    });
+
+    // Ins Fenster ziehen: die Flaeche hebt sich hervor, solange etwas darueber ist
+    kasten.addEventListener('dragover', function (ev) {
+      ev.preventDefault();
+      drop.setAttribute('data-ueber', '1');
+    });
+    kasten.addEventListener('dragleave', function (ev) {
+      if (!kasten.contains(ev.relatedTarget)) drop.removeAttribute('data-ueber');
+    });
+    kasten.addEventListener('drop', function (ev) {
+      ev.preventDefault();
+      ev.stopPropagation();                    // nicht noch einmal auf der Seite
+      drop.removeAttribute('data-ueber');
+      nimm(ev.dataTransfer && ev.dataTransfer.files);
+    });
+
+    kasten.addEventListener('click', function (ev) {
+      if (offen) return;                         // waehrend des Hochladens offen lassen
+      if (ev.target.closest('.lay-waehler-zu') || ev.target === kasten) {
+        kasten.remove();
+        fenster = null;
+      }
+    });
+
+    fenster = { nimm: nimm };
+    if (anfang) nimm(anfang);
+  }
+
+  /* Fotos irgendwo auf die Seite ziehen: das Fenster geht auf und nimmt sie.
+     Ohne preventDefault wuerde der Browser die Datei selbst oeffnen und die
+     Seite verlassen - deshalb auch dann abfangen, wenn niemand angemeldet ist. */
+  function sindDateien(ev) {
+    return ev.dataTransfer && [].indexOf.call(ev.dataTransfer.types || [], 'Files') >= 0;
+  }
+
+  document.addEventListener('dragover', function (ev) {
+    if (!sindDateien(ev)) return;
+    ev.preventDefault();
+    if (!fenster && hochBtn && !hochBtn.disabled) document.body.setAttribute('data-zieht', '1');
+  });
+  document.addEventListener('dragleave', function (ev) {
+    if (!ev.relatedTarget) document.body.removeAttribute('data-zieht');
+  });
+  document.addEventListener('drop', function (ev) {
+    if (!sindDateien(ev)) return;
+    ev.preventDefault();
+    document.body.removeAttribute('data-zieht');
+    if (!hochBtn || hochBtn.disabled) {
+      melden('로그인하면 사진을 끌어다 놓아 올릴 수 있습니다.', 1);
+      return;
+    }
+    hochFenster(ev.dataTransfer.files);
+  });
+
   // ---------------------------------------------------------------- Bedienung
+  if (hochBtn) {
+    hochBtn.disabled = !angemeldet();
+    if (!angemeldet()) hochBtn.title = '로그인하면 올릴 수 있습니다';
+    hochBtn.addEventListener('click', function () { hochFenster(); });
+  }
+
   liste.addEventListener('click', function (ev) {
     var b = ev.target.closest('[data-ordner]');
     if (!b) return;

@@ -186,11 +186,19 @@
   }
 
   function rowBar(i, block) {
-    var jetzt = block.cells.map(function (c) { return asInt(c.w, 1, 100) || 1; }).join();
+    var jetzt = block.cells.map(function (c) { return asInt(c.w, 1, 100) || 1; });
     var gap = asInt(block.gap, 0, 400);
     if (gap === null) gap = GAP_DEFAULT;
+    // Vorlage gilt als gewaehlt, wenn das Verhaeltnis stimmt - nach dem Ziehen
+    // steht 1:1 als 50:50 da und soll trotzdem als "2칸" leuchten.
+    function gleichesVerhaeltnis(v) {
+      if (v.w.length !== jetzt.length) return false;
+      var sv = v.w.reduce(function (s, x) { return s + x; }, 0);
+      var sj = jetzt.reduce(function (s, x) { return s + x; }, 0);
+      return v.w.every(function (x, k) { return x * sj === jetzt[k] * sv; });
+    }
     var knoepfe = VORLAGEN.map(function (v) {
-      var on = v.w.length === block.cells.length && v.w.join() === jetzt ? ' data-on=""' : '';
+      var on = gleichesVerhaeltnis(v) ? ' data-on=""' : '';
       return '<button type="button" data-tat="vorlage" data-i="' + i + '" data-k="' + v.k +
              '"' + on + ' title="' + v.w.length + '칸">' + icon(v.d) + '</button>';
     }).join('');
@@ -240,7 +248,7 @@
       for (var t = 1; t < b.cells.length; t++) {
         el.insertAdjacentHTML('beforeend',
           '<span class="lay-trenner" data-tat="breite" data-i="' + i + '" data-t="' + t +
-          '" style="left:' + (anteil(b, t) * 100) + '%"></span>');
+          '" style="left:' + (anteil(b, t) * 100) + '%" title="끌어서 칸 너비 바꾸기"></span>');
       }
       // Steht ein Bild allein in der Zeile, gibt es keinen Trenner - dann sitzt
       // der Griff an seiner rechten Kante und aendert fill. Fuer die Hand ist
@@ -532,26 +540,41 @@
       return;
     }
 
+    // Die Vorlagen stehen als kleine Verhaeltnisse da (1:1, 2:1). In diesen
+    // Schritten liesse sich 1:1 gar nicht bewegen - deshalb vor dem Ziehen
+    // auf Prozent umrechnen (Summe 100) und dann in 1%-Schritten ziehen.
+    prozent(block);
     var t = +el.getAttribute('data-t');
     var breite = node.getBoundingClientRect().width;
     var x0 = ev.clientX;
-    var links = asInt(block.cells[t - 1].w, 1, 100) || 1;
-    var rechts = asInt(block.cells[t].w, 1, 100) || 1;
-    var paar = links + rechts;
+    var links = block.cells[t - 1].w;
+    var paar = links + block.cells[t].w;
+    var MIN = 5;                                 // keine Spalte schmaler als 5%
+    el.classList.add('lay-zieht');
     move(function (ev2) {
       // nur die beiden Nachbarn tauschen Anteile, der Rest der Zeile bleibt
-      var summe = block.cells.reduce(function (s, c) { return s + (asInt(c.w, 1, 100) || 1); }, 0);
-      var d = Math.round((ev2.clientX - x0) / breite * summe);
-      var l = Math.max(1, Math.min(paar - 1, links + d));
+      var d = Math.round((ev2.clientX - x0) / breite * 100);
+      var l = Math.max(MIN, Math.min(paar - MIN, links + d));
       block.cells[t - 1].w = l;
       block.cells[t].w = paar - l;
       node.style.setProperty('--cols', block.cells.map(function (c) {
-        return (asInt(c.w, 1, 100) || 1) + 'fr';
+        return c.w + 'fr';
       }).join(' '));
       el.style.left = (anteil(block, t) * 100) + '%';
+      el.setAttribute('data-wert', block.cells.map(function (c) { return c.w; }).join(' : '));
       stand();
     });
   });
+
+  // Anteile einer Zeile auf ganze Prozent bringen, Summe genau 100.
+  // Das Verhaeltnis bleibt, nur die Zahlen werden feiner.
+  function prozent(block) {
+    var roh = block.cells.map(function (c) { return asInt(c.w, 1, 100) || 1; });
+    var summe = roh.reduce(function (s, v) { return s + v; }, 0);
+    var neu = roh.map(function (v) { return Math.max(1, Math.round(v / summe * 100)); });
+    neu[neu.length - 1] += 100 - neu.reduce(function (s, v) { return s + v; }, 0);
+    block.cells.forEach(function (c, k) { c.w = neu[k]; });
+  }
 
   function move(auf) {
     function ab() {

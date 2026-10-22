@@ -893,7 +893,37 @@ body[data-section="layout"] .masthead {
 }
 
 .lay-block:hover .lay-trenner::after { background: var(--bp-hairline); }
-.lay-trenner:hover::after { background: var(--bp-fg); }
+.lay-trenner:hover::after, .lay-trenner.lay-zieht::after { background: var(--bp-fg); }
+
+/* Griff in der Mitte des Trenners, damit man ihn ueberhaupt findet */
+.lay-trenner[data-tat="breite"]::before,
+.lay-trenner[data-tat="fuellen"]::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 30px;
+  transform: translate(-50%, -50%);
+  border: 1px solid var(--bp-fg);
+  border-radius: 4px;
+  background: var(--bp-bg);
+  opacity: 0;
+  z-index: 1;
+}
+.lay-block:hover > .lay-trenner::before, .lay-trenner.lay-zieht::before { opacity: 1; }
+
+/* Beim Ziehen steht das Verhaeltnis daneben, z. B. 62 : 38 */
+.lay-trenner.lay-zieht[data-wert]::before {
+  content: attr(data-wert);
+  width: auto;
+  height: auto;
+  padding: 3px 7px;
+  font-size: 11px;
+  white-space: nowrap;
+  background: var(--bp-fg);
+  color: var(--bp-bg);
+}
 
 /* Ecke eines Bildes, das sich die Zeile teilt: ziehen aendert, wie viel von
    seiner Spalte es einnimmt. Die Kante selbst gehoert dem Trenner. */
@@ -1231,3 +1261,21 @@ body[data-section="layout"] .work-cell { position: relative; }
 @media (max-width: 780px) {
   .foto-gitter { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 }
+
+/* Hochladen auf der Fotoseite */
+.foto-hoch { margin-left: auto; }
+.foto-hoch:disabled { background: #C9C9C9; cursor: not-allowed; }
+.foto-hoch-wahl { display: inline-block; text-align: center; padding: 8px 18px; }
+/* Ablageflaeche im Fenster; hebt sich hervor, solange Dateien darueber sind */
+.foto-drop { margin: var(--bp-space-sm) 0 0; padding: var(--bp-space-md) var(--bp-space-sm); border: 1.5px dashed #BDBDBD; border-radius: 4px; text-align: center; font-size: 13px; color: var(--bp-fg-muted); transition: background .12s ease, border-color .12s ease; }
+.foto-drop p { margin: 0 0 10px; }
+.foto-drop[data-ueber] { border-color: var(--bp-fg); background: #F2F2F2; color: var(--bp-fg); }
+/* Datei ueber der Fotoseite: die ganze Seite zeigt, dass sie annimmt */
+body[data-zieht] .foto-flaeche { outline: 2px dashed var(--bp-fg); outline-offset: 8px; border-radius: 4px; }
+body[data-zieht] .foto-flaeche::before { content: '여기에 놓으면 올리기 창이 열립니다'; display: block; margin-bottom: var(--bp-space-sm); font-size: 13px; color: var(--bp-fg); }
+.foto-hoch-liste { list-style: none; margin: var(--bp-space-sm) 0 0; padding: 0; font-size: 12px; max-height: 40vh; overflow: auto; }
+.foto-hoch-liste li { display: flex; justify-content: space-between; gap: 10px; padding: 5px 0; border-bottom: 1px solid var(--bp-hairline); }
+.foto-hoch-name { overflow-wrap: anywhere; }
+.foto-hoch-stand { color: var(--bp-fg-muted); white-space: nowrap; }
+.foto-hoch-stand[data-ok] { color: var(--bp-fg); }
+.foto-hoch-stand[data-bad] { color: #C0392B; white-space: normal; text-align: right; }
