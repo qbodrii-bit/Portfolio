@@ -15,14 +15,14 @@
       "cells": [
         {
           "t": "text",
-          "de": "Gefrorener Wein schmilzt und gibt seine Flüssigkeit an ein Coin-Tissue ab. Während das Eis verschwindet, verändern sich die Formen beider Materialien. Mich interessiert der Moment, in dem eine Form in eine andere übergeht.",
+          "de": "Gefrorener Wein schmilzt und gibt seine Flüssigkeit an ein Coin-Tissue ab.\n\n Während das Eis verschwindet, verändern sich die Formen beider Materialien. \n\nMich interessiert der Moment, in dem eine Form in eine andere übergeht.",
           "en": "Frozen wine melts and passes its liquid on to a coin tissue. As the ice disappears, the forms of both materials change. I am interested in the moment when one form passes into another."
         }
       ]
     },
     {
       "t": "gap",
-      "h": 96
+      "h": 36
     },
     {
       "t": "row",
@@ -30,11 +30,13 @@
       "cells": [
         {
           "t": "img",
-          "src": "/content/images/uebergabe/01.jpg"
+          "src": "/content/images/uebergabe/01.jpg",
+          "w": 50
         },
         {
           "t": "img",
-          "src": "/content/images/uebergabe/02.jpg"
+          "src": "/content/images/uebergabe/02.jpg",
+          "w": 50
         }
       ]
     },
@@ -44,16 +46,17 @@
     },
     {
       "t": "row",
-      "gap": 10,
+      "gap": 16,
       "cells": [
         {
           "t": "img",
           "src": "/content/images/uebergabe/03.jpg",
-          "fill": 90
+          "w": 50
         },
         {
           "t": "img",
-          "src": "/content/images/uebergabe/05.jpg"
+          "src": "/content/images/uebergabe/55.jpg",
+          "w": 50
         }
       ]
     }
