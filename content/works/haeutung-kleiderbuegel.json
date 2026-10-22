@@ -41,8 +41,7 @@
         },
         {
           "t": "img",
-          "src": "/content/images/haeutung-kleiderbuegel/03.jpg",
-          "fill": 95
+          "src": "/content/images/haeutung-kleiderbuegel/03.jpg"
         }
       ]
     },
@@ -61,9 +60,8 @@
         },
         {
           "t": "img",
-          "src": "/content/images/haeutung-kleiderbuegel/faber-2026-1_hires-97.jpg",
-          "w": 1,
-          "fill": 95
+          "src": "/content/images/haeutung-kleiderbuegel/foto.jpg",
+          "w": 1
         }
       ]
     }
