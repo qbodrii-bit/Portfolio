@@ -12,31 +12,24 @@
     {
       "t": "row",
       "gap": 16,
-      "cells": [
-        {
-          "t": "text",
-          "de": "Nasses Reispapier wurde über Körperformen gelegt und trocknete zu dünnen, brüchigen Hüllen. Die Oberfläche zeigt Spuren einer körperlichen Form, ohne den Körper selbst sichtbar zu machen. Mich interessiert die Grenze zwischen Material und Körper.",
-          "en": "Wet rice paper was laid over body forms and dried into thin, brittle shells. The surface shows traces of a bodily form without making the body itself visible. I am interested in the boundary between material and body."
-        }
-      ]
-    },
-    {
-      "t": "gap",
-      "h": 96
-    },
-    {
-      "t": "row",
-      "gap": 16,
+      "va": "center",
       "cells": [
         {
           "t": "img",
           "src": "/content/images/haeutung-reispapier/01.jpg",
-          "fill": 59
+          "w": 1,
+          "fill": 95
         },
         {
           "t": "img",
           "src": "/content/images/haeutung-reispapier/02.jpg",
-          "fill": 62
+          "w": 1
+        },
+        {
+          "t": "text",
+          "de": "Nasses Reispapier wurde über Körperformen gelegt und trocknete zu dünnen, brüchigen Hüllen. \n\nDie Oberfläche zeigt Spuren einer körperlichen Form, ohne den Körper selbst sichtbar zu machen. \n\nMich interessiert die Grenze zwischen Material und Körper.",
+          "en": "",
+          "w": 1
         }
       ]
     },
