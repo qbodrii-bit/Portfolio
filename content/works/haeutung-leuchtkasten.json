@@ -11,27 +11,20 @@
   "blocks": [
     {
       "t": "row",
-      "gap": 32,
-      "cells": [
-        {
-          "t": "text",
-          "de": "Nasses Reispapier wurde über Körperformen gelegt und trocknete zu dünnen, brüchigen Hüllen. Im Leuchtkasten werden Materialität und feine Strukturen sichtbar. Die Arbeit thematisiert Präsenz durch Spuren statt durch Sichtbarkeit.",
-          "en": "Wet rice paper was laid over body forms and dried into thin, brittle shells. In the light box, materiality and fine structures become visible. The work addresses presence through traces rather than through visibility."
-        }
-      ]
-    },
-    {
-      "t": "gap",
-      "h": 96
-    },
-    {
-      "t": "row",
-      "gap": 32,
+      "gap": 0,
+      "va": "center",
       "cells": [
         {
           "t": "img",
           "src": "/content/images/Tübingen.png",
-          "fill": 48
+          "w": 2,
+          "fill": 73
+        },
+        {
+          "t": "text",
+          "de": "Nasses Reispapier wurde über Körperformen gelegt und trocknete zu dünnen, brüchigen Hüllen. \n\nIm Leuchtkasten werden Materialität und feine Strukturen sichtbar. \n\nDie Arbeit thematisiert Präsenz durch Spuren statt durch Sichtbarkeit.",
+          "en": "",
+          "w": 1
         }
       ]
     },
