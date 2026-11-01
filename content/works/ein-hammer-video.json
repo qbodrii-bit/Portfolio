@@ -33,7 +33,7 @@
     },
     {
       "t": "row",
-      "gap": 32,
+      "gap": 16,
       "cells": [
         {
           "t": "img",
@@ -47,19 +47,21 @@
     },
     {
       "t": "gap",
-      "h": 32
+      "h": 16
     },
     {
       "t": "row",
-      "gap": 32,
+      "gap": 16,
       "cells": [
         {
           "t": "img",
-          "src": "/content/images/ein-hammer-video/3.jpg"
+          "src": "/content/images/ein-hammer-video/3.jpg",
+          "w": 50
         },
         {
           "t": "img",
-          "src": "/content/images/ein-hammer-video/4.jpg"
+          "src": "/content/images/ein-hammer-video/4.jpg",
+          "w": 50
         }
       ]
     }
