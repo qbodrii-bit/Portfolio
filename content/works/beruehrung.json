@@ -11,19 +11,19 @@
   "blocks": [
     {
       "t": "row",
-      "gap": 22,
+      "gap": 16,
       "va": "center",
       "cells": [
         {
           "t": "img",
           "src": "/content/images/beruehrung/01.jpg",
-          "w": 35,
+          "w": 37,
           "caption_de": "Vorderseite"
         },
         {
           "t": "img",
           "src": "/content/images/beruehrung/1.png",
-          "w": 26,
+          "w": 30,
           "fill": 94,
           "caption_de": "Rückseite"
         },
@@ -31,7 +31,7 @@
           "t": "text",
           "de": "Eine von Reispapier umhüllte Hand erinnert an eine dünne, schalenartige Oberfläche.\n\n Auf der Glastür begegnet sie allen, die den Raum betreten oder durchqueren.",
           "en": "",
-          "w": 39
+          "w": 33
         }
       ]
     }
