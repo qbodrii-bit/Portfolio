@@ -17,8 +17,7 @@
         {
           "t": "img",
           "src": "/content/images/Tübingen.png",
-          "w": 50,
-          "fill": 99
+          "w": 50
         },
         {
           "t": "text",
@@ -34,7 +33,7 @@
     },
     {
       "t": "row",
-      "gap": 32,
+      "gap": 16,
       "cells": [
         {
           "t": "img",
